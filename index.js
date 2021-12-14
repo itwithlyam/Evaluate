@@ -2,7 +2,7 @@ const LEXER = require("./lexer")
 const INTERPRETER = require("./interpreter")
 const PARSER = require('./parser')
 
-const program = "mset ImportantNumber 12 var ImportantNumber";
+const program = "var a";
 
 console.log("COMPLICATED-CALCULATOR> " + program)
 let tokens = LEXER.Lexer(program)

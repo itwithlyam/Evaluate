@@ -1,5 +1,5 @@
 const IDENT = {
-	PLC1: 0,
+	NUMBER: 0,
 	NEWLINE: 1,
 	PLUS: 2,
 	MINUS: 3,
@@ -32,6 +32,10 @@ function Lexer(script) {
 	program.forEach((line) => {
     let chars = line.split(' ')
 		chars.forEach((char) => {
+			if (parseInt(char)) {
+				const payload = {'char': parseInt(char), 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
+				return idents.push(payload)
+			}
 			switch(char) {
 				case '+':
 					const payload1 = {'char': char, 'ident': IDENT.PLUS, 'classify': Classify.OPERATION}
