@@ -1,20 +1,37 @@
+const fs = require("fs")
 
-et UserMemory = {}
+function pushdata(id, value) {
+	fs.readFile('./memory.json', (err, data) => {
+		data = JSON.parse(data)
+		data[id] = value
+		fs.writeFile('./memory.json', JSON.stringify(data), (err) => {})
+	})
+}
+function pulldata(id) {
+	
+}
+
 
 function Interpret(AST) {
 	let tokens = AST.body
 	let current = 0
 	let ans = ""
-	AST.body.forEach(element => {
+	AST.body.forEach(async element => {
 		switch(element.type) {
 			case 'memory':
 				if (element.kind === 'mset') {
 					current += 1
-					return UserMemory[element.declarations.id.name] = element.declarations.init.value
+					pushdata(element.declarations.id.name, element.declarations.init.value)
+					return ans = element.declarations.init.value
 				}
 				if (element.kind === 'var') {
 					current += 1
-					return ans = UserMemory[element.declarations.id.name]
+					let id = element.declarations.id.name
+					fs.readFile('./memory.json', (err, data) => {
+						data = JSON.parse(data.toString())
+						console.log(data)
+						ans = data[`${id}`]
+					})
 				}
 				break;
 			case 'operation':
