@@ -2,8 +2,8 @@
 Just an old project... 
 
 ## Example program
-Input: ``mset b 12 var b``  
-Result: ``12``
+Input: ``67 + 2``  
+Result: ``69``
 
 ## Lexer
 
@@ -22,6 +22,10 @@ MEMSET - 10
 TERM - 11  
 MEMCLR - 12  
 EQUALS - 13  
+
+Input: `67 + 2`  
+Output: `[{0, 67}, {2, +}, {0, 2}]`
+
 
 ## Parser
 

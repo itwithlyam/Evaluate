@@ -1,4 +1,5 @@
-let UserMemory = {}
+
+et UserMemory = {}
 
 function Interpret(AST) {
 	let tokens = AST.body
