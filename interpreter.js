@@ -7,16 +7,13 @@ function pushdata(id, value) {
 		fs.writeFile('./memory.json', JSON.stringify(data), (err) => {})
 	})
 }
-function pulldata(id) {
-	
-}
 
 
 function Interpret(AST) {
 	let tokens = AST.body
 	let current = 0
-	let ans = ""
-	AST.body.forEach(async element => {
+	let ans = null
+	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'memory':
 				if (element.kind === 'mset') {
@@ -25,13 +22,15 @@ function Interpret(AST) {
 					return ans = element.declarations.init.value
 				}
 				if (element.kind === 'var') {
-					current += 1
 					let id = element.declarations.id.name
-					fs.readFile('./memory.json', (err, data) => {
-						data = JSON.parse(data.toString())
-						console.log(data)
-						ans = data[`${id}`]
-					})
+					let a;
+					let data = JSON.parse(fs.readFileSync('./memory.json').toString())
+					a = data[id]
+					current += 1
+					ans = a
+					return
+					
+					
 				}
 				break;
 			case 'operation':
