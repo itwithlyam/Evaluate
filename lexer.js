@@ -33,7 +33,7 @@ function Lexer(script) {
     let chars = line.split(' ')
 		chars.forEach((char) => {
 			if (parseInt(char)) {
-				const payload = {'char': parseInt(char), 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
+				const payload = {'char': char, 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
 			switch(char) {

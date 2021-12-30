@@ -55,7 +55,7 @@ function Parse(tokens) {
 			tokens[current].read = true
 			return body.push({
 				type: "number",
-				value: element.char
+				value: parseFloat(element.char)
 			})
 		}
 		if (element.ident == 11) {
