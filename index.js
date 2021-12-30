@@ -1,19 +1,14 @@
 const LEXER = require("./lexer")
 const INTERPRETER = require("./interpreter")
 const PARSER = require('./parser')
-const repl = require('repl')
 
 const fs = require('fs')
 fs.writeFileSync('./memory.json', '{}')
 
-const myRepl = repl.start("Read-Eval-Print loop > ");
+let program = process.argv[2]
 
-const state = {
-  e(program) {
-    let tokens = LEXER.Lexer(program)
+if (!program) process.exit(1)
+
+    let tokens = LEXER.Lexer(fs.readFileSync(program).toString())
 	let script = PARSER.Parse(tokens)
-	return INTERPRETER.Interpret(script)
-  }
-};
-
-Object.assign(myRepl.context, state);
+	console.log(INTERPRETER.Interpret(script))
