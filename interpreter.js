@@ -10,7 +10,6 @@ function pushdata(id, value) {
 
 
 function Interpret(AST) {
-	console.log(AST)
 	let tokens = AST.body
 	let current = 0
 	let ans = null
