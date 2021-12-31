@@ -9,6 +9,6 @@ let program = process.argv[2]
 
 if (!program) process.exit(1)
 
-    let tokens = LEXER.Lexer(fs.readFileSync(program).toString())
-	let script = PARSER.Parse(tokens)
-	console.log(INTERPRETER.Interpret(script))
+let tokens = LEXER.Lexer(fs.readFileSync(program).toString())
+let script = PARSER.Parse(tokens)
+console.log(INTERPRETER.Interpret(script))

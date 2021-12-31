@@ -30,18 +30,25 @@ function Lexer(script) {
 	let lastnum = false;
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
-    let chars = line.split(' ')
+    let chars = line.split('')
+		console.log(chars)
 		chars.forEach((char) => {
 			if (parseInt(char)) {
 				const payload = {'char': char, 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
 			switch(char) {
+				case ' ':
+					return;
+				case '{':
+					return idents.push({'char': '{', 'ident': IDENT.LCBRACKET, 'classify': IDENT.CBRACKET})
+				case '}':
+					return idents.push({'char': '}', 'ident': IDENT.RCBRACKET, 'classify': IDENT.CBRACKET})
 				case '+':
 					const payload1 = {'char': char, 'ident': IDENT.PLUS, 'classify': Classify.OPERATION}
 					return idents.push(payload1)
 					break;
-				case '\n':
+				case ';':
 					const payload2 = {'char': char, 'ident': IDENT.NEWLINE, 'classify': Classify.SYSTEM}
 					return idents.push(payload2)
 					break;
