@@ -48,7 +48,7 @@ function Lexer(script) {
 					const payload1 = {'char': char, 'ident': IDENT.PLUS, 'classify': Classify.OPERATION}
 					return idents.push(payload1)
 					break;
-				case '\n':
+				case ';':
 					const payload2 = {'char': char, 'ident': IDENT.NEWLINE, 'classify': Classify.SYSTEM}
 					return idents.push(payload2)
 					break;

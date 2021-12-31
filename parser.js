@@ -53,7 +53,7 @@ function Parse(tokens) {
 				if (block) throw new util.CompilationError("SubBlock", "Blocks within blocks are not permitted", line)
 				return block = true;
 			case 8:
-				//if (!block) throw new util.CompilationError("NoBlock", "Blocks must be opened before closed", line)
+				if (!block) throw new util.CompilationError("NoBlock", "Blocks must be opened before closed", line)
 				return block = false;
 			case 2:
 			case 3:
