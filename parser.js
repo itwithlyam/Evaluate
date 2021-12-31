@@ -1,4 +1,4 @@
-// TODO: Make Parser (start with mset and mread idents)
+const util = require("./util")
 
 /*
 // TS Syntax from ComplicatedCalculator archive
@@ -31,16 +31,30 @@ type Tree = {
 function Parse(tokens) {
 	let body = []
 	let current = 0;
+	let block = false
+	let line = 1
+	let bar = false
 
 	tokens.forEach((element) => {
 		if (element.read) return;
 		if (element.ident == 6) {
+			if (bar && block) throw new util.CompilationError("UnnexpectedEOF", "An EOF was given instead of a Block", line)
+			bar = true
 			body.push({
 				type: "EOF",
 				value: element.char
 			})
 		}
+		
 		switch(element.ident) {
+			case 1:
+				return line += 1
+			case 7:
+				if (block) throw new util.CompilationError("SubBlock", "Blocks within blocks are not permitted", line)
+				return block = true;
+			case 8:
+				//if (!block) throw new util.CompilationError("NoBlock", "Blocks must be opened before closed", line)
+				return block = false;
 			case 2:
 			case 3:
 			case 4:

@@ -1,6 +1,6 @@
 {
   "name": "evaluate.js",
-  "version": "0.1.0",
+  "version": "0.3.0-alpha",
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
