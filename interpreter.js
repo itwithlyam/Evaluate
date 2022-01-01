@@ -1,20 +1,30 @@
 const fs = require("fs")
+const {RuntimeError} = require("./util")
 
 function pushdata(id, value) {
-	fs.readFile('./memory.json', (err, data) => {
-		data = JSON.parse(data)
-		data[id] = value
-		fs.writeFile('./memory.json', JSON.stringify(data), (err) => {})
-	})
+	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
+	data[id] = value
+	let err = fs.writeFileSync('./memory.json', JSON.stringify(data))
+	if (err) console.log(err)
 }
+
 
 
 function Interpret(AST) {
 	let tokens = AST.body
 	let current = 0
+	let line = 1
 	let ans = null
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'newline':
+				current += 1
+				line += 1
+				break;
+			case 'eopen':
+			case 'eclose':
+				current += 1
+				break;
 			case 'memory':
 				if (element.kind === 'mset') {
 					current += 1
@@ -23,11 +33,12 @@ function Interpret(AST) {
 				}
 				if (element.kind === 'var') {
 					let id = element.declarations.id.name
-					let a;
-					let data = JSON.parse(fs.readFileSync('./memory.json').toString())
-					a = data[id]
+					let raw = fs.readFileSync('./memory.json').toString()
+					let data = JSON.parse(raw)
+					ans = parseFloat(data[id])
+					if (!ans && ans !== 0) ans = data[id]
+					if (!ans) throw new RuntimeError("NotDefined", `${id} is not defined in memory`, line)
 					current += 1
-					ans = a
 					return
 					
 					

@@ -1,24 +1,38 @@
-class LexicalError extends Error {
+const LEXER = require("./lexer")
+const INTERPRETER = require("./interpreter")
+const PARSER = require('./parser')
+
+class LexicalError {
 	constructor(type, body, location) {
-		super(`Lexical ${type} Error: ${body} (Line${location})`)
+		console.error(`Lexical ${type} Error: ${body} (Line${location})`)
+		process.exit(1)
 	}
 }
 
-class CompilationError extends Error {
+class CompilationError {
 	constructor(type, body, location) {
-		super(`Compilation ${type} Error: ${body} (Line ${location})`)
+		console.error(`Compilation ${type} Error: ${body} (Line ${location})`)
+		process.exit(1)
 	}
 }
 
-class RuntimeError extends Error {
+function run(program) {
+	let tokens = LEXER.Lexer(program)
+	let script = PARSER.Parse(tokens)
+	return INTERPRETER.Interpret(script)
+}
+
+class RuntimeError {
 	constructor(type, body, location) {
-		super(`Runtime ${type} Error: ${body} (Line ${location})`)
+		console.error(`Runtime ${type} Error: ${body} (Line ${location})`)
+		process.exit(1)
 	}
 }
 
-class Fault extends Error {
+class Fault {
 	constructor(c) {
-		super(`FAULT - An internal language fault has been detected! Please report this.\nFull error: \n${c}`)
+		console.error(`FAULT - An internal language fault has been detected! Please report this.\nFull error: \n${c}`)
+		process.exit(1)
 	}
 }
 
@@ -26,5 +40,6 @@ module.exports = {
 	LexicalError,
 	CompilationError,
 	RuntimeError,
-	Fault
+	Fault,
+	run
 }
