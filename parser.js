@@ -1,4 +1,4 @@
-const util = require("./util")
+const {CompilationError} = require("./util")
 
 /*
 // TS Syntax from ComplicatedCalculator archive
@@ -38,7 +38,7 @@ function Parse(tokens) {
 	tokens.forEach((element) => {
 		if (element.read) return;
 		if (element.ident == 6) {
-			if (bar && block) throw new util.CompilationError("UnnexpectedEOF", "An EOF was given instead of a Block", line)
+			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line)
 			bar = true
 			body.push({
 				type: "EOF",
@@ -48,12 +48,31 @@ function Parse(tokens) {
 		
 		switch(element.ident) {
 			case 1:
+				
+				current += 1
+				body.push({
+					type: "newline",
+					value: element.char
+				})
 				return line += 1
 			case 7:
-				if (block) throw new util.CompilationError("SubBlock", "Blocks within blocks are not permitted", line)
+			tokens[current].read = true
+			current += 1
+				if (block) throw new CompilationError("EquationOpen", "Equations within equations are not permitted", line)
+				body.push({
+					type: "eopen",
+					value: element.char
+				})
 				return block = true;
+				
 			case 8:
-				if (!block) throw new util.CompilationError("NoBlock", "Blocks must be opened before closed", line)
+			tokens[current].read = true
+			current += 1
+				if (!block) throw new CompilationError("EquationClosed", "Equations must be opened before closed", line)
+				body.push({
+					type: "eclose",
+					value: element.char
+				})
 				return block = false;
 			case 2:
 			case 3:

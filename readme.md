@@ -1,9 +1,19 @@
 # Evaluate.js
-Just an old project... 
+Part of the Evaluate collection.
 
 ## Example program
-Input: ``67 + 2``  
+Input: ``67 + 2 ;``  
 Result: ``69``
+
+## Error handling
+
+### Compile-time
+- UnnexpectedEOF
+- EquationOpen
+- EquationClosed
+
+### Runtime
+- NotDefined
 
 ## Lexer
 
@@ -23,8 +33,8 @@ TERM - 11
 MEMCLR - 12  
 EQUALS - 13  
 
-Input: `67 + 2`  
-Output: `[{0, 67}, {2, +}, {0, 2}]`
+Input: `67 + 2 ;`  
+Output: `[{0, 67}, {2, +}, {0, 2}, {1, ;}]`
 
 
 ## Parser
