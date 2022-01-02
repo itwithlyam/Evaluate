@@ -1,5 +1,5 @@
 const fs = require("fs")
-const {RuntimeError} = require("./util")
+const util = require("./util")
 
 function pushdata(id, value) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
@@ -37,7 +37,7 @@ function Interpret(AST) {
 					let data = JSON.parse(raw)
 					ans = parseFloat(data[id])
 					if (!ans && ans !== 0) ans = data[id]
-					if (!ans) throw new RuntimeError("NotDefined", `${id} is not defined in memory`, line)
+					if (!ans) throw new util.RuntimeError("NotDefined", `${id} is not defined in memory`, line)
 					current += 1
 					return
 					
