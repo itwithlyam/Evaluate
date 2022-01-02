@@ -11,6 +11,9 @@
   "devDependencies": {
     "chai": "^4.3.4"
   },
+  "bin": {
+    "evaluatejs": "./bin/index.js"
+  },
   "dependencies": {
     "math.js": "^1.1.46",
     "mathjs": "^10.0.2",

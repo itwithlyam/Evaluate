@@ -1,9 +1,11 @@
-const LEXER = require("./lexer")
-const INTERPRETER = require("./interpreter")
-const PARSER = require('./parser')
+#!/usr/bin/env node
+
+const LEXER = require("../lexer")
+const INTERPRETER = require("../interpreter")
+const PARSER = require('../parser')
 
 const fs = require('fs')
-fs.writeFileSync('./memory.json', '{}')
+fs.writeFileSync('../memory.json', '{}')
 
 let program = process.argv[2]
 
