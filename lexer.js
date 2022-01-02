@@ -28,40 +28,15 @@ function Lexer(script) {
   let program = script.split('\n')
 	let idents = []
 	let lastnum = false;
-	let lastwd = false;
-	let store = ""
-	let current = 0
-	let recentnum = {'char': parseFloat(char), 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
-	let wordbuffer = ['{', '}', ';', ' ']
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
-    let chars = line.split('')
+    let chars = line.split(' ')
 		chars.forEach((char) => {
-			current += 1
-			if (parseInt(char) || char == 0 || char == '.') {
-				if (!lastnum) {
-					lastnum = true
-
-				}
-				if (char !== ".") {
-					idents[idents.length - 1].char += char
-					return idents[idents.length - 1].char = parseFloat(idents[idents.length - 1].char)
-				}
-				return idents[idents.length - 1].char = idents[idents.length - 1].char.toString() + "."
+			if (parseInt(char) || char == 0) {
+				const payload = {'char': char, 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
+				return idents.push(payload)
 			}
-			lastnum = false
-			if (!lastwd) {
-				lastwd = true
-				store = char
-				if (!parseFloat(chars[current + 1]) || wordbuffer.includes(chars[current + 1])) return;
-			} else if (wordbuffer.includes(char)) {
-				store = char
-				lastwd = false
-			} else {
-				return store += char
-			}
-			console.log(store)
-			switch(store) {
+			switch(char) {
 				case ' ':
 					return;
 				case '{':
@@ -69,49 +44,49 @@ function Lexer(script) {
 				case '}':
 					return idents.push({'char': '}', 'ident': IDENT.RCBRACKET, 'classify': IDENT.CBRACKET})
 				case '+':
-					const payload1 = {'char': store, 'ident': IDENT.PLUS, 'classify': Classify.OPERATION}
+					const payload1 = {'char': char, 'ident': IDENT.PLUS, 'classify': Classify.OPERATION}
 					return idents.push(payload1)
 					break;
 				case ';':
-					const payload2 = {'char': store, 'ident': IDENT.NEWLINE, 'classify': Classify.SYSTEM}
+					const payload2 = {'char': char, 'ident': IDENT.NEWLINE, 'classify': Classify.SYSTEM}
 					return idents.push(payload2)
 					break;
 				case '-':
-					const payload3 = {'char': store, 'ident': IDENT.MINUS, 'classify': Classify.OPERATION}
+					const payload3 = {'char': char, 'ident': IDENT.MINUS, 'classify': Classify.OPERATION}
 					return idents.push(payload3)
 					break;
 				case '*':
-					const payload4 = {'char': store, 'ident': IDENT.TIMES, 'classify': Classify.OPERATION}
+					const payload4 = {'char': char, 'ident': IDENT.TIMES, 'classify': Classify.OPERATION}
 					return idents.push(payload4)
 					break;
 				case '/':
-					const payload5 = {'char': store, 'ident': IDENT.DIVIDE, 'classify': Classify.OPERATION}
+					const payload5 = {'char': char, 'ident': IDENT.DIVIDE, 'classify': Classify.OPERATION}
 					return idents.push(payload5)
 					break;
 				case '{':
-					const payload6 = {'char': store, 'ident': IDENT.LCBRACKET, 'classify': Classify.CBRACKET}
+					const payload6 = {'char': char, 'ident': IDENT.LCBRACKET, 'classify': Classify.CBRACKET}
 					return idents.push(payload6)
 					break;
 				case '}':
-					const payload7 = {'char': store, 'ident': IDENT.RCBRACKET, 'classify': Classify.CBRACKET}
+					const payload7 = {'char': char, 'ident': IDENT.RCBRACKET, 'classify': Classify.CBRACKET}
 					return idents.push(payload7)
 					break;
 				case ' ':
 					break;
 				case '<ALGEBRA>':
-					const payload8 = {'char': store, 'ident': IDENT.ALGEBRA, 'classify': Classify.SETTING}
+					const payload8 = {'char': char, 'ident': IDENT.ALGEBRA, 'classify': Classify.SETTING}
 					return idents.push(payload8)
 					break;
 				case 'mset':
-					const payload9 = {'char': store, 'ident': IDENT.MEMSET, 'classify': Classify.MEMORY}
+					const payload9 = {'char': char, 'ident': IDENT.MEMSET, 'classify': Classify.MEMORY}
 					return idents.push(payload9)
 					break;
 				case 'mclear':
-					const payload10 = {'char': store, 'ident': IDENT.MEMCLR, 'classify': Classify.MEMORY}
+					const payload10 = {'char': char, 'ident': IDENT.MEMCLR, 'classify': Classify.MEMORY}
 					return idents.push(payload10)
 					break;
 				default:
-					const readmem = {'char': store, 'ident': IDENT.TERM, 'classify': Classify.CHAR}
+					const readmem = {'char': char, 'ident': IDENT.TERM, 'classify': Classify.CHAR}
 					return idents.push(readmem)
 					break;
 			}
