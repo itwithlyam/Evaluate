@@ -31,6 +31,7 @@ function Lexer(script) {
 	let lastwd = false;
 	let store = ""
 	let current = 0
+	let recentnum = {'char': parseFloat(char), 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
 	let wordbuffer = ['{', '}', ';', ' ']
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
@@ -40,16 +41,13 @@ function Lexer(script) {
 			if (parseInt(char) || char == 0 || char == '.') {
 				if (!lastnum) {
 					lastnum = true
-					const payload = {'char': parseFloat(char), 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
-					console.log(char)
-					return idents.push(payload)
+
 				}
-				idents[idents.length - 1].char = (idents[idents.length - 1].char *= 10).toString()
-				idents[idents.length - 1].char += char
-				if (char !== '.') {
+				if (char !== ".") {
+					idents[idents.length - 1].char += char
 					return idents[idents.length - 1].char = parseFloat(idents[idents.length - 1].char)
 				}
-				idents[idents.length - 1].char = idents[idents.length - 1].char
+				return idents[idents.length - 1].char = idents[idents.length - 1].char.toString() + "."
 			}
 			lastnum = false
 			if (!lastwd) {
