@@ -20,6 +20,9 @@ describe('Maths', function() {
 		it("should return 4", function() {
 			expect(start("10 - 6")).to.equal(4)
 		})
+		it("should still execute", function() {
+			expect(start("1+               1")).to.equal(2)
+		})
   })
   
 })
