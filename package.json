@@ -4,7 +4,8 @@
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "testwin": "mocha"
   },
   "author": "",
   "license": "MIT",

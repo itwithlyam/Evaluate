@@ -30,13 +30,16 @@ function Lexer(script) {
 	let lastnum = false;
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
-    let chars = line.split(' ')
+    	let chars = line.split(/\s|\{|\}/)
+		//let chars = line.split(' ')
+		console.log(chars)
 		chars.forEach((char) => {
 			if (parseInt(char) || char == 0) {
 				const payload = {'char': char, 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
 			switch(char) {
+				case '':
 				case ' ':
 					return;
 				case '{':

@@ -133,6 +133,7 @@ function Parse(tokens) {
 		length: tokens.length,
 		body: body
 	}
+	console.log(AST)
 	return AST
 }
 
