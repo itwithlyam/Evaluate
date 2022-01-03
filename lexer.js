@@ -24,28 +24,30 @@ const Classify = {
 	MEMORY: 5
 }
 
+const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)/gi
+
 function Lexer(script) {
   let program = script.split('\n')
 	let idents = []
 	let lastnum = false;
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
-    	let chars = line.split(/\s|\{|\}/)
+    	let chars = line.split(negatives)
 		//let chars = line.split(' ')
-		console.log(chars)
 		chars.forEach((char) => {
-			if (parseInt(char) || char == 0) {
+			if (parseInt(char) || char == 0 && char != "") {
 				const payload = {'char': char, 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
+			if (!char) return;
 			switch(char) {
 				case '':
 				case ' ':
 					return;
 				case '{':
-					return idents.push({'char': '{', 'ident': IDENT.LCBRACKET, 'classify': IDENT.CBRACKET})
+					return idents.push({'char': '{', 'ident': IDENT.LCBRACKET, 'classify': Classify.CBRACKET})
 				case '}':
-					return idents.push({'char': '}', 'ident': IDENT.RCBRACKET, 'classify': IDENT.CBRACKET})
+					return idents.push({'char': '}', 'ident': IDENT.RCBRACKET, 'classify': Classify.CBRACKET})
 				case '+':
 					const payload1 = {'char': char, 'ident': IDENT.PLUS, 'classify': Classify.OPERATION}
 					return idents.push(payload1)
