@@ -4,16 +4,21 @@
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "build": "./node_modules/pkg/bin/pkg"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.3.4"
   },
+  "bin": {
+    "evaluatejs": "./bin/index.js"
+  },
   "dependencies": {
     "math.js": "^1.1.46",
     "mathjs": "^10.0.2",
-    "mocha": "^9.1.3"
+    "mocha": "^9.1.3",
+    "pkg": "^5.5.1"
   }
 }

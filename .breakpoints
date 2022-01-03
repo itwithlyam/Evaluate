@@ -1,3 +1,12 @@
 {
-  "files": {}
+  "files": {
+    "lexer.js": [
+      {
+        "id": "2157b5ab-361b-47e7-8d86-be84a9b43105",
+        "line": 24,
+        "version": 856,
+        "index": 273
+      }
+    ]
+  }
 }

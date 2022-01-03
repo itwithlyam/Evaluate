@@ -1,1 +1,6 @@
 ./memory.json
+node_modules
+*-linux
+*-macos
+*-win.exe
+.breakpoints
