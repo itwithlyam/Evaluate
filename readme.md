@@ -2,8 +2,11 @@
 Part of the Evaluate collection.
 
 ## Example program
-Input: ``67 + 2 ;``  
+Input: ``67+2;``  
 Result: ``69``
+
+Input: `210*4;`
+Result: `840`
 
 ## Error handling
 

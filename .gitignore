@@ -1,5 +1,6 @@
 ./memory.json
 node_modules
-evaluate-linux
-evaluate-macos
-evaluate-win.exe
+*-linux
+*-macos
+*-win.exe
+.breakpoints
