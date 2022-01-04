@@ -34,6 +34,8 @@ function Parse(tokens) {
 	let block = false
 	let line = 1
 	let bar = false
+	let bracket = false
+	let sbracket = false
 
 	tokens.forEach((element) => {
 		if (element.read) return;
@@ -74,6 +76,42 @@ function Parse(tokens) {
 					value: element.char
 				})
 				return block = false;
+			case 14:
+				tokens[current].read = true
+				current += 1
+				if (bracket) throw new util.CompilationError("BracketOpen", "Brackets within brackets are not permitted", line)
+				body.push({
+					type: "bopen",
+					value: element.char
+				})
+				return bracket = true;
+			case 15:
+				tokens[current].read = true
+				current += 1
+				if (!bracket) throw new util.CompilationError("BracketClosed", "Brackets must be opened before closed", line)
+				body.push({
+					type: "bclose",
+					value: element.char
+				})
+				return bracket = false;
+			case 16:
+				tokens[current].read = true
+				current += 1
+				if (sbracket) throw new util.CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line)
+				body.push({
+					type: "sopen",
+					value: element.char
+				})
+				return sbracket = true;
+			case 17:
+				tokens[current].read = true
+				current += 1
+				if (!sbracket) throw new util.CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line)
+				body.push({
+					type: "sclose",
+					value: element.char
+				})
+				return sbracket = false;
 			case 2:
 			case 3:
 			case 4:
