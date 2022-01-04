@@ -35,8 +35,12 @@ MEMSET - 10
 TERM - 11  
 MEMCLR - 12  
 EQUALS - 13  
+LBRACKET - 14
+RBRACKET - 15
+LSBRACKET - 16
+RSBRACKET - 17
 
-Input: `67 + 2 ;`  
+Input: `67+2;`  
 Output: `[{0, 67}, {2, +}, {0, 2}, {1, ;}]`
 
 
