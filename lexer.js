@@ -12,7 +12,9 @@ const IDENT = {
 	MEMSET: 10,
 	TERM: 11,
 	MEMCLR: 12,
-	EQUALS: 13
+	EQUALS: 13,
+	LBRACKET: 14,
+	RBRACKET: 15
 }
 
 const Classify = {
@@ -21,15 +23,15 @@ const Classify = {
 	SYSTEM: 2,
 	CBRACKET: 3,
 	SETTING: 4,
-	MEMORY: 5
+	MEMORY: 5,
+	BRACKET: 6
 }
 
-const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)/gi
+const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))/gi
 
 function Lexer(script) {
   let program = script.split('\n')
 	let idents = []
-	let lastnum = false;
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
     	let chars = line.split(negatives)
@@ -44,6 +46,10 @@ function Lexer(script) {
 				case '':
 				case ' ':
 					return;
+				case '(':
+					return idents.push({'char': '(', 'ident': IDENT.LBRACKET, 'classify': Classify.BRACKET})
+				case ')':
+					return idents.push({'char': ')', 'ident': IDENT.RBRACKET, 'classify': Classify.BRACKET})
 				case '{':
 					return idents.push({'char': '{', 'ident': IDENT.LCBRACKET, 'classify': Classify.CBRACKET})
 				case '}':
