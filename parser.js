@@ -131,14 +131,13 @@ function Parse(tokens) {
 		}
 		if (element.ident == 11) {
 			tokens[current].read = true
-			tokens[current + 1].read = true
 			body.push({
 				type: "memory",
 				kind: "var",
-				value: "var " + tokens[current + 1].char,
+				value: tokens[current].char,
 				declarations: {
 					id: {
-						name: tokens[current + 1].char
+						name: tokens[current].char
 					}
 				}
 			})
