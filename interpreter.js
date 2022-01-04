@@ -23,6 +23,10 @@ function Interpret(AST) {
 				break;
 			case 'eopen':
 			case 'eclose':
+			case 'bopen':
+			case 'bclose':
+			case 'sopen':
+			case 'sclose':
 				current += 1
 				break;
 			case 'memory':
