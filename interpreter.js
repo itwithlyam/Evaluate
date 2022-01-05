@@ -49,11 +49,20 @@ function Interpret(AST) {
 				}
 				break;
 			case 'operation':
-				let ops = ""
-				element.body.forEach(e => {
-					ops += e.value
-				})
-				return ans = eval(ops)
+				switch(element.value) {
+					case '+':
+						ans = tokens[current - 1].value + tokens[current + 1].value
+						return current += 1
+					case '-':
+						ans = tokens[current - 1].value - tokens[current + 1].value
+						return current += 1
+					case '*':
+						ans = tokens[current - 1].value * tokens[current + 1].value
+						return current += 1
+					case '/':
+						ans = tokens[current - 1].value / tokens[current + 1].value
+						return current += 1
+				}
 			default:
 				current += 1
 		}

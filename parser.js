@@ -36,14 +36,10 @@ function Parse(tokens) {
 	let bar = false
 	let bracket = false
 	let sbracket = false
-	let equation = ""
-	console.log(tokens)
 
 	tokens.forEach((element) => {
 		if (element.read) return;
 		if (element.ident == 6) {
-			current += 1
-			tokens[current].read = true
 			if (bar && block) throw new util.CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line)
 			bar = true
 			body.push({
@@ -112,10 +108,6 @@ function Parse(tokens) {
 				current += 1
 				if (!sbracket) throw new util.CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line)
 				body.push({
-					type: "equation",
-					value: equation
-				})
-				body.push({
 					type: "sclose",
 					value: element.char
 				})
@@ -124,19 +116,13 @@ function Parse(tokens) {
 			case 3:
 			case 4:
 			case 5:
-				//if (!sbracket) throw new util.CompilationError("InvalidEquation", "Equations can only be used in square brackets",line)
-				equation += tokens[current - 1].char
-				equation += element.char
-				if (parseFloat(tokens[current + 1].char)) return;
-				equation += tokens[current + 1].char
+				tokens[current].read = true
+				return body.push({
+					type: "operation",
+					value: element.char
+				})
 		}
 		if (element.ident == 0) {
-			if (tokens[current + 1].ident == 2 || tokens[current + 1].ident == 3 || tokens[current + 1].ident == 4 || tokens[current + 1].ident == 5) {
-				return;
-			}
-			if (tokens[current - 1].ident == 2 || tokens[current - 1].ident == 3 || tokens[current - 1].ident == 4 || tokens[current - 1].ident == 5) {
-				return;
-			}
 			tokens[current].read = true
 			return body.push({
 				type: "number",
