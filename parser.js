@@ -37,6 +37,7 @@ function Parse(tokens) {
 	let bracket = false
 	let sbracket = false
 	let equation = ""
+	console.log(tokens)
 
 	tokens.forEach((element) => {
 		if (element.read) return;
@@ -111,6 +112,10 @@ function Parse(tokens) {
 				current += 1
 				if (!sbracket) throw new util.CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line)
 				body.push({
+					type: "equation",
+					value: equation
+				})
+				body.push({
 					type: "sclose",
 					value: element.char
 				})
@@ -119,7 +124,7 @@ function Parse(tokens) {
 			case 3:
 			case 4:
 			case 5:
-				if (!sbracket) throw new util.CompilationError("InvalidEquation", "Equations can only be used in square brackets",line)
+				//if (!sbracket) throw new util.CompilationError("InvalidEquation", "Equations can only be used in square brackets",line)
 				equation += tokens[current - 1].char
 				equation += element.char
 				if (parseFloat(tokens[current + 1].char)) return;
