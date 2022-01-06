@@ -141,7 +141,7 @@ function Parse(tokens) {
 					}
 				}
 			})
-			return current += 2
+			return current += 1
 		}
 		if (element.ident == 10) {
 			tokens[current + 1].read = true

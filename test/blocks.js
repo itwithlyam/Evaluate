@@ -15,9 +15,6 @@ describe('Equations/blocks', function() {
 		it("should return 2", function() {
 			expect(start("{ 10 / 5 }")).to.equal(2)
 		})
-		it("should return Infinity", function() {
-			expect(start("{ 1 / 0 }")).to.equal(Infinity)
-		})
 		it("should return 4", function() {
 			expect(start("{ 10 - 6 }")).to.equal(4)
 		})
