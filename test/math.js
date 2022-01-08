@@ -1,4 +1,4 @@
-const start = require("../util.js").run
+const start = require("../util").run
 
 var expect = require('chai').expect;
 
@@ -6,7 +6,7 @@ describe('Maths', function() {
 
   context('simple equations', function() {
     it('should return 2', function() {
-      expect(start("1 + 1")).to.equal(2)
+      expect(start("{1 + 1}")).to.equal(2)
     })
 		it('should return 1', function() {
 			expect(start("{1 * 1}")).to.equal(1)

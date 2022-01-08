@@ -9,7 +9,7 @@ function pushdata(id, value) {
 	if (err) console.log(err)
 }
 
-
+const Yard = util.Yard
 
 function Interpret(AST) {
 	let tokens = AST.body
@@ -54,7 +54,7 @@ function Interpret(AST) {
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
-				return ans = util.rpn(util.Yard(op))
+				return ans = util.rpn(Yard(op))
 			default:
 				current += 1
 		}
