@@ -30,6 +30,7 @@ type Tree = {
 
 function Parse(tokens) {
 	let body = []
+	let presentblock = []
 	let current = 0;
 	let block = false
 	let line = 1
@@ -47,6 +48,30 @@ function Parse(tokens) {
 				value: element.char
 			})
 		}
+		if (block) {
+			tokens[current].read = true
+			current += 1
+			if (parseFloat(element.char) || element.char == 0) {
+				return presentblock.push({
+					type: "blockelement",
+					value: element.char
+				})
+			}
+			switch(element.char) {
+				case '(':
+				case ')':
+				case '+':
+				case '-':
+				case '*':
+				case '/':
+					return presentblock.push({
+						type: "blockelement",
+						value: element.char
+					})
+				default:
+					//throw new util.CompilationError("InvalidBlockElement", "An invalid block element was recieved", line)
+			}
+		} 
 		
 		switch(element.ident) {
 			case 1:
@@ -60,11 +85,6 @@ function Parse(tokens) {
 			case 7:
 			tokens[current].read = true
 			current += 1
-				if (block) throw new util.CompilationError("EquationOpen", "Equations within equations are not permitted", line)
-				body.push({
-					type: "eopen",
-					value: element.char
-				})
 				return block = true;
 				
 			case 8:
@@ -72,9 +92,10 @@ function Parse(tokens) {
 			current += 1
 				if (!block) throw new util.CompilationError("EquationClosed", "Equations must be opened before closed", line)
 				body.push({
-					type: "eclose",
-					value: element.char
+					type: "block",
+					body: presentblock
 				})
+				presentblock = []
 				return block = false;
 			case 14:
 				tokens[current].read = true
@@ -131,18 +152,17 @@ function Parse(tokens) {
 		}
 		if (element.ident == 11) {
 			tokens[current].read = true
-			tokens[current + 1].read = true
 			body.push({
 				type: "memory",
 				kind: "var",
-				value: "var " + tokens[current + 1].char,
+				value: tokens[current].char,
 				declarations: {
 					id: {
-						name: tokens[current + 1].char
+						name: tokens[current].char
 					}
 				}
 			})
-			return current += 2
+			return current += 1
 		}
 		if (element.ident == 10) {
 			tokens[current + 1].read = true

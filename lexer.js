@@ -40,7 +40,7 @@ function Lexer(script) {
     	let chars = line.split(negatives)
 		//let chars = line.split(' ')
 		chars.forEach((char) => {
-			if (parseInt(char) || char == 0 && char != "") {
+			if (parseInt(char) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': IDENT.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
@@ -88,12 +88,6 @@ function Lexer(script) {
 				case '}':
 					const payload7 = {'char': char, 'ident': IDENT.RCBRACKET, 'classify': Classify.CBRACKET}
 					return idents.push(payload7)
-					break;
-				case ' ':
-					break;
-				case '<ALGEBRA>':
-					const payload8 = {'char': char, 'ident': IDENT.ALGEBRA, 'classify': Classify.SETTING}
-					return idents.push(payload8)
 					break;
 				case 'mset':
 					const payload9 = {'char': char, 'ident': IDENT.MEMSET, 'classify': Classify.MEMORY}

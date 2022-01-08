@@ -1,11 +1,13 @@
 # Evaluate.js
 Part of the Evaluate collection.
 
+> Temp notice: Our unit tests are currently failing for an unknown reason, despite all the code working when put live onto the interpreter.
+
 ## Example program
 Input: ``67+2;``  
 Result: ``69``
 
-Input: `210*4;`
+Input: `210*4;`  
 Result: `840`
 
 ## Error handling
@@ -35,10 +37,10 @@ MEMSET - 10
 TERM - 11  
 MEMCLR - 12  
 EQUALS - 13  
-LBRACKET - 14
-RBRACKET - 15
-LSBRACKET - 16
-RSBRACKET - 17
+LBRACKET - 14  
+RBRACKET - 15  
+LSBRACKET - 16  
+RSBRACKET - 17  
 
 Input: `67+2;`  
 Output: `[{0, 67}, {2, +}, {0, 2}, {1, ;}]`

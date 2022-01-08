@@ -15,21 +15,21 @@ describe('Memory', function() {
 
 	context('var', function() {
 		it('should return 12', function() {
-			expect(start("var a")).to.equal(12)
+			expect(start("a")).to.equal(12)
 		})
 		it('should return "hello"', function() {
-			expect(start("var b")).to.equal("hello")
+			expect(start("b")).to.equal("hello")
 		})
 	})
 
 	context('mset var', function() {
 		it('should return 14', function() {
-			expect(start(`mset c 14 ;
-			var c ;`)).to.equal(14)
+			expect(start(`mset c 14;
+			c;`)).to.equal(14)
 		})
 		it('should return "Helloworld"', function() {
-			expect(start(`mset d Helloworld ;
-			var d ;`)).to.equal("Helloworld")
+			expect(start(`mset d Helloworld;
+			d;`)).to.equal("Helloworld")
 		})
 	})
   

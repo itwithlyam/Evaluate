@@ -1,5 +1,6 @@
 const fs = require("fs")
 const util = require("./util")
+const rpn = require("rpn")
 
 function pushdata(id, value) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
@@ -8,7 +9,7 @@ function pushdata(id, value) {
 	if (err) console.log(err)
 }
 
-
+const Yard = util.Yard
 
 function Interpret(AST) {
 	let tokens = AST.body
@@ -48,21 +49,12 @@ function Interpret(AST) {
 					
 				}
 				break;
-			case 'operation':
-				switch(element.value) {
-					case '+':
-						ans = tokens[current - 1].value + tokens[current + 1].value
-						return current += 1
-					case '-':
-						ans = tokens[current - 1].value - tokens[current + 1].value
-						return current += 1
-					case '*':
-						ans = tokens[current - 1].value * tokens[current + 1].value
-						return current += 1
-					case '/':
-						ans = tokens[current - 1].value / tokens[current + 1].value
-						return current += 1
-				}
+			case 'block':
+				let op = []
+				element.body.forEach(e => {
+					op.push(e.value)
+				})
+				return ans = util.rpn(Yard(op))
 			default:
 				current += 1
 		}
