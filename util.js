@@ -42,7 +42,6 @@ let Yard = (infix) => {
 	let stack = [];
   
 	return infix
-	  .split('')
 	  .reduce((output, token) => {
 		if (parseFloat(token)) {
 		  output.push(token);
@@ -67,7 +66,6 @@ let Yard = (infix) => {
 		return output;
 	  }, [])
 	  .concat(stack.reverse())
-	  .join(' ');
   };
   
 module.exports = {

@@ -48,21 +48,13 @@ function Interpret(AST) {
 					
 				}
 				break;
-			case 'operation':
-				switch(element.value) {
-					case '+':
-						ans = tokens[current - 1].value + tokens[current + 1].value
-						return current += 1
-					case '-':
-						ans = tokens[current - 1].value - tokens[current + 1].value
-						return current += 1
-					case '*':
-						ans = tokens[current - 1].value * tokens[current + 1].value
-						return current += 1
-					case '/':
-						ans = tokens[current - 1].value / tokens[current + 1].value
-						return current += 1
-				}
+			case 'block':
+				let op = []
+				element.body.forEach(e => {
+					op.push(e.value)
+				})
+				const RPN = util.Yard(op) 
+				console.log(RPN)
 			default:
 				current += 1
 		}
