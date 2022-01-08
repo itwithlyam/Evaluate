@@ -185,7 +185,6 @@ function Parse(tokens) {
 		}
 		current += 1
 	})
-	console.log(body[1])
 	let AST = {
 		type: "Program",
 		tokens: tokens,

@@ -1,5 +1,6 @@
 const fs = require("fs")
 const util = require("./util")
+const rpn = require("rpn")
 
 function pushdata(id, value) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
@@ -53,8 +54,7 @@ function Interpret(AST) {
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
-				const RPN = util.Yard(op) 
-				console.log(RPN)
+				return ans = util.rpn(util.Yard(op))
 			default:
 				current += 1
 		}

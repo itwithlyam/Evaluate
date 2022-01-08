@@ -66,7 +66,41 @@ let Yard = (infix) => {
 		return output;
 	  }, [])
 	  .concat(stack.reverse())
-  };
+  }
+
+function rpn(postfix, line) {
+	if (postfix.length === 0) {
+		return 0;
+	}
+		
+	var stack = [];
+	
+	for (var i = 0; i < postfix.length; i++) {
+		var token = postfix[i];
+	
+		if (!Number.isNaN(+token)) {
+		stack.push(parseFloat(token));
+		}
+	
+		else {
+		if (stack.length < 2) {
+			throw new RuntimeError('ExpressionTooShort', 'Insufficient values in expression', line);
+		}
+	
+		var y = stack.pop();
+		var x = stack.pop();
+		stack.push(eval(x + token + ' ' + y));
+		}
+	}
+	
+	if (stack.length > 1) {
+		throw new RuntimeError('ExpressionTooLong', 'Inputted expression has too many values.', line);
+	}
+	
+	return stack.pop();
+}
+	  
+	  
   
 module.exports = {
 	LexicalError,
@@ -74,5 +108,6 @@ module.exports = {
 	RuntimeError,
 	Fault,
 	Yard,
+	rpn,
 	run
 }
