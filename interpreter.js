@@ -35,7 +35,7 @@ function Interpret(AST) {
 					current += 1
 					pushdata(element.declarations.id.name, element.declarations.init.value)
 					ans = element.declarations.init.value
-					return console.log(ans)
+					return;
 				}
 				if (element.kind === 'var') {
 					let id = element.declarations.id.name
