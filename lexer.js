@@ -16,7 +16,8 @@ const IDENT = {
 	LBRACKET: 14,
 	RBRACKET: 15,
 	LSBRACKET: 16,
-	RSBRACKET: 17
+	RSBRACKET: 17,
+	STRING: 18
 }
 
 const Classify = {
@@ -30,7 +31,7 @@ const Classify = {
 	SBRACKET: 7
 }
 
-const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))|(\[)|(\])/gi
+const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))|(\[)|(\])|(\")/gi
 
 function Lexer(script) {
   let program = script.split('\n')
@@ -46,7 +47,9 @@ function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
-				case '':
+				case '"':
+					idents.push({char: char, ident: IDENT.STRING, classify: Classify.CHAR})
+					break;
 				case ' ':
 					return;
 				case '(':
