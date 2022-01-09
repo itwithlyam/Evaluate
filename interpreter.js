@@ -34,7 +34,8 @@ function Interpret(AST) {
 				if (element.kind === 'mset') {
 					current += 1
 					pushdata(element.declarations.id.name, element.declarations.init.value)
-					return ans = element.declarations.init.value
+					ans = element.declarations.init.value
+					return console.log(ans)
 				}
 				if (element.kind === 'var') {
 					let id = element.declarations.id.name
@@ -44,6 +45,7 @@ function Interpret(AST) {
 					if (!ans && ans !== 0) ans = data[id]
 					if (!ans) throw new util.RuntimeError("NotDefined", `${id} is not defined in memory`, line)
 					current += 1
+					console.log(ans)
 					return
 					
 					
@@ -54,12 +56,12 @@ function Interpret(AST) {
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
-				return ans = util.rpn(Yard(op), line)
+				ans = util.rpn(Yard(op), line)
+				return console.log(ans)
 			default:
 				current += 1
 		}
 	})
-	return ans
 }
 module.exports = {
 	Interpret
