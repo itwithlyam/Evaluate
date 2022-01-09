@@ -4,10 +4,10 @@ Part of the Evaluate collection.
 > Temp notice: Our unit tests are currently failing for an unknown reason, despite all the code working when put live onto the interpreter.
 
 ## Example program
-Input: ``67+2;``  
+Input: ``{67+2};``  
 Result: ``69``
 
-Input: `210*4;`  
+Input: `{210*4};`  
 Result: `840`
 
 ## Error handling
@@ -73,6 +73,7 @@ BodyItem schema:
 			"value": string
 		}
 	},
-	"value": string
+	"value?": string,
+	"body": BodyItem[]
 }
 ```
