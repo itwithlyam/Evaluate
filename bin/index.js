@@ -13,4 +13,4 @@ if (!program) process.exit(1)
 
 let tokens = LEXER.Lexer(fs.readFileSync(program).toString())
 let script = PARSER.Parse(tokens)
-console.log(INTERPRETER.Interpret(script))
+INTERPRETER.Interpret(script)
