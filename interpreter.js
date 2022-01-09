@@ -54,7 +54,7 @@ function Interpret(AST) {
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
-				return ans = util.rpn(Yard(op))
+				return ans = util.rpn(Yard(op), line)
 			default:
 				current += 1
 		}

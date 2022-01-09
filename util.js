@@ -94,7 +94,7 @@ function rpn(postfix, line) {
 	}
 	
 	if (stack.length > 1) {
-		throw new RuntimeError('ExpressionTooLong', 'Inputted expression has too many values.', line);
+		throw new RuntimeError('ExpressionSyntax', 'Inputted expression has a syntax error', line);
 	}
 	
 	return stack.pop();
