@@ -1,55 +1,62 @@
-const LEXER = require("./lexer")
-const INTERPRETER = require("./interpreter")
-const PARSER = require('./parser')
-const fifo = require("fifo")
-let STACK = fifo()
-STACK.clear()
+import * as LEXER from "./lexer.js"
+import * as INTERPRETER from "./interpreter.js"
+import * as PARSER from './parser.js'
+import * as FIFO from 'fifo'
 
-class LexicalError {
+export class LexicalError {
 	constructor(type, body, location) {
 		console.error(`Lexical ${type} Error: ${body} (Line${location})`)
 		process.exit(1)
 	}
 }
 
-class CompilationError {
+export class CompilationError {
 	constructor(type, body, location) {
 		console.error(`Compilation ${type} Error: ${body} (Line ${location})`)
 		process.exit(1)
 	}
 }
 
-function run(program) {
+export function run(program) {
 	let tokens = LEXER.Lexer(program)
 	let script = PARSER.Parse(tokens)
 	return INTERPRETER.Interpret(script)
 }
 
-class RuntimeError {
+export class RuntimeError {
 	constructor(type, body, location) {
 		console.error(`Runtime ${type} Error: ${body} (Line ${location})`)
 		process.exit(1)
 	}
 }
 
-class Fault {
+export class Fault {
 	constructor(c) {
 		console.error(`FAULT - An internal language fault has been detected! Please report this.\nFull error: \n${c}`)
 		process.exit(1)
 	}
 }
 
-function Stack(operation, state=null, line=null) {
-	console.log(STACK)
-	if (operation === "push") {
-		return STACK.push(`${state}: Line ${line}`)
-	} else if (operation === "pop") {
-		return STACK.pop()
+class StackTrace {
+	constructor() {
+		this.Stack = FIFO()
 	}
-	return STACK.clear()
+	Push(state, pos) {
+		this.Stack.push(`${state}: ${pos}`)
+	}
+	Pop() {
+		this.Stack.pop()
+	}
+	Clear() {
+		this.Stack.clear()
+	}
+	get Traceback() {
+		return this.Stack
+	}
 }
+export const GlobalStack = new StackTrace()
 
-let Yard = (infix) => {
+export let Yard = (infix) => {
 	let ops = {'+': 1, '-': 1, '*': 2, '/': 2};
 	let peek = (a) => a[a.length - 1];
 	let stack = [];
@@ -81,7 +88,7 @@ let Yard = (infix) => {
 	  .concat(stack.reverse())
   }
 
-function rpn(postfix, line) {
+export function rpn(postfix, line) {
 	if (postfix.length === 0) {
 		return 0;
 	}
@@ -111,16 +118,4 @@ function rpn(postfix, line) {
 	}
 	
 	return stack.pop();
-}
-	  
-	  
-  
-module.exports = {
-	LexicalError,
-	CompilationError,
-	RuntimeError,
-	Fault,
-	Yard,
-	rpn,
-	run
 }

@@ -1,6 +1,6 @@
-const fs = require("fs")
-const util = require("./util")
-const rpn = require("rpn")
+import * as fs from 'fs'
+import * as util from "./util.js"
+import * as rpn from 'rpn'
 
 function pushdata(id, value) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
@@ -11,8 +11,8 @@ function pushdata(id, value) {
 
 const Yard = util.Yard
 
-function Interpret(AST) {
-	util.Stack("push", "Program start", 0)
+export default function Interpret(AST) {
+	util.GlobalStack.push("Program Start", 0)
 	let tokens = AST.body
 	let current = 0
 	let line = 1
@@ -26,20 +26,20 @@ function Interpret(AST) {
 			case 'eopen':
 			case 'bopen':
 			case 'sopen':
-				util.Stack("push", "Block", line)
+				util.GlobalStack.push("Block", line)
 				current += 1
 				break;
 			case 'eclose':
 			case 'bclose':
 			case 'sclose':
-				util.Stack("pop")
+				util.GlobalStack.pop()
 			case 'memory':
 				if (element.kind === 'mset') {
-					util.Stack("push", "mset", line)
+					util.GlobalStack.push("mset", line)
 					current += 1
 					pushdata(element.declarations.id.name, element.declarations.init.value)
 					ans = element.declarations.init.value
-					util.Stack("pop")
+					util.GlobalStack.pop()
 					return;
 				}
 				if (element.kind === 'var') {
@@ -67,7 +67,4 @@ function Interpret(AST) {
 				current += 1
 		}
 	})
-}
-module.exports = {
-	Interpret
 }

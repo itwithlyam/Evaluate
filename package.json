@@ -16,6 +16,7 @@
   "bin": {
     "evaluatejs": "bin/index.js"
   },
+  "type": "module",
   "dependencies": {
     "fifo": "^2.4.1",
     "math.js": "^1.1.46",

@@ -1,4 +1,4 @@
-const util = require("./util")
+import * as util from './util.js'
 
 class CompilationError {
 	constructor(type, body, location) {
@@ -35,7 +35,7 @@ type Tree = {
 }
 */
 
-function Parse(tokens) {
+export default function Parse(tokens) {
 	let body = []
 	let presentblock = []
 	let current = 0;
@@ -201,8 +201,4 @@ function Parse(tokens) {
 		body: body
 	}
 	return AST
-}
-
-module.exports = {
-	Parse
 }

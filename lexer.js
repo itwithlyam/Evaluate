@@ -35,7 +35,7 @@ const Classify = {
 
 const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))|(\[)|(\])|(\")/gi
 
-function Lexer(script) {
+export default function Lexer(script) {
   let program = script.split('\n')
 	let idents = []
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
@@ -114,10 +114,4 @@ function Lexer(script) {
   })
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
 	return idents
-}
-
-module.exports = {
-  Lexer,
-  'IDT': IDENT,
-	'IDTCLA': Classify
 }
