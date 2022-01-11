@@ -1,6 +1,9 @@
 const LEXER = require("./lexer")
 const INTERPRETER = require("./interpreter")
 const PARSER = require('./parser')
+const fifo = require("fifo")
+let STACK = fifo()
+STACK.clear()
 
 class LexicalError {
 	constructor(type, body, location) {
@@ -34,6 +37,16 @@ class Fault {
 		console.error(`FAULT - An internal language fault has been detected! Please report this.\nFull error: \n${c}`)
 		process.exit(1)
 	}
+}
+
+function Stack(operation, state=null, line=null) {
+	console.log(STACK)
+	if (operation === "push") {
+		return STACK.push(`${state}: Line ${line}`)
+	} else if (operation === "pop") {
+		return STACK.pop()
+	}
+	return STACK.clear()
 }
 
 let Yard = (infix) => {
