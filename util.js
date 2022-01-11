@@ -1,18 +1,29 @@
 import * as LEXER from "./lexer.js"
 import * as INTERPRETER from "./interpreter.js"
 import * as PARSER from './parser.js'
-import * as FIFO from 'fifo'
+import fifo from 'fifo'
 
 export class LexicalError {
-	constructor(type, body, location) {
-		console.error(`Lexical ${type} Error: ${body} (Line${location})`)
+	constructor(type, body, location, traceback) {
+		console.error(`Lexical ${type} Error: ${body} (Line${location})\nTRACEBACK\n${traceback}`)
 		process.exit(1)
 	}
 }
 
+export function ParseTrace(traceback) {
+	let Trace = ""
+	console.log(traceback.Stack.length)
+	for(let i = 0; i <= traceback.Stack.length; i++) {
+		console.log("a")
+		Trace += traceback.Stack.pop()
+		Trace += "\n"
+	}
+	return Trace
+}
+
 export class CompilationError {
-	constructor(type, body, location) {
-		console.error(`Compilation ${type} Error: ${body} (Line ${location})`)
+	constructor(type, body, location, traceback) {
+		console.error(`Compilation ${type} Error: ${body} (Line ${location})\nTRACEBACK` + traceback)
 		process.exit(1)
 	}
 }
@@ -24,8 +35,8 @@ export function run(program) {
 }
 
 export class RuntimeError {
-	constructor(type, body, location) {
-		console.error(`Runtime ${type} Error: ${body} (Line ${location})`)
+	constructor(type, body, location, traceback) {
+		console.error(`Runtime ${type} Error: ${body} (Line ${location})\nTRACEBACK\n${traceback}`)
 		process.exit(1)
 	}
 }
@@ -37,20 +48,20 @@ export class Fault {
 	}
 }
 
-class StackTrace {
+export class StackTrace {
 	constructor() {
-		this.Stack = FIFO()
+		this.Stack = fifo()
 	}
-	Push(state, pos) {
+	push(state, pos) {
 		this.Stack.push(`${state}: ${pos}`)
 	}
-	Pop() {
+	pop() {
 		this.Stack.pop()
 	}
-	Clear() {
+	clear() {
 		this.Stack.clear()
 	}
-	get Traceback() {
+	get traceback() {
 		return this.Stack
 	}
 }

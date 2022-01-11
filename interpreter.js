@@ -1,6 +1,5 @@
 import * as fs from 'fs'
-import * as util from "./util.js"
-import * as rpn from 'rpn'
+import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 
 function pushdata(id, value) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
@@ -9,10 +8,10 @@ function pushdata(id, value) {
 	if (err) console.log(err)
 }
 
-const Yard = util.Yard
+const RuntimeStack = new StackTrace()
 
 export default function Interpret(AST) {
-	util.GlobalStack.push("Program Start", 0)
+	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
 	let current = 0
 	let line = 1
@@ -26,20 +25,20 @@ export default function Interpret(AST) {
 			case 'eopen':
 			case 'bopen':
 			case 'sopen':
-				util.GlobalStack.push("Block", line)
+				RuntimeStack.push("Block", line)
 				current += 1
 				break;
 			case 'eclose':
 			case 'bclose':
 			case 'sclose':
-				util.GlobalStack.pop()
+				RuntimeStack.pop()
 			case 'memory':
 				if (element.kind === 'mset') {
-					util.GlobalStack.push("mset", line)
+					RuntimeStack.push("mset", line)
 					current += 1
 					pushdata(element.declarations.id.name, element.declarations.init.value)
 					ans = element.declarations.init.value
-					util.GlobalStack.pop()
+					RuntimeStack.pop()
 					return;
 				}
 				if (element.kind === 'var') {
@@ -48,7 +47,7 @@ export default function Interpret(AST) {
 					let data = JSON.parse(raw)
 					ans = parseFloat(data[id])
 					if (!ans && ans !== 0) ans = data[id]
-					if (!ans) throw new util.RuntimeError("NotDefined", `${id} is not declared`, line)
+					if (!ans) throw new RuntimeError("NotDefined", `${id} is not declared`, line, ParseTrace(RuntimeStack))
 					current += 1
 					console.log(ans)
 					return
@@ -61,7 +60,7 @@ export default function Interpret(AST) {
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
-				ans = util.rpn(Yard(op), line)
+				ans = rpn(Yard(op), line)
 				return console.log(ans)
 			default:
 				current += 1
