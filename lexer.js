@@ -17,7 +17,8 @@ const IDENT = {
 	RBRACKET: 15,
 	LSBRACKET: 16,
 	RSBRACKET: 17,
-	STRING: 18
+	STRING: 18,
+	INITFUNC: 19
 }
 
 const Classify = {
@@ -28,7 +29,8 @@ const Classify = {
 	SETTING: 4,
 	MEMORY: 5,
 	BRACKET: 6,
-	SBRACKET: 7
+	SBRACKET: 7,
+	FUNCTION: 8
 }
 
 const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))|(\[)|(\])|(\")/gi
@@ -47,6 +49,9 @@ function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
+				case "function":
+					idents.push({char: char, ident: IDENT.INITFUNC, classify: Classify.FUNCTION})
+					break;
 				case '"':
 					idents.push({char: char, ident: IDENT.STRING, classify: Classify.CHAR})
 					break;

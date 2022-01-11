@@ -1,5 +1,12 @@
 const util = require("./util")
 
+class CompilationError {
+	constructor(type, body, location) {
+		console.error(`Compilation ${type} Error: ${body} (Line ${location})`)
+		process.exit(1)
+	}
+}
+
 /*
 // TS Syntax from ComplicatedCalculator archive
 
@@ -74,6 +81,8 @@ function Parse(tokens) {
 		} 
 		
 		switch(element.ident) {
+			case 19:
+				throw new CompilationError("WIP", "Functions are a WIP", line)
 			case 1:
 				
 				current += 1
@@ -90,7 +99,7 @@ function Parse(tokens) {
 			case 8:
 			tokens[current].read = true
 			current += 1
-				if (!block) throw new util.CompilationError("EquationClosed", "Equations must be opened before closed", line)
+				if (!block) throw new CompilationError("EquationClosed", "Equations must be opened before closed", line)
 				body.push({
 					type: "block",
 					body: presentblock
@@ -100,7 +109,7 @@ function Parse(tokens) {
 			case 14:
 				tokens[current].read = true
 				current += 1
-				if (bracket) throw new util.CompilationError("BracketOpen", "Brackets within brackets are not permitted", line)
+				if (bracket) throw new CompilationError("BracketOpen", "Brackets within brackets are not permitted", line)
 				body.push({
 					type: "bopen",
 					value: element.char
@@ -109,7 +118,7 @@ function Parse(tokens) {
 			case 15:
 				tokens[current].read = true
 				current += 1
-				if (!bracket) throw new util.CompilationError("BracketClosed", "Brackets must be opened before closed", line)
+				if (!bracket) throw new CompilationError("BracketClosed", "Brackets must be opened before closed", line)
 				body.push({
 					type: "bclose",
 					value: element.char
@@ -118,7 +127,7 @@ function Parse(tokens) {
 			case 16:
 				tokens[current].read = true
 				current += 1
-				if (sbracket) throw new util.CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line)
+				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line)
 				body.push({
 					type: "sopen",
 					value: element.char
@@ -127,7 +136,7 @@ function Parse(tokens) {
 			case 17:
 				tokens[current].read = true
 				current += 1
-				if (!sbracket) throw new util.CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line)
+				if (!sbracket) throw new CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line)
 				body.push({
 					type: "sclose",
 					value: element.char
