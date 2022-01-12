@@ -30,6 +30,7 @@ type Tree = {
 
 export default function Parse(tokens) {
 	const ParseStack = new StackTrace()
+	ParseStack.push("Program Start", 0)
 	let body = []
 	let presentblock = []
 	let current = 0;
@@ -76,6 +77,7 @@ export default function Parse(tokens) {
 		
 		switch(element.ident) {
 			case 19:
+				ParseStack.push("Function", line)
 				throw new CompilationError("WIP", "Functions are a WIP", line, ParseTrace(ParseStack))
 			case 1:
 				
@@ -86,6 +88,7 @@ export default function Parse(tokens) {
 				})
 				return line += 1
 			case 7:
+			ParseStack.push("Equation", line)
 			tokens[current].read = true
 			current += 1
 				return block = true;
@@ -99,8 +102,10 @@ export default function Parse(tokens) {
 					body: presentblock
 				})
 				presentblock = []
+				ParseStack.pop()
 				return block = false;
 			case 14:
+				ParseStack.push("Bracket", line)
 				tokens[current].read = true
 				current += 1
 				if (bracket) throw new CompilationError("BracketOpen", "Brackets within brackets are not permitted", line, ParseTrace(ParseStack))
@@ -117,8 +122,10 @@ export default function Parse(tokens) {
 					type: "bclose",
 					value: element.char
 				})
+				ParseStack.pop()
 				return bracket = false;
 			case 16:
+				ParseStack.push("SquareBracket", line)
 				tokens[current].read = true
 				current += 1
 				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line, ParseTrace(ParseStack))
@@ -135,6 +142,7 @@ export default function Parse(tokens) {
 					type: "sclose",
 					value: element.char
 				})
+				ParseStack.pop()
 				return sbracket = false;
 			case 2:
 			case 3:
@@ -154,6 +162,7 @@ export default function Parse(tokens) {
 			})
 		}
 		if (element.ident == 11) {
+			ParseStack.push("var", line)
 			tokens[current].read = true
 			body.push({
 				type: "memory",
@@ -166,8 +175,10 @@ export default function Parse(tokens) {
 				}
 			})
 			return current += 1
+			ParseStack.pop()
 		}
 		if (element.ident == 10) {
+			ParseStack.push("mset", line)
 			tokens[current + 1].read = true
 			tokens[current].read = true
 			tokens[current + 2].read = true
@@ -184,6 +195,7 @@ export default function Parse(tokens) {
 				},
 				value: "mset " + tokens[current + 1].char + " " + tokens[current + 2].char
 			})
+			ParseStack.pop()
 			return current += 3
 		}
 		current += 1
