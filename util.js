@@ -2,26 +2,27 @@ import * as LEXER from "./lexer.js"
 import * as INTERPRETER from "./interpreter.js"
 import * as PARSER from './parser.js'
 import fifo from 'fifo'
+import chalk from 'chalk'
 
 export class LexicalError {
 	constructor(type, body, location, traceback) {
-		console.error(`Lexical ${type} Error: ${body} (Line${location})\nTRACEBACK\n${traceback}`)
+		console.error(chalk.red(`Lexical ${type} Error: ${body} (Line${location})`)+`\n\nTRACEBACK\n${traceback}`)
 		process.exit(1)
 	}
 }
 
 export function ParseTrace(traceback) {
 	let Trace = "\n"
-	for(let i = 0; i <= traceback.Stack.length; i++) {
-		Trace += traceback.Stack.pop()
+	traceback.Stack.forEach(value => {
+		Trace += value
 		Trace += "\n"
-	}
+	})
 	return Trace
 }
 
 export class CompilationError {
 	constructor(type, body, location, traceback) {
-		console.error(`Compilation ${type} Error: ${body} (Line ${location})\nTRACEBACK` + traceback)
+		console.error(chalk.red(`Compilation ${type} Error: ${body} (Line ${location})`)+`\n\nTRACEBACK` + traceback)
 		process.exit(1)
 	}
 }
@@ -34,7 +35,7 @@ export function run(program) {
 
 export class RuntimeError {
 	constructor(type, body, location, traceback) {
-		console.error(`Runtime ${type} Error: ${body} (Line ${location})\nTRACEBACK\n${traceback}`)
+		console.error(chalk.red(`Runtime ${type} Error: ${body} (Line ${location})`)+`\n\nTRACEBACK\n${traceback}`)
 		process.exit(1)
 	}
 }

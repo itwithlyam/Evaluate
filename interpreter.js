@@ -25,7 +25,7 @@ export default function Interpret(AST) {
 			case 'eopen':
 			case 'bopen':
 			case 'sopen':
-				RuntimeStack.push("Block", line)
+				RuntimeStack.push("Brackets", line)
 				current += 1
 				break;
 			case 'eclose':
@@ -42,6 +42,7 @@ export default function Interpret(AST) {
 					return;
 				}
 				if (element.kind === 'var') {
+					RuntimeStack.push("var", line)
 					let id = element.declarations.id.name
 					let raw = fs.readFileSync('./memory.json').toString()
 					let data = JSON.parse(raw)
@@ -50,17 +51,20 @@ export default function Interpret(AST) {
 					if (!ans) throw new RuntimeError("NotDefined", `${id} is not declared`, line, ParseTrace(RuntimeStack))
 					current += 1
 					console.log(ans)
+					RuntimeStack.pop()
 					return
 					
 					
 				}
 				break;
 			case 'block':
+				RuntimeStack.push("Equation", line)
 				let op = []
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
 				ans = rpn(Yard(op), line)
+				RuntimeStack.pop()
 				return console.log(ans)
 			default:
 				current += 1
