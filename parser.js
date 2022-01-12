@@ -1,11 +1,4 @@
-import * as util from './util.js'
-
-class CompilationError {
-	constructor(type, body, location) {
-		console.error(`Compilation ${type} Error: ${body} (Line ${location})`)
-		process.exit(1)
-	}
-}
+import {CompilationError, ParseTrace, StackTrace} from './util.js'
 
 /*
 // TS Syntax from ComplicatedCalculator archive
@@ -36,6 +29,7 @@ type Tree = {
 */
 
 export default function Parse(tokens) {
+	const ParseStack = new StackTrace()
 	let body = []
 	let presentblock = []
 	let current = 0;
@@ -48,7 +42,7 @@ export default function Parse(tokens) {
 	tokens.forEach((element) => {
 		if (element.read) return;
 		if (element.ident == 6) {
-			if (bar && block) throw new util.CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line)
+			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
 			bar = true
 			body.push({
 				type: "EOF",
@@ -82,7 +76,7 @@ export default function Parse(tokens) {
 		
 		switch(element.ident) {
 			case 19:
-				throw new CompilationError("WIP", "Functions are a WIP", line)
+				throw new CompilationError("WIP", "Functions are a WIP", line, ParseTrace(ParseStack))
 			case 1:
 				
 				current += 1
@@ -99,7 +93,7 @@ export default function Parse(tokens) {
 			case 8:
 			tokens[current].read = true
 			current += 1
-				if (!block) throw new CompilationError("EquationClosed", "Equations must be opened before closed", line)
+				if (!block) throw new CompilationError("EquationClosed", "Equations must be opened before closed", line, ParseTrace(ParseStack))
 				body.push({
 					type: "block",
 					body: presentblock
@@ -109,7 +103,7 @@ export default function Parse(tokens) {
 			case 14:
 				tokens[current].read = true
 				current += 1
-				if (bracket) throw new CompilationError("BracketOpen", "Brackets within brackets are not permitted", line)
+				if (bracket) throw new CompilationError("BracketOpen", "Brackets within brackets are not permitted", line, ParseTrace(ParseStack))
 				body.push({
 					type: "bopen",
 					value: element.char
@@ -118,7 +112,7 @@ export default function Parse(tokens) {
 			case 15:
 				tokens[current].read = true
 				current += 1
-				if (!bracket) throw new CompilationError("BracketClosed", "Brackets must be opened before closed", line)
+				if (!bracket) throw new CompilationError("BracketClosed", "Brackets must be opened before closed", line, ParseTrace(ParseStack))
 				body.push({
 					type: "bclose",
 					value: element.char
@@ -127,7 +121,7 @@ export default function Parse(tokens) {
 			case 16:
 				tokens[current].read = true
 				current += 1
-				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line)
+				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line, ParseTrace(ParseStack))
 				body.push({
 					type: "sopen",
 					value: element.char
@@ -136,7 +130,7 @@ export default function Parse(tokens) {
 			case 17:
 				tokens[current].read = true
 				current += 1
-				if (!sbracket) throw new CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line)
+				if (!sbracket) throw new CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line, ParseTrace(ParseStack))
 				body.push({
 					type: "sclose",
 					value: element.char

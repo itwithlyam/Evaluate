@@ -11,10 +11,8 @@ export class LexicalError {
 }
 
 export function ParseTrace(traceback) {
-	let Trace = ""
-	console.log(traceback.Stack.length)
+	let Trace = "\n"
 	for(let i = 0; i <= traceback.Stack.length; i++) {
-		console.log("a")
 		Trace += traceback.Stack.pop()
 		Trace += "\n"
 	}
