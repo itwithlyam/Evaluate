@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import interpreter from '../interpreter.js'
-import lexer from '../lexer.js'
-import parser from '../parser.js'
+import {Interpret} from '../interpreter.js'
+import {Lexer} from '../lexer.js'
+import {Parse} from '../parser.js'
 
 
 import * as fs from 'fs'
@@ -12,6 +12,6 @@ let program = process.argv[2]
 
 if (!program) process.exit(1)
 
-let tokens = lexer(fs.readFileSync(program).toString())
-let script = parser(tokens)
-interpreter(script)
+let tokens = Lexer(fs.readFileSync(program).toString())
+let script = Parse(tokens)
+Interpret(script, false)

@@ -1,6 +1,6 @@
-import * as LEXER from "./lexer.js"
-import * as INTERPRETER from "./interpreter.js"
-import * as PARSER from './parser.js'
+import {Lexer} from "./lexer.js"
+import {Interpret} from "./interpreter.js"
+import {Parse} from './parser.js'
 import fifo from 'fifo'
 import chalk from 'chalk'
 
@@ -28,9 +28,9 @@ export class CompilationError {
 }
 
 export function run(program) {
-	let tokens = LEXER.Lexer(program)
-	let script = PARSER.Parse(tokens)
-	return INTERPRETER.Interpret(script)
+	let tokens = Lexer(program)
+	let script = Parse(tokens)
+	return Interpret(script, true)
 }
 
 export class RuntimeError {

@@ -28,7 +28,7 @@ type Tree = {
 }
 */
 
-export default function Parse(tokens) {
+export function Parse(tokens) {
 	const ParseStack = new StackTrace()
 	ParseStack.push("Program Start", 0)
 	let body = []

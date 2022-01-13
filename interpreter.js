@@ -8,9 +8,8 @@ function pushdata(id, value) {
 	if (err) console.log(err)
 }
 
-const RuntimeStack = new StackTrace()
-
-export default function Interpret(AST) {
+export function Interpret(AST, unit) {
+	const RuntimeStack = new StackTrace()
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
 	let current = 0
@@ -50,9 +49,13 @@ export default function Interpret(AST) {
 					if (!ans && ans !== 0) ans = data[id]
 					if (!ans) throw new RuntimeError("NotDefined", `${id} is not declared`, line, ParseTrace(RuntimeStack))
 					current += 1
-					console.log(ans)
-					RuntimeStack.pop()
-					return
+					if (!unit) {
+						console.log(ans)
+						return
+					}
+					else {
+					return ans
+					}
 					
 					
 				}
@@ -65,7 +68,13 @@ export default function Interpret(AST) {
 				})
 				ans = rpn(Yard(op), line)
 				RuntimeStack.pop()
-				return console.log(ans)
+				if (!unit) {
+						console.log(ans)
+						return
+					}
+					else {
+					return ans
+					}
 			default:
 				current += 1
 		}
