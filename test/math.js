@@ -1,6 +1,5 @@
-const start = require("../util").run
-
-var expect = require('chai').expect;
+import {run as start} from '../util.js'
+import {expect} from 'chai'
 
 describe('Maths', function() {
 
@@ -19,8 +18,8 @@ describe('Maths', function() {
 		})
   })
   context('complex calculations', function() {
-	  it("should return 44", function() {
-		  expect(start("{11 * (12 - 1)}")).to.equal(44)
+	  it("should return 121", function() {
+		  expect(start("{11 * (12 - 1)}")).to.equal(121)
 	  })
 	  it("should return 1", function() {
 		  expect(start("{0.5 * 2}")).to.equal(1)

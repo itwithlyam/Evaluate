@@ -1,6 +1,5 @@
-const start = require("../util.js").run
-
-var expect = require('chai').expect;
+import {run as start} from '../util.js'
+import {expect} from 'chai'
 
 describe('Memory', function() {
 

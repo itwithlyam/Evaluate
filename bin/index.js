@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-const LEXER = require("../lexer")
-const INTERPRETER = require("../interpreter")
-const PARSER = require('../parser')
+import {Interpret} from '../interpreter.js'
+import {Lexer} from '../lexer.js'
+import {Parse} from '../parser.js'
 
-const fs = require('fs')
+
+import * as fs from 'fs'
 fs.writeFileSync('../memory.json', '{}')
 
 let program = process.argv[2]
 
 if (!program) process.exit(1)
 
-let tokens = LEXER.Lexer(fs.readFileSync(program).toString())
-let script = PARSER.Parse(tokens)
-INTERPRETER.Interpret(script)
+let tokens = Lexer(fs.readFileSync(program).toString())
+let script = Parse(tokens)
+Interpret(script, false)
