@@ -78,7 +78,20 @@ export function Parse(tokens) {
 		switch(element.ident) {
 			case 19:
 				ParseStack.push("Function", line)
-				throw new CompilationError("WIP", "Functions are a WIP", line, ParseTrace(ParseStack))
+				tokens[current].read = true
+				tokens[current + 1].read = true
+				body.push({
+					type: "function",
+					declarations: {
+						id: {
+							name: tokens[current + 1].char
+						}
+					},
+					value: `${tokens[current].char} ${tokens[current + 1].char}`
+				})
+				current += 2
+				ParseStack.pop()
+				return;
 			case 1:
 				
 				current += 1
