@@ -93,7 +93,7 @@ export function Parse(tokens) {
 					},
 					value: `${tokens[current].char} ${tokens[current + 1].char} ${tokens[current + 2].char}`
 				})
-				current += 2
+				current += 3
 				ParseStack.pop()
 				return;
 			case 1:
