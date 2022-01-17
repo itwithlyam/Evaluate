@@ -3,14 +3,15 @@ import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 
-function pushdata(id, value) {
+function pushdata(id, value, type) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
-	data[id] = value
+	data[id] = {value: value, type: type}
 	let err = fs.writeFileSync('./memory.json', JSON.stringify(data))
 	if (err) console.log(err)
 }
 
 export function Interpret(AST, unit) {
+	console.log(AST)
 	const RuntimeStack = new StackTrace()
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
@@ -22,7 +23,7 @@ export function Interpret(AST, unit) {
 			case 'function':
 				const functionname = element.declarations.id.name
 				const functionbody = Parse(Lexer(element.declarations.init.body))
-				return pushdata('function ' + functionname, functionbody)
+				return pushdata(functionname, functionbody, 'function')
 			case 'newline':
 				current += 1
 				line += 1
@@ -41,7 +42,7 @@ export function Interpret(AST, unit) {
 				if (element.kind === 'mset') {
 					RuntimeStack.push("mset", line)
 					current += 1
-					pushdata(element.declarations.id.name, element.declarations.init.value)
+					pushdata(element.declarations.id.name, element.declarations.init.value, 'variable')
 					ans = element.declarations.init.value
 					RuntimeStack.pop()
 					return;
@@ -51,8 +52,9 @@ export function Interpret(AST, unit) {
 					let id = element.declarations.id.name
 					let raw = fs.readFileSync('./memory.json').toString()
 					let data = JSON.parse(raw)
-					ans = parseFloat(data[id])
-					if (!ans && ans !== 0) ans = data[id]
+					if (data[id].type === 'function') return Interpret(data[id].value)
+					ans = parseFloat(data[id].value)
+					if (!ans && ans !== 0) ans = data[id].value
 					if (!ans) throw new RuntimeError("NotDefined", `${id} is not declared`, line, ParseTrace(RuntimeStack))
 					current += 1
 					if (!unit) {
