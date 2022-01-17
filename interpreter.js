@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
+import {Lexer} from "./lexer.js"
 
 function pushdata(id, value) {
 	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
@@ -20,7 +21,7 @@ export function Interpret(AST, unit) {
 		switch(element.type) {
 			case 'function':
 				const functionname = element.declarations.id.name
-				const functionbody = Parse(element.declarations.init.body)
+				const functionbody = Parse(Lexer(element.declarations.init.body))
 				return pushdata('function ' + functionname, functionbody)
 			case 'newline':
 				current += 1

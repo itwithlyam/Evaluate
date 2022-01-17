@@ -77,17 +77,21 @@ export function Parse(tokens) {
 		
 		switch(element.ident) {
 			case 19:
-				ParseStack.push("Function", line)
 				tokens[current].read = true
 				tokens[current + 1].read = true
+				tokens[current + 2].read = true
+				ParseStack.push("Function " + tokens[current+1].char, line)
 				body.push({
 					type: "function",
 					declarations: {
 						id: {
 							name: tokens[current + 1].char
+						},
+						init: {
+							body: tokens[current + 2].char
 						}
 					},
-					value: `${tokens[current].char} ${tokens[current + 1].char}`
+					value: `${tokens[current].char} ${tokens[current + 1].char} ${tokens[current + 2].char}`
 				})
 				current += 2
 				ParseStack.pop()
