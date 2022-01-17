@@ -11,7 +11,6 @@ function pushdata(id, value, type) {
 }
 
 export function Interpret(AST, unit) {
-	console.log(AST)
 	const RuntimeStack = new StackTrace()
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body

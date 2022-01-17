@@ -76,6 +76,22 @@ export function Parse(tokens) {
 		} 
 		
 		switch(element.ident) {
+			case 20:
+				tokens[current].read = true
+				tokens[current + 1].read = true
+				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				body.push({
+					type: "functioncall",
+					decarations: {
+						id: {
+							name: tokens[current+1].char
+						}
+					},
+					value: "call " + tokens[current+1].char
+				})
+				current += 2
+				ParseStack.pop()
+				break;
 			case 19:
 				tokens[current].read = true
 				tokens[current + 1].read = true

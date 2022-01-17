@@ -18,7 +18,8 @@ const IDENT = {
 	LSBRACKET: 16,
 	RSBRACKET: 17,
 	STRING: 18,
-	INITFUNC: 19
+	INITFUNC: 19,
+	FUNCCALL: 20
 }
 
 const Classify = {
@@ -51,6 +52,9 @@ export function Lexer(script) {
 			switch(char) {
 				case "function":
 					idents.push({char: char, ident: IDENT.INITFUNC, classify: Classify.FUNCTION})
+					break;
+				case "call":
+					idents.push({char: char, ident: IDENT.FUNCCALL, classify: Classify.FUNCTION})
 					break;
 				case '"':
 					idents.push({char: char, ident: IDENT.STRING, classify: Classify.CHAR})
