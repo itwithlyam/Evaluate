@@ -95,6 +95,7 @@ export function Interpret(AST, unit) {
 				current += 1
 		}
 	})
+	if (!ans[0]) return
 	if (!unit) {
 		ans.forEach(value => {
 			console.log(value)

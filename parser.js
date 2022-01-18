@@ -103,7 +103,6 @@ export function Parse(tokens) {
 				ParseStack.pop()
 				break;
 			case 19:
-				console.log(tokens)
 				tokens[current].read = true
 				tokens[current + 1].read = true
 				tokens[current + 2].read = true
