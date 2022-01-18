@@ -53,6 +53,9 @@ export function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
+				case "pass":
+					idents.push({char: char, ident: IDENT.PASS, classify: Classify.FUNCTION})
+					break;
 				case "function":
 					idents.push({char: char, ident: IDENT.INITFUNC, classify: Classify.FUNCTION})
 					break;

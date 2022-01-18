@@ -76,6 +76,16 @@ export function Parse(tokens) {
 		} 
 		
 		switch(element.ident) {
+			case 21:
+				tokens[current.read] = true
+				ParseStack.push("Pass", line)
+				current += 1
+				body.push({
+					type: "pass",
+					value: "pass"
+				})
+				ParseStack.pop()
+				break;
 			case 20:
 				tokens[current].read = true
 				tokens[current + 1].read = true
@@ -93,6 +103,7 @@ export function Parse(tokens) {
 				ParseStack.pop()
 				break;
 			case 19:
+				console.log(tokens)
 				tokens[current].read = true
 				tokens[current + 1].read = true
 				tokens[current + 2].read = true

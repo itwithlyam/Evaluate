@@ -19,6 +19,9 @@ export function Interpret(AST, unit) {
 	let ans = []
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'pass':
+				current += 1
+				break;
 			case 'functioncall':
 				let id = element.declarations.id.name
 				RuntimeStack.push(`Function call ${id}`, line)
