@@ -6,8 +6,13 @@ let VarMemory = {}
 let FunctionMemory = {}
 
 function pushdata(id, value, type) {
-	if (type === "function") FunctionMemory[id] = value
-	if (type === "variable") VarMemory[id] = value
+	if (type === "function") return FunctionMemory[id] = value
+	if (type === "variable") {
+		if (parseInt(value)) { VarMemory[id] = parseInt(value) }
+		else {
+			VarMemory[id] = value
+		}
+	}
 }
 
 export function Interpret(AST, unit) {
@@ -66,17 +71,15 @@ export function Interpret(AST, unit) {
 					RuntimeStack.push("var", line)
 					let id = element.declarations.id.name
 					let data = ""
-					let result = ""
 					if (VarMemory.hasOwnProperty(id)) {
 						data = VarMemory[id]
 						let num = parseInt(data)
-						if (num || data == 0) return result = num
-						result = data
+						if (num || data == 0) ans.push(num)
+						ans.push(data)
 					}
 					else throw new RuntimeError("NotDefined", `${id} is not defined as a variable`, line, ParseTrace(RuntimeStack))
 					
 					current += 1
-					ans.push(result)
 					
 					RuntimeStack.pop()
 				}
@@ -95,8 +98,8 @@ export function Interpret(AST, unit) {
 				current += 1
 		}
 	})
-	if (!ans[0]) return
 	if (!unit) {
+		if (!ans[0]) return
 		ans.forEach(value => {
 			console.log(value)
 		})

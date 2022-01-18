@@ -30,7 +30,8 @@ export class CompilationError {
 export function run(program) {
 	let tokens = Lexer(program)
 	let script = Parse(tokens)
-	return Interpret(script, true)[0]
+	let res = Interpret(script, true)
+	if (res[0]) return res[0]
 }
 
 export class RuntimeError {
