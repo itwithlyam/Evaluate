@@ -19,10 +19,24 @@ export function Interpret(AST, unit) {
 	let ans = []
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'functioncall':
+				let id = element.declarations.id.name
+				RuntimeStack.push(`Function call ${id}`, line)
+				let result = ""
+				if (FunctionMemory.hasOwnProperty(id)) {
+						result = Interpret(FunctionMemory[id])
+				} else {
+					throw new RuntimeError("NotDefined", `${id} is not defined as a function`, line, ParseTrace(RuntimeStack))
+				}
+				ans.push(result)
+				current += 1
+				RuntimeStack.pop()
+				break;
 			case 'function':
 				const functionname = element.declarations.id.name
 				const functionbody = Parse(Lexer(element.declarations.init.body))
 				return pushdata(functionname, functionbody, 'function')
+				current += 1
 			case 'newline':
 				current += 1
 				line += 1
@@ -56,10 +70,7 @@ export function Interpret(AST, unit) {
 						if (num || data == 0) return result = num
 						result = data
 					}
-					else if (FunctionMemory.hasOwnProperty(id)) {
-						result = Interpret(Parse(Lexer(FunctionMemory[id])))
-					}
-					else throw new RuntimeError("NotDefined", `${id} is not defined as a function or variable`, line, ParseTrace(RuntimeStack))
+					else throw new RuntimeError("NotDefined", `${id} is not defined as a variable`, line, ParseTrace(RuntimeStack))
 					
 					current += 1
 					ans.push(result)
