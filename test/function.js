@@ -9,7 +9,8 @@ describe('Functions', function() {
 	})
 	context('function call', function() {
 		it('should call the function', function() {
-			start(`function a pass; call a`)
+			start(`function a pass
+			call a`)
 		})
 	})
   
