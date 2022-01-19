@@ -20,7 +20,9 @@ const IDENT = {
 	STRING: 18,
 	INITFUNC: 19,
 	FUNCCALL: 20,
-	PASS: 21
+	PASS: 21,
+	TRUE: 22,
+	FALSE: 23
 }
 
 const Classify = {
@@ -32,7 +34,8 @@ const Classify = {
 	MEMORY: 5,
 	BRACKET: 6,
 	SBRACKET: 7,
-	FUNCTION: 8
+	FUNCTION: 8,
+	BOOLEAN: 9
 }
 
 const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))|(\[)|(\])|(\")/gi
@@ -53,6 +56,12 @@ export function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
+				case "true":
+					idents.push({char: char, ident: IDENT.TRUE, classify: Classify.BOOLEAN})
+					break;
+				case "false":
+					idents.push({char: char, ident: IDENT.FALSE, classify: Classify.BOOLEAN})
+					break;
 				case "pass":
 					idents.push({char: char, ident: IDENT.PASS, classify: Classify.FUNCTION})
 					break;

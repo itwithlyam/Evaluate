@@ -76,6 +76,20 @@ export function Parse(tokens, func) {
 		} 
 		
 		switch(element.ident) {
+			case 22:
+				tokens[current.read] = true
+				body.push({
+					type: "boolean",
+					value: "true"
+				})
+				break;
+			case 23:
+				tokens[current.read] = true
+				body.push({
+					type: "boolean",
+					value: "false"
+				})
+				break;
 			case 21:
 				tokens[current.read] = true
 				ParseStack.push("Pass", line)
