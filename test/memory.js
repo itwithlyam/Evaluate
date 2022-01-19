@@ -18,8 +18,8 @@ describe('Memory', function() {
 			c`)).to.equal(14)
 		})
 		it('should return "Helloworld"', function() {
-			expect(start(`mset d Helloworld;
-			d;`)).to.equal("Helloworld")
+			expect(start(`mset d Helloworld
+			d`)).to.equal("Helloworld")
 		})
 	})
   
