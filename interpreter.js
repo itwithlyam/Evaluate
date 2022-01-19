@@ -1,11 +1,18 @@
 import * as fs from 'fs'
 import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
+import {Parse} from "./parser.js"
+import {Lexer} from "./lexer.js"
+let VarMemory = {}
+let FunctionMemory = {}
 
-function pushdata(id, value) {
-	let data = JSON.parse(fs.readFileSync('./memory.json').toString())
-	data[id] = value
-	let err = fs.writeFileSync('./memory.json', JSON.stringify(data))
-	if (err) console.log(err)
+function pushdata(id, value, type) {
+	if (type === "function") return FunctionMemory[id] = value
+	if (type === "variable") {
+		if (parseInt(value)) { VarMemory[id] = parseInt(value) }
+		else {
+			VarMemory[id] = value
+		}
+	}
 }
 
 export function Interpret(AST, unit) {
@@ -14,9 +21,30 @@ export function Interpret(AST, unit) {
 	let tokens = AST.body
 	let current = 0
 	let line = 1
-	let ans = null
+	let ans = []
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'pass':
+				current += 1
+				break;
+			case 'functioncall':
+				let id = element.declarations.id.name
+				RuntimeStack.push(`Function call ${id}`, line)
+				let result = ""
+				if (FunctionMemory.hasOwnProperty(id)) {
+						result = Interpret(FunctionMemory[id])
+				} else {
+					throw new RuntimeError("NotDefined", `${id} is not defined as a function`, line, ParseTrace(RuntimeStack))
+				}
+				ans.push(result)
+				current += 1
+				RuntimeStack.pop()
+				break;
+			case 'function':
+				const functionname = element.declarations.id.name
+				const functionbody = Parse(Lexer(element.declarations.init.body), true)
+				return pushdata(functionname, functionbody, 'function')
+				current += 1
 			case 'newline':
 				current += 1
 				line += 1
@@ -35,29 +63,26 @@ export function Interpret(AST, unit) {
 				if (element.kind === 'mset') {
 					RuntimeStack.push("mset", line)
 					current += 1
-					pushdata(element.declarations.id.name, element.declarations.init.value)
-					ans = element.declarations.init.value
+					pushdata(element.declarations.id.name, element.declarations.init.value, 'variable')
 					RuntimeStack.pop()
 					return;
 				}
 				if (element.kind === 'var') {
 					RuntimeStack.push("var", line)
 					let id = element.declarations.id.name
-					let raw = fs.readFileSync('./memory.json').toString()
-					let data = JSON.parse(raw)
-					ans = parseFloat(data[id])
-					if (!ans && ans !== 0) ans = data[id]
-					if (!ans) throw new RuntimeError("NotDefined", `${id} is not declared`, line, ParseTrace(RuntimeStack))
+					let data = ""
+					if (VarMemory.hasOwnProperty(id)) {
+						data = VarMemory[id]
+						let num = parseInt(data)
+						if (num || data == 0) ans.push(num)
+						else
+						ans.push(data)
+					}
+					else throw new RuntimeError("NotDefined", `${id} is not defined as a variable`, line, ParseTrace(RuntimeStack))
+					
 					current += 1
-					if (!unit) {
-						console.log(ans)
-						return
-					}
-					else {
-					return ans
-					}
 					
-					
+					RuntimeStack.pop()
 				}
 				break;
 			case 'block':
@@ -66,17 +91,20 @@ export function Interpret(AST, unit) {
 				element.body.forEach(e => {
 					op.push(e.value)
 				})
-				ans = rpn(Yard(op), line)
+				let answ = rpn(Yard(op), line)
+				ans.push(answ)
 				RuntimeStack.pop()
-				if (!unit) {
-						console.log(ans)
-						return
-					}
-					else {
-					return ans
-					}
+				break;
 			default:
 				current += 1
 		}
 	})
+	if (!unit) {
+		if (!ans[0]) return
+		ans.forEach(value => {
+			console.log(value)
+		})
+		return;
+	}
+	return ans
 }

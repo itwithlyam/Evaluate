@@ -28,7 +28,7 @@ type Tree = {
 }
 */
 
-export function Parse(tokens) {
+export function Parse(tokens, func) {
 	const ParseStack = new StackTrace()
 	ParseStack.push("Program Start", 0)
 	let body = []
@@ -76,9 +76,52 @@ export function Parse(tokens) {
 		} 
 		
 		switch(element.ident) {
+			case 21:
+				tokens[current.read] = true
+				ParseStack.push("Pass", line)
+				current += 1
+				body.push({
+					type: "pass",
+					value: "pass"
+				})
+				ParseStack.pop()
+				break;
+			case 20:
+				tokens[current].read = true
+				tokens[current + 1].read = true
+				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				body.push({
+					type: "functioncall",
+					declarations: {
+						id: {
+							name: tokens[current+1].char
+						}
+					},
+					value: "call " + tokens[current+1].char
+				})
+				current += 2 
+				ParseStack.pop()
+				break;
 			case 19:
-				ParseStack.push("Function", line)
-				throw new CompilationError("WIP", "Functions are a WIP", line, ParseTrace(ParseStack))
+				tokens[current].read = true
+				tokens[current + 1].read = true
+				tokens[current + 2].read = true
+				ParseStack.push("Function " + tokens[current+1].char, line)
+				body.push({
+					type: "function",
+					declarations: {
+						id: {
+							name: tokens[current + 1].char
+						},
+						init: {
+							body: tokens[current + 2].char
+						}
+					},
+					value: `${tokens[current].char} ${tokens[current + 1].char} ${tokens[current + 2].char}`
+				})
+				current += 3
+				ParseStack.pop()
+				return;
 			case 1:
 				
 				current += 1
@@ -206,5 +249,6 @@ export function Parse(tokens) {
 		length: tokens.length,
 		body: body
 	}
+	if (func) AST.type = "Function"
 	return AST
 }

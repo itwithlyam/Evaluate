@@ -18,7 +18,9 @@ const IDENT = {
 	LSBRACKET: 16,
 	RSBRACKET: 17,
 	STRING: 18,
-	INITFUNC: 19
+	INITFUNC: 19,
+	FUNCCALL: 20,
+	PASS: 21
 }
 
 const Classify = {
@@ -36,6 +38,8 @@ const Classify = {
 const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\;)|(\()|(\))|(\[)|(\])|(\")/gi
 
 export function Lexer(script) {
+	/*console.log(script)
+	console.log("END SCRIPT")*/
   let program = script.split('\n')
 	let idents = []
 	idents.push({'char': '<EOF>', 'ident': IDENT.EOF, 'classify': Classify.SYSTEM})
@@ -49,8 +53,14 @@ export function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
+				case "pass":
+					idents.push({char: char, ident: IDENT.PASS, classify: Classify.FUNCTION})
+					break;
 				case "function":
 					idents.push({char: char, ident: IDENT.INITFUNC, classify: Classify.FUNCTION})
+					break;
+				case "call":
+					idents.push({char: char, ident: IDENT.FUNCCALL, classify: Classify.FUNCTION})
 					break;
 				case '"':
 					idents.push({char: char, ident: IDENT.STRING, classify: Classify.CHAR})
