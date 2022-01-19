@@ -99,7 +99,7 @@ export function Interpret(AST, unit) {
 			case 'EOF':
 				break;
 			default:
-				console.log(chalk.yellow("Warning: Expressor '" + element.value + "' is still a work in progress"))
+				console.log(chalk.yellow("Warning: Expressor '" + element.value + "' is still a work in progress: Line " + line))
 				current += 1
 				break
 		}
