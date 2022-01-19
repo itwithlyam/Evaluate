@@ -6,8 +6,6 @@ import {Interpret} from '../interpreter.js'
 	import * as fs from 'fs'
 
 export default function runner() {
-	fs.writeFileSync('../memory.json', '{}')
-
 	let program = process.argv[2]
 
 	if (!program) process.exit(1)

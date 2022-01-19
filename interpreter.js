@@ -42,7 +42,7 @@ export function Interpret(AST, unit) {
 				break;
 			case 'function':
 				const functionname = element.declarations.id.name
-				const functionbody = Parse(Lexer(element.declarations.init.body))
+				const functionbody = Parse(Lexer(element.declarations.init.body), true)
 				return pushdata(functionname, functionbody, 'function')
 				current += 1
 			case 'newline':
@@ -75,6 +75,7 @@ export function Interpret(AST, unit) {
 						data = VarMemory[id]
 						let num = parseInt(data)
 						if (num || data == 0) ans.push(num)
+						else
 						ans.push(data)
 					}
 					else throw new RuntimeError("NotDefined", `${id} is not defined as a variable`, line, ParseTrace(RuntimeStack))

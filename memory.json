@@ -1,1 +1,0 @@
-{"abc":{"value":{"type":"Program","tokens":[{"char":"<EOF>","ident":6,"classify":2},{"char":"12","ident":0,"classify":0,"read":true},{"char":"<EOF>","ident":6,"classify":2}],"length":3,"body":[{"type":"EOF","value":"<EOF>"},{"type":"number","value":12},{"type":"EOF","value":"<EOF>"}]},"type":"function"}}
