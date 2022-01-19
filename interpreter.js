@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
+import chalk from "chalk"
 let VarMemory = {}
 let FunctionMemory = {}
 
@@ -95,8 +96,12 @@ export function Interpret(AST, unit) {
 				ans.push(answ)
 				RuntimeStack.pop()
 				break;
+			case 'EOF':
+				break;
 			default:
+				console.log(chalk.yellow("Warning: Expressor '" + element.value + "' is still a work in progress"))
 				current += 1
+				break
 		}
 	})
 	if (!unit) {
