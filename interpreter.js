@@ -3,6 +3,7 @@ import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 import chalk from "chalk"
+import fifo from 'fifo'
 let VarMemory = {}
 let FunctionMemory = {}
 
@@ -106,7 +107,11 @@ export function Interpret(AST, unit) {
 	})
 	if (!unit) {
 		if (!ans[0]) return
+		const returns = fifo()
 		ans.forEach(value => {
+			returns.unshift(value)
+		})
+		returns.forEach(value => {
 			console.log(value)
 		})
 		return;
