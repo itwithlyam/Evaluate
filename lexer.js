@@ -49,8 +49,7 @@ export function Lexer(script) {
 	program.forEach((line) => {
 		idents.push({char: null, ident: Ident.NEWLINE, classify: Classify.SYSTEM})
     	let chars = line.split(negatives)
-		//let chars = line.split(' ')
-		chars.forEach((char) => {
+			chars.forEach((char) => {
 			if (parseInt(char) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': Ident.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)

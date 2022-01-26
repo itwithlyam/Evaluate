@@ -22,7 +22,7 @@ export function Interpret(AST, unit, verbose) {
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
 	let current = 0
-	let line = 1
+	let line = 0
 	let ans = []
 	AST.body.forEach(element => {
 		switch(element.type) {
