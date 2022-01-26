@@ -43,10 +43,12 @@ export function Interpret(AST, unit, verbose) {
 				RuntimeStack.pop()
 				break;
 			case 'function':
+				RuntimeStack.push("Function " + element.declarations.id.name, line)
 				const functionname = element.declarations.id.name
 				const functionbody = Parse(Lexer(element.declarations.init.body), true)
-				return pushdata(functionname, functionbody, 'function')
+				pushdata(functionname, functionbody, 'function')
 				current += 1
+				return RuntimeStack.pop()
 			case 'newline':
 				current += 1
 				line += 1
@@ -109,7 +111,7 @@ export function Interpret(AST, unit, verbose) {
 		if (!ans[0]) return
 		const returns = fifo()
 		ans.forEach(value => {
-			returns.unshift(value)
+			returns.push(value)
 		})
 		returns.forEach(value => {
 			console.log(value)
