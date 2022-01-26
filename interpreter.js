@@ -17,8 +17,8 @@ function pushdata(id, value, type) {
 	}
 }
 
-export function Interpret(AST, unit) {
-	const RuntimeStack = new StackTrace()
+export function Interpret(AST, unit, verbose) {
+	const RuntimeStack = new StackTrace(verbose)
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
 	let current = 0

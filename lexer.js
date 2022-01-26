@@ -93,10 +93,6 @@ export function Lexer(script) {
 					const payload1 = {'char': char, 'ident': Ident.PLUS, 'classify': Classify.OPERATION}
 					return idents.push(payload1)
 					break;
-				case ';':
-					const payload2 = {'char': char, 'ident': Ident.NEWLINE, 'classify': Classify.SYSTEM}
-					return idents.push(payload2)
-					break;
 				case '-':
 					const payload3 = {'char': char, 'ident': Ident.MINUS, 'classify': Classify.OPERATION}
 					return idents.push(payload3)
