@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "build": "./node_modules/pkg/bin/pkg",
     "start": "node bin/index.js program.ev"
   },
   "author": "",

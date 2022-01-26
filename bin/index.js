@@ -21,13 +21,13 @@ export default function runner() {
 		if (!options.input) process.exit(1)
 		if (options.verbose) {
 			verbose = true
-			console.log("Running on verbose mode")
+			console.log("Loading program")
 		}
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens)
 		Interpret(script, false, verbose)
-		console.log("Executed in " + Math.floor(timer.stop()) + " ms")
+		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log("Invalid argument")
 	}
