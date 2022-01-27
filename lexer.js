@@ -38,7 +38,7 @@ const Classify = {
 	BOOLEAN: 9
 }
 
-const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\()|(\))|(\[)|(\])|(\")/gi
+const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\()|(\))|(\[)|(\])/gi
 
 export function Lexer(script) {
 	/*console.log(script)
@@ -49,8 +49,7 @@ export function Lexer(script) {
 	program.forEach((line) => {
 		idents.push({char: null, ident: Ident.NEWLINE, classify: Classify.SYSTEM})
     	let chars = line.split(negatives)
-		//let chars = line.split(' ')
-		chars.forEach((char) => {
+			chars.forEach((char) => {
 			if (parseInt(char) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': Ident.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
@@ -92,10 +91,6 @@ export function Lexer(script) {
 				case '+':
 					const payload1 = {'char': char, 'ident': Ident.PLUS, 'classify': Classify.OPERATION}
 					return idents.push(payload1)
-					break;
-				case ';':
-					const payload2 = {'char': char, 'ident': Ident.NEWLINE, 'classify': Classify.SYSTEM}
-					return idents.push(payload2)
 					break;
 				case '-':
 					const payload3 = {'char': char, 'ident': Ident.MINUS, 'classify': Classify.OPERATION}

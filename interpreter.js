@@ -3,6 +3,7 @@ import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 import chalk from "chalk"
+import fifo from 'fifo'
 let VarMemory = {}
 let FunctionMemory = {}
 
@@ -16,12 +17,12 @@ function pushdata(id, value, type) {
 	}
 }
 
-export function Interpret(AST, unit) {
-	const RuntimeStack = new StackTrace()
+export function Interpret(AST, unit, verbose) {
+	const RuntimeStack = new StackTrace(verbose)
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
 	let current = 0
-	let line = 1
+	let line = 0
 	let ans = []
 	AST.body.forEach(element => {
 		switch(element.type) {
@@ -42,10 +43,12 @@ export function Interpret(AST, unit) {
 				RuntimeStack.pop()
 				break;
 			case 'function':
+				RuntimeStack.push("Function " + element.declarations.id.name, line)
 				const functionname = element.declarations.id.name
 				const functionbody = Parse(Lexer(element.declarations.init.body), true)
-				return pushdata(functionname, functionbody, 'function')
+				pushdata(functionname, functionbody, 'function')
 				current += 1
+				return RuntimeStack.pop()
 			case 'newline':
 				current += 1
 				line += 1
@@ -106,7 +109,11 @@ export function Interpret(AST, unit) {
 	})
 	if (!unit) {
 		if (!ans[0]) return
+		const returns = fifo()
 		ans.forEach(value => {
+			returns.push(value)
+		})
+		returns.forEach(value => {
 			console.log(value)
 		})
 		return;

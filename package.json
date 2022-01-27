@@ -1,11 +1,10 @@
 {
   "name": "evaluate.js",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "build": "./node_modules/pkg/bin/pkg",
     "start": "node bin/index.js program.ev"
   },
   "author": "",
@@ -19,13 +18,16 @@
   "type": "module",
   "dependencies": {
     "bin": "0.0.0",
-    "chalk": "^5.0.0",
+    "caxa": "^2.1.0",
+    "chalk": "^4.1.2",
+    "command-line-args": "^5.2.0",
     "fifo": "^2.4.1",
     "math.js": "^1.1.46",
     "mathjs": "^10.0.2",
     "mocha": "^9.1.3",
     "pkg": "^5.5.1",
     "rpn": "^2.0.0",
-    "stack-lifo": "^0.1.6"
+    "stack-lifo": "^0.1.6",
+    "statman-stopwatch": "^2.13.0"
   }
 }

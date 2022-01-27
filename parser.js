@@ -35,7 +35,7 @@ export function Parse(tokens, func) {
 	let presentblock = []
 	let current = 0;
 	let block = false
-	let line = 1
+	let line = 0
 	let bar = false
 	let bracket = false
 	let sbracket = false

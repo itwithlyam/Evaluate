@@ -1,6 +1,6 @@
 ./memory.json
 node_modules
-*-linux
-*-macos
-*-win.exe
+package-lock.json
 .breakpoints
+build/
+build/evaluate.exe
