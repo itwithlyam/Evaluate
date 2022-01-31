@@ -30,5 +30,5 @@ Valid arguments:
 ```
 --input <file> -i <file> - Path to the target file
 --verbose -v - Outputs the location of the interpreter at every operation
---version -V - Version of Evaluate installation
+--version - Version of Evaluate installation
 ```

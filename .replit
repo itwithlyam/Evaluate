@@ -1,1 +1,1 @@
-run="node bin/index.js ./program.ev" 
+run="node bin/index.js ./program.ev --version" 
