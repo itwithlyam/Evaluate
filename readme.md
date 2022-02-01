@@ -11,17 +11,21 @@ Result: `840`
 **Syntax guide: https://itwithlyam.gitbook.io/evaluate**
 
 ## Installation
-### Windows
-Download binary, add to PATH
+**If it exists, download the binary for your system. If not, then build from source:**
 
-### MacOS and Linux (build from source):
+### Build from source
 
-Our builder doesn't support cross-compiling so you must build from source.
+1. Install [GNU Make](https://www.gnu.org/software/make/).
+2. Run `make install` in the source code directory to install required dependencies.
 
-1. Clone source
-2. Use the relevant npm script: "npm run buildmacos" or "npm run buildlinux"
-3. Wait for the binary to finish building
-4. Add the binary to PATH or move it to the directory you are working on
+#### Windows
+Run `make win`, the output will be a .exe file
+
+#### Unix (macos/linux)
+Run `make unix`, the output will be an executable
+
+#### MacOS app
+Run `make macosapp`, the output will be a .app file
 
 ## Run 
 Template: `evaluate <input> [args]`
