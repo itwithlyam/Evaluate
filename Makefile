@@ -1,25 +1,44 @@
 VER = 1.1.1
+COLOR = '\033[0;31m'
+BLUE = '\033[0;34m'
+NC='\033[0m'
 
 first:
-	@echo "Please specifify a target: unix, macosapp, win (or install dependencies)"
+	@echo -e ${BLUE}
+	@echo "Please specifify a target: unix, macosapp, win, unixsh (or install dependencies)"
 
 install:
+	@echo -e ${COLOR}
 	@echo "Installing dependencies"
-	@npm install 
-	@npm install caxa
+	@echo -e ${NC}
+	npm install 
+	npm install caxa
 
 unix:
+	@echo -e ${COLOR}
 	@echo "Building for Unix platforms"
-	@npx caxa --input '.' --output 'Evaluate-${VER}' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
+	@echo -e ${NC}
+	npx caxa --input '.' --output 'Evaluate-${VER}' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
 	@echo "Build complete"
 
 macosapp:
+	@ech -e ${COLOR}
 	@echo "Building for a MacOS (.app)"
-	@npx caxa --input '.' --output 'Evaluate-${VER}.app' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
+	@echo -e ${NC}
+	npx caxa --input '.' --output 'Evaluate-${VER}.app' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
 	@echo "Build complete"
 
 win:
+	@echo -e ${COLOR}
 	@echo "Building for Windows platforms (.exe)"
-	@npx caxa --input '.' --output 'Evaluate-${VER}.exe' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
+	@echo -e ${NC}
+	npx caxa --input '.' --output 'Evaluate-${VER}.exe' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
+	@echo "Build complete"
+
+unixsh:
+	@echo -e ${COLOR}
+	@echo "Building for Unix platforms (.sh)"
+	@echo -e ${NC}
+	npx caxa --input '.' --output 'Evaluate-${VER}.sh' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'
 	@echo "Build complete"
 	
