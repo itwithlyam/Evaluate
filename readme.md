@@ -2,10 +2,16 @@
 A bad interpreter that works
 
 ## Example program
-Input: ``{67+2};``  
-Result: ``69``
-
-Input: `{210*4};`  
+Input 
+```
+mset a 12;
+var a
+```
+Result: `12`  
+Input: 
+```
+{210*4};
+```
 Result: `840`
 
 **Syntax guide: https://itwithlyam.gitbook.io/evaluate**
