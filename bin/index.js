@@ -31,7 +31,7 @@ export default function runner() {
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens)
-		Interpret(script, false, verbose)
+		Interpret(script, true, verbose)
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log("Invalid argument")
