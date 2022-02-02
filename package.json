@@ -1,11 +1,14 @@
 {
   "name": "evaluate.js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "start": "node bin/index.js program.ev"
+    "start": "node bin/index.js program.ev",
+    "buildunix": "caxa --input '.' --output 'Evaluate-1.1.1' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'",
+    "buildapp": "caxa --input '.' --output 'Evaluate-1.1.1.app' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'",
+    "buildwin": "caxa --input '.' --output 'Evaluate-1.1.1.exe' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'"
   },
   "author": "",
   "license": "MIT",
@@ -24,7 +27,7 @@
     "fifo": "^2.4.1",
     "math.js": "^1.1.46",
     "mathjs": "^10.0.2",
-    "mocha": "^9.1.3",
+    "mocha": "^9.2.0",
     "pkg": "^5.5.1",
     "rpn": "^2.0.0",
     "stack-lifo": "^0.1.6",

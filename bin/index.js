@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 
+const version = "1.1.1-dev"
+
 const argdef = [
 	{name: 'input', alias: 'i', type: String, defaultOption: true},
-	{name: 'verbose', alias: 'v', type: Boolean}
+	{name: 'verbose', alias: 'v', type: Boolean},
+	{name: 'version', type: Boolean}
 ]
 
 import stopwatch from 'statman-stopwatch'
@@ -18,6 +21,8 @@ export default function runner() {
 		const timer =  new stopwatch(true)
 		const options =  args(argdef)
 
+		if (options.version) console.log("Evaluate v" + version)
+
 		if (!options.input) process.exit(1)
 		if (options.verbose) {
 			verbose = true
@@ -26,7 +31,7 @@ export default function runner() {
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens)
-		Interpret(script, false, verbose)
+		Interpret(script, true, verbose)
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log("Invalid argument")

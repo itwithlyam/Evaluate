@@ -4,3 +4,4 @@ package-lock.json
 .breakpoints
 build/
 build/evaluate.exe
+Evaluate-*
