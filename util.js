@@ -73,7 +73,7 @@ export class StackTrace {
 export const GlobalStack = new StackTrace()
 
 export let Yard = (infix) => {
-	let ops = {'+': 1, '-': 1, '*': 2, '/': 2};
+	let ops = {'+': 1, '-': 1, '*': 2, '/': 2, '%': 2};
 	let peek = (a) => a[a.length - 1];
 	let stack = [];
   
@@ -98,7 +98,7 @@ export let Yard = (infix) => {
 			output.push(stack.pop());
 		  stack.pop();
 		}
-  
+		console.log(output)
 		return output;
 	  }, [])
 	  .concat(stack.reverse())
