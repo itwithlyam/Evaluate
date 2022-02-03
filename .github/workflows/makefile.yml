@@ -1,0 +1,27 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Install dependencies
+      run: make install
+      
+    - name: Build for Unix
+      run: make unix
+      
+    - name: Build for Win
+      run: make win
+      
+    - name: Build for Unix (.sh)
+      run: make unixsh
