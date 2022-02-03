@@ -22,7 +22,8 @@ const Ident = {
 	FUNCCALL: 20,
 	PASS: 21,
 	TRUE: 22,
-	FALSE: 23
+	FALSE: 23,
+	MODULO: 24
 }
 
 const Classify = {
@@ -38,7 +39,7 @@ const Classify = {
 	BOOLEAN: 9
 }
 
-const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\()|(\))|(\[)|(\])/gi
+const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\%)|(\()|(\))|(\[)|(\])/gi
 
 export function Lexer(script) {
 	/*console.log(script)
@@ -56,6 +57,9 @@ export function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
+				case "%":
+					idents.push({char: char, ident: Ident.MODULO, classify: Classify.OPERATION})
+					break;
 				case "true":
 					idents.push({char: char, ident: Ident.TRUE, classify: Classify.BOOLEAN})
 					break;
