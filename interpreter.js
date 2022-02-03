@@ -96,7 +96,6 @@ export function Interpret(AST, unit, verbose) {
 					op.push(e.value)
 				})
 				let answ = rpn(Yard(op), line)
-				console.log(Yard(op))
 				ans.push(answ)
 				RuntimeStack.pop()
 				break;
