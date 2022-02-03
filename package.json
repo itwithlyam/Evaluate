@@ -16,7 +16,7 @@
     "chai": "^4.3.4"
   },
   "bin": {
-    "evaluatejs": "bin/index.js"
+    "evaluatejs": "index.js"
   },
   "type": "module",
   "dependencies": {
