@@ -67,6 +67,7 @@ export function Parse(tokens, func) {
 				case '*':
 				case '/':
 				case '%':
+				case '¬':
 					return presentblock.push({
 						type: "blockelement",
 						value: element.char
