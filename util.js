@@ -75,7 +75,7 @@ export const GlobalStack = new StackTrace()
 export let Yard = (infix) => {
 	let ops = {'+': 1, '-': 1, '*': 2, '/': 2, '%': 2};
 	let peek = (a) => a[a.length - 1];
-	let stack = [];
+	let stack = []
   
 	return infix
 	  .reduce((output, token) => {
@@ -98,7 +98,6 @@ export let Yard = (infix) => {
 			output.push(stack.pop());
 		  stack.pop();
 		}
-		console.log(output)
 		return output;
 	  }, [])
 	  .concat(stack.reverse())
@@ -113,19 +112,23 @@ export function rpn(postfix, line) {
 	
 	for (var i = 0; i < postfix.length; i++) {
 		var token = postfix[i];
-	
+
 		if (!Number.isNaN(+token)) {
-		stack.push(parseFloat(token));
+			stack.push(parseFloat(token));
+			//console.log("a")
 		}
 	
 		else {
 		if (stack.length < 2) {
-			throw new RuntimeError('ExpressionTooShort', 'Insufficient values in expression', line);
+			throw new RuntimeError('ExpressionSyntax', 'Inputted expression has a syntax error', line);
 		}
-	
+
 		var y = stack.pop();
 		var x = stack.pop();
+		//console.log(x)
+		//console.log(y)
 		stack.push(eval(x + token + ' ' + y));
+		//console.log(stack)
 		}
 	}
 	
