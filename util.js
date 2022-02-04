@@ -112,31 +112,31 @@ export function rpn(postfix, line) {
 	
 	for (var i = 0; i < postfix.length; i++) {
 		var token = postfix[i];
-
 		if (!Number.isNaN(+token)) {
 			stack.push(parseFloat(token));
-			//console.log("a")
 		}
 	
 		else {
-		if (stack.length < 2) {
-			throw new RuntimeError('ExpressionSyntax', 'Inputted expression has a syntax error', line);
+		if (stack.length < 2 && token !== '¬') {
+				throw new RuntimeError('ExpressionSyntax', 'Inputted expression has a syntax error - not enough inputs', line);
 		}
 
 		var y = stack.pop();
 		var x = stack.pop();
-		//console.log(x)
-		//console.log(y)
-		if (token == "¬") { 
-			stack.push(x)
-			stack.push(Math.sqrt(y));
-		} else stack.push(eval(x + token + ' ' + y));
+
+		if(token == '¬') {
+			if (x) stack.push(x)
+			stack.push(Math.sqrt(y))
+		} else {
+			let exp = x + token+' '+y
+			stack.push(eval(exp));
+		}
 		//console.log(stack)
 		}
 	}
 	
 	if (stack.length > 1) {
-		throw new RuntimeError('ExpressionSyntax', 'Inputted expression has a syntax error', line);
+		throw new RuntimeError('ExpressionSyntax', 'Inputted expression has a syntax error - too many inputs', line);
 	}
 	
 	return stack.pop();
