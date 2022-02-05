@@ -6,6 +6,7 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
     "start": "node bin/index.js program.ev",
+    "testw": "mocha",
     "buildunix": "caxa --input '.' --output 'Evaluate-1.1.1' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'",
     "buildapp": "caxa --input '.' --output 'Evaluate-1.1.1.app' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'",
     "buildwin": "caxa --input '.' --output 'Evaluate-1.1.1.exe' -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/index.js'"
