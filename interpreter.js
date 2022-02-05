@@ -1,3 +1,4 @@
+
 import * as fs from 'fs'
 import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
@@ -92,8 +93,10 @@ export function Interpret(AST, unit, verbose) {
 			case 'block':
 				RuntimeStack.push("Equation", line)
 				let op = []
+				let nots = ['¬']
 				element.body.forEach(e => {
 					op.push(e.value)
+					if (nots.includes(e.value)) op.push(0)
 				})
 				let answ = rpn(Yard(op), line)
 				ans.push(answ)

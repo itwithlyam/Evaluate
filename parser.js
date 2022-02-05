@@ -67,12 +67,14 @@ export function Parse(tokens, func) {
 				case '*':
 				case '/':
 				case '%':
-					return presentblock.push({
+				case '¬':
+				case '^':
+					presentblock.push({
 						type: "blockelement",
 						value: element.char
 					})
-				default:
-					//throw new util.CompilationError("InvalidBlockElement", "An invalid block element was recieved", line)
+					return;
+					break;
 			}
 		} 
 		
