@@ -69,6 +69,8 @@ export function Parse(tokens, func) {
 				case '%':
 				case '¬':
 				case '^':
+				case '>>':
+				case '<<':
 					presentblock.push({
 						type: "blockelement",
 						value: element.char

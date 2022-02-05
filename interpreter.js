@@ -111,7 +111,7 @@ export function Interpret(AST, unit, verbose) {
 		}
 	})
 	if (!unit) {
-		if (!ans[0]) return
+		if (!ans[0] && ans[0] != 0) return
 		const returns = fifo()
 		ans.forEach(value => {
 			returns.push(value)
