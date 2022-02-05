@@ -19,6 +19,12 @@ describe('Maths', function() {
 		it("should return undefined", function() {
 			expect(start("{54 % 2}")).to.equal(undefined)
 		})
+		it("should return 2", function() {
+			expect(start("{4¬}")).to.equal(2)
+		})
+		it("should return 4", function() {
+			expect(start("{2^2}")).to.equal(4)
+		})
   })
   context('complex calculations', function() {
 	  it("should return 121", function() {

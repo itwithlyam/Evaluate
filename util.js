@@ -73,7 +73,7 @@ export class StackTrace {
 export const GlobalStack = new StackTrace()
 
 export let Yard = (infix) => {
-	let ops = {'+': 1, '-': 1, '*': 2, '/': 2, '%': 2, '¬': 3, '^': 3};
+	let ops = {'<<': 1, '>>': 1, '+': 2, '-': 2, '*': 3, '/': 3, '%': 3, '¬': 4, '^': 4};
 	let peek = (a) => a[a.length - 1];
 	let stack = []
   
@@ -133,7 +133,6 @@ export function rpn(postfix, line) {
 			let exp = x + token+' '+y
 			stack.push(eval(exp));
 		}
-		//console.log(stack)
 		}
 	}
 	
