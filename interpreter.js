@@ -98,7 +98,6 @@ export function Interpret(AST, unit, verbose) {
 				element.body.forEach(e => {
 					if (e.value === '~') round = true
 					else op.push(e.value)
-					console.log(e)
 					if (nots.includes(e.value)) op.push(0)
 				})
 				let answ = rpn(Yard(op), line)
