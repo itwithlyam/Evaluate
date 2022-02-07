@@ -44,7 +44,7 @@ const Classify = {
 	BOOLEAN: 9
 }
 
-const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])/gi
+const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)/gi
 
 export function Lexer(script) {
 	/*console.log(script)
