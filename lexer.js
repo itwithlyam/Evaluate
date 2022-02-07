@@ -27,7 +27,8 @@ const Ident = {
 	SQRT: 25,
 	POWER: 26,
 	LEFTSHIFT: 27,
-	RIGHTSHIFT: 28
+	RIGHTSHIFT: 28,
+	ROUND: 29
 }
 
 const Classify = {
@@ -61,6 +62,9 @@ export function Lexer(script) {
 			}
 			if (!char) return;
 			switch(char) {
+				case '~':
+					idents.push({char: char, ident: Ident.ROUND, classify: Classify.OPERATION})
+					break;
 				case '<<':
 					idents.push({char: char, ident: Ident.LEFTSHIFT, classify: Classify.OPERATION})
 					break;
