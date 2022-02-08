@@ -10,9 +10,9 @@ const argdef = [
 
 import stopwatch from 'statman-stopwatch'
 import args from 'command-line-args'
-import {Interpret} from './interpreter.js'
-import {Lexer} from './lexer.js'
-import {Parse} from './parser.js'
+import {Interpret} from './src/interpreter.js'
+import {Lexer} from './src/lexer.js'
+import {Parse} from './src/parser.js'
 import * as fs from 'fs'
 
 export default function runner() {
