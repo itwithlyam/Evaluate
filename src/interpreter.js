@@ -1,10 +1,10 @@
-
 import * as fs from 'fs'
 import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
 import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 import chalk from "chalk"
 import fifo from 'fifo'
+import equation from './interpreter/equate.js'
 let VarMemory = {}
 let FunctionMemory = {}
 
@@ -91,18 +91,9 @@ export function Interpret(AST, unit, verbose) {
 				}
 				break;
 			case 'block':
+			
 				RuntimeStack.push("Equation", line)
-				let round = false
-				let op = []
-				let nots = ['¬']
-				element.body.forEach(e => {
-					if (e.value === '~') round = true
-					else op.push(e.value)
-					if (nots.includes(e.value)) op.push(0)
-				})
-				let answ = rpn(Yard(op), line)
-				if (round) answ = Math.floor(answ)
-				ans.push(answ)
+				ans.push(equation.execute(element.body))
 				RuntimeStack.pop()
 				break;
 			case 'EOF':

@@ -34,7 +34,7 @@ export default function runner() {
 		Interpret(script, false, verbose)
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
-		console.log("Invalid argument")
+		console.log(err)
 	}
 }
 runner()
