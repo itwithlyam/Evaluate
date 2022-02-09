@@ -4,7 +4,12 @@ import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 import chalk from "chalk"
 import fifo from 'fifo'
+
+// Expressors
 import equation from './interpreter/equate.js'
+import variable from './interpreter/var.js'
+
+// Memory 
 let VarMemory = {}
 let FunctionMemory = {}
 
@@ -74,19 +79,7 @@ export function Interpret(AST, unit, verbose) {
 				}
 				if (element.kind === 'var') {
 					RuntimeStack.push("var", line)
-					let id = element.declarations.id.name
-					let data = ""
-					if (VarMemory.hasOwnProperty(id)) {
-						data = VarMemory[id]
-						let num = parseInt(data)
-						if (num || data == 0) ans.push(num)
-						else
-						ans.push(data)
-					}
-					else throw new RuntimeError("NotDefined", `${id} is not defined as a variable`, line, ParseTrace(RuntimeStack))
-					
-					current += 1
-					
+					ans.push(variable.execute(VarMemory, element, RuntimeStack))
 					RuntimeStack.pop()
 				}
 				break;
