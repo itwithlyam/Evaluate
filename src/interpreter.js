@@ -9,6 +9,8 @@ import fifo from 'fifo'
 import equation from './interpreter/equate.js'
 import variable from './interpreter/var.js'
 import mset from './interpreter/mset.js'
+import callfunc from './interpreter/callfunc.js'
+import initfunc from './interpreter/initfunc.js'
 
 // Memory 
 let VarMemory = {}
@@ -39,21 +41,13 @@ export function Interpret(AST, unit, verbose) {
 			case 'functioncall':
 				let id = element.declarations.id.name
 				RuntimeStack.push(`Function call ${id}`, line)
-				let result = ""
-				if (FunctionMemory.hasOwnProperty(id)) {
-						result = Interpret(FunctionMemory[id])
-				} else {
-					throw new RuntimeError("NotDefined", `${id} is not defined as a function`, line, ParseTrace(RuntimeStack))
-				}
-				ans.push(result)
+				ans.push(callfunc.execute(id, FunctionMemory, RuntimeStack, line))
 				current += 1
 				RuntimeStack.pop()
 				break;
 			case 'function':
 				RuntimeStack.push("Function " + element.declarations.id.name, line)
-				const functionname = element.declarations.id.name
-				const functionbody = Parse(Lexer(element.declarations.init.body), true)
-				pushdata(functionname, functionbody, 'function')
+				FunctionMemory = initfunc.execute(FunctionMemory, element)
 				current += 1
 				return RuntimeStack.pop()
 			case 'newline':
