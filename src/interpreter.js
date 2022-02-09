@@ -8,6 +8,7 @@ import fifo from 'fifo'
 // Expressors
 import equation from './interpreter/equate.js'
 import variable from './interpreter/var.js'
+import mset from './interpreter/mset.js'
 
 // Memory 
 let VarMemory = {}
@@ -73,20 +74,21 @@ export function Interpret(AST, unit, verbose) {
 				if (element.kind === 'mset') {
 					RuntimeStack.push("mset", line)
 					current += 1
-					pushdata(element.declarations.id.name, element.declarations.init.value, 'variable')
+					VarMemory = mset.execute(element.declarations.id.name, element.declarations.init.value, VarMemory)
 					RuntimeStack.pop()
 					return;
 				}
 				if (element.kind === 'var') {
 					RuntimeStack.push("var", line)
 					ans.push(variable.execute(VarMemory, element, RuntimeStack))
+					current += 1
 					RuntimeStack.pop()
 				}
 				break;
 			case 'block':
-			
 				RuntimeStack.push("Equation", line)
 				ans.push(equation.execute(element.body))
+				current += 1
 				RuntimeStack.pop()
 				break;
 			case 'EOF':
