@@ -3,26 +3,26 @@ import {expect} from 'chai'
 
 describe('Maths', function() {
 
-  context('simple equations', function() {
-    it('should return 2', function() {
+  context('simple calculations', function() {
+    it('addition', function() {
       expect(start("{1 + 1}")).to.equal(2)
     })
-		it('should return 1', function() {
+		it('multiplication', function() {
 			expect(start("{1 * 1}")).to.equal(1)
 		})
-		it("should return 2", function() {
+		it("division", function() {
 			expect(start("{10 / 5}")).to.equal(2)
 		})
-		it("should return 4", function() {
+		it("subtraction", function() {
 			expect(start("{10 - 6}")).to.equal(4)
 		})
-		it("should return undefined", function() {
+		it("modulus", function() {
 			expect(start("{54 % 2}")).to.equal(undefined)
 		})
-		it("should return 2", function() {
+		it("square root", function() {
 			expect(start("{4¬}")).to.equal(2)
 		})
-		it("should return 4", function() {
+		it("power", function() {
 			expect(start("{2^2}")).to.equal(4)
 		})
   })
