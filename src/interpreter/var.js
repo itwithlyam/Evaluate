@@ -4,7 +4,7 @@ import {RuntimeError, ParseTrace} from '../util.js'
 export default {
 	name: "var",
 	description: "get variables from memory",
-	execute(VarMemory, element, RuntimeStack) {
+	execute(VarMemory, element, RuntimeStack, line) {
 		let ans = 0
 		let id = element.declarations.id.name
 		let data = ""

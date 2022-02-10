@@ -74,7 +74,7 @@ export function Interpret(AST, unit, verbose) {
 				}
 				if (element.kind === 'var') {
 					RuntimeStack.push("var", line)
-					ans.push(variable.execute(VarMemory, element, RuntimeStack))
+					ans.push(variable.execute(VarMemory, element, RuntimeStack, line))
 					current += 1
 					RuntimeStack.pop()
 				}
