@@ -142,3 +142,51 @@ export function rpn(postfix, line) {
 	
 	return stack.pop();
 }
+
+export const Ident = {
+	NUMBER: 0,
+	NEWLINE: 1,
+	PLUS: 2,
+	MINUS: 3,
+	DIVIDE: 4,
+	TIMES: 5,
+	EOF: 6,
+	LCBRACKET: 7,
+	RCBRACKET: 8,
+	ALGEBRA: 9,
+	MEMSET: 10,
+	TERM: 11,
+	MEMCLR: 12,
+	EQUALS: 13,
+	LBRACKET: 14,
+	RBRACKET: 15,
+	LSBRACKET: 16,
+	RSBRACKET: 17,
+	STRING: 18,
+	INITFUNC: 19,
+	FUNCCALL: 20,
+	PASS: 21,
+	TRUE: 22,
+	FALSE: 23,
+	MODULO: 24,
+	SQRT: 25,
+	POWER: 26,
+	LEFTSHIFT: 27,
+	RIGHTSHIFT: 28,
+	ROUND: 29
+}
+
+export const Classify = {
+	CHAR: 0,
+	OPERATION: 1,
+	SYSTEM: 2,
+	CBRACKET: 3,
+	SETTING: 4,
+	MEMORY: 5,
+	BRACKET: 6,
+	SBRACKET: 7,
+	FUNCTION: 8,
+	BOOLEAN: 9
+}
+
+export const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)/gi

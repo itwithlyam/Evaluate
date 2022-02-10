@@ -1,4 +1,4 @@
-import {run as start} from '../util.js'
+import {run as start} from '../src/util.js'
 import {expect} from 'chai'
 
 describe('Memory', function() {
