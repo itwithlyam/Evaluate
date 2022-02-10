@@ -59,6 +59,12 @@ export function Parse(tokens, func) {
 					value: element.char
 				})
 			}
+			if (element.char == '~') {
+				return presentblock.push({
+					type: "roundblock",
+					value: element.char
+				})
+			}
 			switch(element.char) {
 				case '(':
 				case ')':
@@ -76,7 +82,6 @@ export function Parse(tokens, func) {
 						value: element.char
 					})
 					return;
-					break;
 			}
 		} 
 		

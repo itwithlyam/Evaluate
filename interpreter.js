@@ -92,13 +92,16 @@ export function Interpret(AST, unit, verbose) {
 				break;
 			case 'block':
 				RuntimeStack.push("Equation", line)
+				let round = false
 				let op = []
 				let nots = ['¬']
 				element.body.forEach(e => {
-					op.push(e.value)
+					if (e.value === '~') round = true
+					else op.push(e.value)
 					if (nots.includes(e.value)) op.push(0)
 				})
 				let answ = rpn(Yard(op), line)
+				if (round) answ = Math.floor(answ)
 				ans.push(answ)
 				RuntimeStack.pop()
 				break;
