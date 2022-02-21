@@ -41,8 +41,9 @@ export function Parse(tokens, func) {
 	let sbracket = false
 
 	tokens.forEach((element) => {
-		
-		
+		console.log(element)
+		let status = ParseStack.status()
+		console.log(status)
 
 		if (element.read) return;
 		if (element.ident == 6) {
@@ -53,7 +54,7 @@ export function Parse(tokens, func) {
 				value: element.char
 			})
 		}
-		if (block) {
+		if (status == "Equation" && element.char !== '}') {
 			tokens[current].read = true
 			current += 1
 			if (parseFloat(element.char) || element.char == 0) {
@@ -87,7 +88,7 @@ export function Parse(tokens, func) {
 					return;
 			}
 		} 
-		
+		if (status === "Equation") return;
 		switch(element.ident) {
 			case 22:
 				tokens[current.read] = true
