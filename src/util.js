@@ -66,6 +66,9 @@ export class StackTrace {
 		this.Stack.clear()
 		if (this.verbose) console.info(chalk.blue("Stack cleared"))
 	}
+	get status() {
+		return this.Stack.first
+	}
 	get traceback() {
 		return this.Stack
 	}

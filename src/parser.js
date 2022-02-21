@@ -41,6 +41,9 @@ export function Parse(tokens, func) {
 	let sbracket = false
 
 	tokens.forEach((element) => {
+		
+		
+
 		if (element.read) return;
 		if (element.ident == 6) {
 			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
