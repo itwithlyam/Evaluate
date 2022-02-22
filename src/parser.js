@@ -54,7 +54,18 @@ export function Parse(tokens, func) {
 				value: element.char
 			})
 		}
-		if (status == "Equation" && element.char !== '}') {
+		if (status == "Equation") {
+			if (element.char == '}') {
+				tokens[current].read = true
+				current += 1
+				body.push({
+					type: "block",
+					body: presentblock
+				})
+				presentblock = []
+				ParseStack.pop()
+				return
+			}
 			tokens[current].read = true
 			current += 1
 			if (parseFloat(element.char) || element.char == 0) {
@@ -159,22 +170,10 @@ export function Parse(tokens, func) {
 				})
 				return line += 1
 			case 7:
-			ParseStack.push("Equation", line)
-			tokens[current].read = true
-			current += 1
-				return block = true;
-				
-			case 8:
-			tokens[current].read = true
-			current += 1
-				if (!block) throw new CompilationError("EquationClosed", "Equations must be opened before closed", line, ParseTrace(ParseStack))
-				body.push({
-					type: "block",
-					body: presentblock
-				})
-				presentblock = []
-				ParseStack.pop()
-				return block = false;
+				ParseStack.push("Equation", line)
+				tokens[current].read = true
+				current += 1
+				break;
 			case 14:
 				ParseStack.push("Bracket", line)
 				tokens[current].read = true
