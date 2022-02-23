@@ -53,6 +53,7 @@ export function Parse(tokens, func, verbose=false) {
 				type: "EOF",
 				value: element.char
 			})
+			current += 1
 		}
 		if (element.ident === 7) {
 			ParseStack.push("Equation", line)
