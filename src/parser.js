@@ -41,9 +41,9 @@ export function Parse(tokens, func, verbose=false) {
 	let sbracket = false
 
 	tokens.forEach((element) => {
-		console.log(element)
+		// console.log(element)
 		let status = ParseStack.status()
-		console.log(status)
+		// console.log(status)
 
 		if (element.read) return;
 		if (element.ident == 6) {
@@ -62,13 +62,13 @@ export function Parse(tokens, func, verbose=false) {
 		if (status == "Equation") {
 			tokens[current].read = true
 			current += 1
-			console.log(presentblock)
+			// console.log(presentblock)
 			if (element.char == '}') {
 				body.push({
 					type: "block",
 					body: presentblock
 				})
-				console.log(presentblock)
+				// console.log(presentblock)
 				presentblock = []
 				ParseStack.pop()
 				return
@@ -242,15 +242,15 @@ export function Parse(tokens, func, verbose=false) {
 			body.push({
 				type: "memory",
 				kind: "var",
-				value: tokens[current].char,
+				value: element.char,
 				declarations: {
 					id: {
-						name: tokens[current].char
+						name: element.char
 					}
 				}
 			})
-			return current += 1
 			ParseStack.pop()
+			return current += 1
 		}
 		if (element.ident == 10) {
 			ParseStack.push("mset", line)
@@ -273,8 +273,6 @@ export function Parse(tokens, func, verbose=false) {
 			ParseStack.pop()
 			return current += 3
 		}
-		current += 1
-		console.log(element)
 	})
 	let AST = {
 		type: "Program",

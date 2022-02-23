@@ -56,7 +56,7 @@ export class StackTrace {
 		if (this.verbose) console.info(chalk.blue("Initiate stack " + name))
 	}
 	push(state, pos) {
-		this.Stack.push(`${state}: ${pos}`)
+		this.Stack.push(`${state}` + chalk.gray(` at position ${pos}`))
 		this.trueStack.push(state)
 		if (this.verbose) console.info(chalk.blue("Enter state " + state + " at line " + pos))
 	}
