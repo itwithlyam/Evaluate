@@ -49,22 +49,29 @@ export class Fault {
 }
 
 export class StackTrace {
-	constructor(verbose = false) {
+	constructor(verbose = false, name = "") {
 		this.Stack = fifo()
+		this.trueStack = fifo()
 		this.verbose = verbose
-		if (this.verbose) console.info(chalk.blue("Initiate stack"))
+		if (this.verbose) console.info(chalk.blue("Initiate stack " + name))
 	}
 	push(state, pos) {
-		this.Stack.push(`${state}: ${pos}`)
+		this.Stack.push(`${state}` + chalk.gray(` at position ${pos}`))
+		this.trueStack.push(state)
 		if (this.verbose) console.info(chalk.blue("Enter state " + state + " at line " + pos))
 	}
 	pop() {
 		this.Stack.pop()
+		this.trueStack.pop()
 		if (this.verbose) console.info(chalk.blue("Exit state"))
 	}
 	clear() {
 		this.Stack.clear()
+		this.trueStack.clear()
 		if (this.verbose) console.info(chalk.blue("Stack cleared"))
+	}
+	status() {
+		return this.trueStack.last()
 	}
 	get traceback() {
 		return this.Stack

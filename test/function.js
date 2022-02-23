@@ -16,5 +16,3 @@ describe('Functions', function() {
 	})
   
 })
-
-
