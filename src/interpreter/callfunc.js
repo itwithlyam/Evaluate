@@ -1,16 +1,18 @@
-import {Interpret} from '../interpreter.js'
 import {RuntimeError, ParseTrace} from '../util.js'
+
+const StandardLibrary = ["simplify"]
+
+// Standard Library
+import simplify from "./standard/simplify.js"
 
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(id, memory, stack, line) {
-		let result = ""
-		if (memory.hasOwnProperty(id)) {
-				result = Interpret(memory[id])
-		} else {
-			throw new RuntimeError("NotDefined", `${id} is not defined as a function`, line, ParseTrace(stack))
+	async execute(func, args, line, trace) {
+		if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
+		switch(func) {
+			case 'simplify':
+				return simplify(args, line, trace)
 		}
-		return result
 	}
 }
