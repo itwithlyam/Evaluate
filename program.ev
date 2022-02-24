@@ -1,1 +1,1 @@
-simplify("12x*17x")
+output("Yes, I do.")
