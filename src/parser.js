@@ -1,33 +1,5 @@
 import {CompilationError, ParseTrace, StackTrace} from './util.js'
 
-/*
-// TS Syntax from ComplicatedCalculator archive
-
-type BodyItem = {
-	type: string;
-	kind?: string;
-	declarations?: {
-		type?: string;
-		id?: {
-			name: any;
-		}
-		init?: {
-			value: string;
-		}
-	};
-	value: string
-	
-	
-}
-
-type Tree = {
-	type: string;
-	tokens: any[];
-	length: number;
-	body: BodyItem[]
-}
-*/
-
 export function Parse(tokens, func, verbose=false) {
 	const ParseStack = new StackTrace(verbose, "Parser Stack")
 	ParseStack.push("Program Start", 0)

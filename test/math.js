@@ -25,6 +25,12 @@ describe('Maths', function() {
 		it("power", function() {
 			expect(start("{2^2}")).to.equal(4)
 		})
+		it("shift left", function() {
+			expect(start("{12<<2}")).to.equal(48)
+		})
+		it("shift right", function() {
+			expect(start("{12>>2}")).to.equal(3)
+		})
   })
   context('complex calculations', function() {
 	  it("should return 121", function() {
@@ -33,7 +39,7 @@ describe('Maths', function() {
 	  it("should return 1", function() {
 		  expect(start("{0.5 * 2}")).to.equal(1)
 	  })
-		it("should return a decimal", function() {
+		it("should return 63.51101321585903", function() {
 			expect(start("{12+76-34*654/908%1234}")).to.equal(63.51101321585903)
 		})
   })

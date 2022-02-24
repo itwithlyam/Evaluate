@@ -7,7 +7,8 @@ const argdef = [
 	{name: 'input', alias: 'i', type: String, defaultOption: true},
 	{name: 'verbose', alias: 'v', type: Boolean},
 	{name: 'version', type: Boolean},
-	{name: 'force', alias: 'f', type: Boolean}
+	{name: 'force', alias: 'f', type: Boolean},
+	{name: 'disable-warnings', type: Boolean}
 ]
 
 import stopwatch from 'statman-stopwatch'
@@ -23,8 +24,9 @@ export default function runner() {
 		let verbose = false
 		const timer =  new stopwatch(true)
 		const options =  args(argdef)
-
-		if (devmode) console.log(chalk.yellow("Warning: Current version is an unstable devmode. Expect bugs."))
+		if (!options['disable-warnings']) {
+			if (devmode) console.log(chalk.yellow("Warning: Current version is an unstable devmode. Expect bugs."))
+		}
 		if (devmode && !options.force) {
 			console.log(chalk.red("To use devmode, please continue with force."))
 			process.exit(1)

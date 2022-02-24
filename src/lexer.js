@@ -9,13 +9,18 @@ export function Lexer(script) {
 	program.forEach((line) => {
 		idents.push({char: null, ident: Ident.NEWLINE, classify: Classify.SYSTEM})
     	let chars = line.split(negatives)
+			let comment = false
 			chars.forEach((char) => {
-			if (parseInt(char) || char === 0 && char != "") {
+			if (comment) return
+			if (parseFloat(char) || Math.abs(parseFloat(char)) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': Ident.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
 			if (!char) return;
 			switch(char) {
+				case '#':
+					comment = true
+					break;
 				case '~':
 					idents.push({char: char, ident: Ident.ROUND, classify: Classify.OPERATION})
 					break;
