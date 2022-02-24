@@ -51,9 +51,6 @@ export function Lexer(script) {
 				case "function":
 					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})
 					break;
-				case "call":
-					idents.push({char: char, ident: Ident.FUNCCALL, classify: Classify.FUNCTION})
-					break;
 				case '"':
 					idents.push({char: char, ident: Ident.STRING, classify: Classify.CHAR})
 					break;

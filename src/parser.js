@@ -106,22 +106,6 @@ export function Parse(tokens, func, verbose=false) {
 				})
 				ParseStack.pop()
 				break;
-			case 20:
-				tokens[current].read = true
-				tokens[current + 1].read = true
-				ParseStack.push("Function Call " + tokens[current+1].char, line)
-				body.push({
-					type: "functioncall",
-					declarations: {
-						id: {
-							name: tokens[current+1].char
-						}
-					},
-					value: "call " + tokens[current+1].char
-				})
-				current += 2 
-				ParseStack.pop()
-				break;
 			case 19:
 				tokens[current].read = true
 				tokens[current + 1].read = true
@@ -210,6 +194,22 @@ export function Parse(tokens, func, verbose=false) {
 			})
 		}
 		if (element.ident == 11) {
+			if (tokens[current+1].char == '(') {
+				current += 1
+				let options = []
+				while (tokens[current+1].char != ')') {
+					options.push(tokens[current+1].char)
+					current += 1
+				}
+				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				body.push({
+					type: "functioncall",
+					params: options,
+					value: element.char
+				})
+				ParseStack.pop()
+				return;
+			}
 			ParseStack.push("var", line)
 			tokens[current].read = true
 			body.push({
