@@ -134,26 +134,6 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				return line += 1
-			case 14:
-				ParseStack.push("Bracket", line)
-				tokens[current].read = true
-				current += 1
-				if (bracket) throw new CompilationError("BracketOpen", "Brackets within brackets are not permitted", line, ParseTrace(ParseStack))
-				body.push({
-					type: "bopen",
-					value: element.char
-				})
-				return bracket = true;
-			case 15:
-				tokens[current].read = true
-				current += 1
-				if (!bracket) throw new CompilationError("BracketClosed", "Brackets must be opened before closed", line, ParseTrace(ParseStack))
-				body.push({
-					type: "bclose",
-					value: element.char
-				})
-				ParseStack.pop()
-				return bracket = false;
 			case 16:
 				ParseStack.push("SquareBracket", line)
 				tokens[current].read = true
@@ -195,10 +175,12 @@ export function Parse(tokens, func, verbose=false) {
 		}
 		if (element.ident == 11) {
 			if (tokens[current+1].char == '(') {
+				tokens[current+1].read = true
 				current += 1
 				let options = []
 				while (tokens[current+1].char != ')') {
 					options.push(tokens[current+1].char)
+					tokens[current+1].read = true
 					current += 1
 				}
 				ParseStack.push("Function Call " + tokens[current+1].char, line)

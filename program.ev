@@ -1,1 +1,1 @@
-simplify()
+simplify("12x*17x")

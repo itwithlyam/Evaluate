@@ -1,11 +1,12 @@
 import {RuntimeError, ParseTrace} from '../../util.js'
-import math from 'math.js'
+import {simplify} from 'mathjs'
 
-export default async function simplify(args, line, trace) {
+export default function simplifyfunc(args, line, trace) {
 	try {
-		let sim = math.simplify(args[0]).toString()
+		let sim = simplify(args[0]).toString()
 		return sim
 	} catch(err) {
-		throw new RuntimeError("StandardLibrary", "Invalid expression", line, ParseTrace(trace))
+		console.log(err)
+		throw new RuntimeError("StandardLibrarySimplification", "Invalid expression", line, ParseTrace(trace))
 	}
 }

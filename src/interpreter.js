@@ -40,7 +40,7 @@ export function Interpret(AST, unit, verbose) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				ans += callfunc.execute(element.value, element.parameters, line, RuntimeStack)
+				ans.push(callfunc.execute(element.value, element.params, line, RuntimeStack))
 				current += 1
 				RuntimeStack.pop()
 				break;

@@ -4,7 +4,7 @@ import {expect} from 'chai'
 describe('Functions', function() {
 	context('standard mathematical functions', function() {
 		it('simplify', function() {
-			start(`simplify("12+12")`)
+			start(`simplify("12x*17x")`)
 		})
 	})
 })

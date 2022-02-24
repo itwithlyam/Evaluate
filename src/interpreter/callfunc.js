@@ -8,11 +8,14 @@ import simplify from "./standard/simplify.js"
 export default {
 	name: "callfunc",
 	description: "run function",
-	async execute(func, args, line, trace) {
+	execute(func, args, line, trace) {
 		if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
+		let res = null
 		switch(func) {
 			case 'simplify':
-				return simplify(args, line, trace)
+				res = simplify(args, line, trace)
+				break;
 		}
+		return res
 	}
 }
