@@ -1,10 +1,11 @@
 import {RuntimeError, ParseTrace} from '../util.js'
 
-const StandardLibrary = ["simplify", "output"]
+const StandardLibrary = ["simplify", "output", "equate"]
 
 // Standard Library
 import simplify from "./standard/simplify.js"
 import output from "./standard/output.js"
+import evaluate from "./standard/equate.js"
 
 export default {
 	name: "callfunc",
@@ -18,6 +19,9 @@ export default {
 				break;
 			case 'output':
 				res = output(args, line, trace)
+				break;
+			case "equate":
+				res = evaluate(args, line, trace)
 				break;
 		}
 		return res
