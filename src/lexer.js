@@ -5,17 +5,32 @@ export function Lexer(script) {
 	console.log("END SCRIPT")*/
   let program = script.split('\n')
 	let idents = []
+	let str = false
+	let cstr = ""
 	idents.push({'char': '<EOF>', 'ident': Ident.EOF, 'classify': Classify.SYSTEM})
 	program.forEach((line) => {
 		idents.push({char: null, ident: Ident.NEWLINE, classify: Classify.SYSTEM})
     	let chars = line.split(negatives)
+			let comment = false
 			chars.forEach((char) => {
-			if (parseInt(char) || char === 0 && char != "") {
+			if (str && char && char != '"') return cstr += " " + char
+			if (comment) return
+			if (parseFloat(char) || Math.abs(parseFloat(char)) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': Ident.NUMBER, 'classify': Classify.CHAR}
 				return idents.push(payload)
 			}
 			if (!char) return;
 			switch(char) {
+				case '"':
+					str = !str
+					if (!str) {
+						idents.push({char: cstr, ident: Ident.STRING, classify: Classify.CHAR})
+						cstr = ""
+					}
+					break;
+				case '#':
+					comment = true
+					break;
 				case '~':
 					idents.push({char: char, ident: Ident.ROUND, classify: Classify.OPERATION})
 					break;
@@ -45,12 +60,6 @@ export function Lexer(script) {
 					break;
 				case "function":
 					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})
-					break;
-				case "call":
-					idents.push({char: char, ident: Ident.FUNCCALL, classify: Classify.FUNCTION})
-					break;
-				case '"':
-					idents.push({char: char, ident: Ident.STRING, classify: Classify.CHAR})
 					break;
 				case ' ':
 					return;

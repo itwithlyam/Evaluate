@@ -180,7 +180,7 @@ export const Ident = {
 	POWER: 26,
 	LEFTSHIFT: 27,
 	RIGHTSHIFT: 28,
-	ROUND: 29
+	ROUND: 29,
 }
 
 export const Classify = {
@@ -196,4 +196,4 @@ export const Classify = {
 	BOOLEAN: 9
 }
 
-export const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)/gi
+export const negatives = /\s|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)|(\#)|(\")/gi

@@ -39,9 +39,8 @@ export function Interpret(AST, unit, verbose) {
 				current += 1
 				break;
 			case 'functioncall':
-				let id = element.declarations.id.name
-				RuntimeStack.push(`Function call ${id}`, line)
-				ans.push(callfunc.execute(id, FunctionMemory, RuntimeStack, line))
+				RuntimeStack.push(`Function ${element.value}`, line)
+				ans.push(callfunc.execute(element.value, element.params, line, RuntimeStack))
 				current += 1
 				RuntimeStack.pop()
 				break;

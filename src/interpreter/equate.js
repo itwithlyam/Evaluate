@@ -7,10 +7,10 @@ export default {
 		let round = false
 		let op = []
 		let nots = ['¬']
-    postfix.forEach(e => {
-				if (e.value === '~') round = true
-				else op.push(e.value)
-				if (nots.includes(e.value)) op.push(0)
+    	postfix.forEach(e => {
+				if (e === '~') round = true
+				else op.push(e)
+				if (nots.includes(e)) op.push(0)
 		})
 		let answ = rpn(Yard(op), line)
 		if (round) answ = Math.floor(answ)

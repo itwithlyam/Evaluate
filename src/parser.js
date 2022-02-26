@@ -1,33 +1,5 @@
 import {CompilationError, ParseTrace, StackTrace} from './util.js'
 
-/*
-// TS Syntax from ComplicatedCalculator archive
-
-type BodyItem = {
-	type: string;
-	kind?: string;
-	declarations?: {
-		type?: string;
-		id?: {
-			name: any;
-		}
-		init?: {
-			value: string;
-		}
-	};
-	value: string
-	
-	
-}
-
-type Tree = {
-	type: string;
-	tokens: any[];
-	length: number;
-	body: BodyItem[]
-}
-*/
-
 export function Parse(tokens, func, verbose=false) {
 	const ParseStack = new StackTrace(verbose, "Parser Stack")
 	ParseStack.push("Program Start", 0)
@@ -134,22 +106,6 @@ export function Parse(tokens, func, verbose=false) {
 				})
 				ParseStack.pop()
 				break;
-			case 20:
-				tokens[current].read = true
-				tokens[current + 1].read = true
-				ParseStack.push("Function Call " + tokens[current+1].char, line)
-				body.push({
-					type: "functioncall",
-					declarations: {
-						id: {
-							name: tokens[current+1].char
-						}
-					},
-					value: "call " + tokens[current+1].char
-				})
-				current += 2 
-				ParseStack.pop()
-				break;
 			case 19:
 				tokens[current].read = true
 				tokens[current + 1].read = true
@@ -178,26 +134,6 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				return line += 1
-			case 14:
-				ParseStack.push("Bracket", line)
-				tokens[current].read = true
-				current += 1
-				if (bracket) throw new CompilationError("BracketOpen", "Brackets within brackets are not permitted", line, ParseTrace(ParseStack))
-				body.push({
-					type: "bopen",
-					value: element.char
-				})
-				return bracket = true;
-			case 15:
-				tokens[current].read = true
-				current += 1
-				if (!bracket) throw new CompilationError("BracketClosed", "Brackets must be opened before closed", line, ParseTrace(ParseStack))
-				body.push({
-					type: "bclose",
-					value: element.char
-				})
-				ParseStack.pop()
-				return bracket = false;
 			case 16:
 				ParseStack.push("SquareBracket", line)
 				tokens[current].read = true
@@ -238,6 +174,24 @@ export function Parse(tokens, func, verbose=false) {
 			})
 		}
 		if (element.ident == 11) {
+			if (tokens[current+1].char == '(') {
+				tokens[current+1].read = true
+				current += 1
+				let options = []
+				while (tokens[current+1].char != ')') {
+					options.push(tokens[current+1].char)
+					tokens[current+1].read = true
+					current += 1
+				}
+				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				body.push({
+					type: "functioncall",
+					params: options,
+					value: element.char
+				})
+				ParseStack.pop()
+				return;
+			}
 			ParseStack.push("var", line)
 			tokens[current].read = true
 			body.push({
