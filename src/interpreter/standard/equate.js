@@ -5,7 +5,6 @@ export default function eqfunc(args, line, trace) {
 	try {
 		let statement = args[0].split(' ')
 		statement.shift()
-		console.log(statement)
 		return equate.execute(statement, line)
 	} catch(err) {
 		console.log(err)
