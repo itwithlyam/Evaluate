@@ -1,6 +1,6 @@
 import {RuntimeError, ParseTrace} from '../util.js'
 
-const StandardLibrary = ["simplify", "output", "equate"]
+const StandardLibrary = ["simplify", "printf", "equate"]
 
 // Standard Library
 import simplify from "./standard/simplify.js"
@@ -17,7 +17,7 @@ export default {
 			case 'simplify':
 				res = simplify(args, line, trace)
 				break;
-			case 'output':
+			case 'printf':
 				res = output(args, line, trace)
 				break;
 			case "equate":

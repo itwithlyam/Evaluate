@@ -6,8 +6,8 @@ describe('Functions', function() {
 		it('simplify', function() {
 			expect(start(`simplify("12x*17x")`)).to.equal("204 * x ^ 2")
 		})
-		it('output', function() {
-			expect(start(`output("Hello, World!")`)).to.equal(" Hello, World!")
+		it('printf', function() {
+			expect(start(`printf("Hello, World!")`)).to.equal(" Hello, World!")
 		})
 	})
 })
