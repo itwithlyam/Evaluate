@@ -154,37 +154,51 @@ export function Parse(tokens, func, verbose=false) {
 			})
 		}
 		if (element.ident == 11) {
-			if (tokens[current+1].char == '(') {
-				tokens[current+1].read = true
-				current += 1
-				let options = []
-				while (tokens[current+1].char != ')') {
-					options.push(tokens[current+1].char)
-					tokens[current+1].read = true
-					current += 1
-				}
-				ParseStack.push("Function Call " + tokens[current+1].char, line)
-				body.push({
-					type: "functioncall",
-					params: options,
-					value: element.char
-				})
-				ParseStack.pop()
-				return;
-			}
-			tokens[current].read = true
-			let id = tokens[current].char
+			// console.log(tokens[current])
+			// if (tokens[current+1].char == '(') {
+			// 	tokens[current+1].read = true
+			// 	current += 1
+			// 	let options = []
+			// 	while (tokens[current+1].char != ')') {
+			// 		options.push(tokens[current+1].char)
+			// 		tokens[current+1].read = true
+			// 		current += 1
+			// 	}
+			// 	ParseStack.push("Function Call " + tokens[current+1].char, line)
+			// 	body.push({
+			// 		type: "functioncall",
+			// 		params: options,
+			// 		value: element.char
+			// 	})
+			// 	ParseStack.pop()
+			// 	return;
+			// }
+			// tokens[current].read = true
+
 			if (tokens[current + 1].ident == 19) {
+				let id = tokens[current].char
+				tokens[current].read = true
 				ParseStack.push("Function " + tokens[current].char, line)
 				let paras = []
-				current += 3
+				tokens[current + 1].read = true
+				current += 2
 				if (tokens[current].char == "(") {
+					tokens[current].read = true
 					current += 1
 					while (tokens[current + 1].char != ")") {
 						paras.push(tokens[current + 1].char)
+						tokens[current+1] = true
 						current += 1
 					}
 				}
+				let funcbody = []
+				current += 1
+				while (tokens[current].char != "}") {
+					funcbody.push(tokens[current].char)
+					tokens[current].read = true
+					current += 1
+				}
+				current += 1
 				body.push({
 					type: "function",
 					kind: "init",
@@ -201,19 +215,19 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
-			ParseStack.push("var", line)
-			body.push({
-				type: "memory",
-				kind: "var",
-				value: element.char,
-				declarations: {
-					id: {
-						name: element.char
-					}
-				}
-			})
-			ParseStack.pop()
-			return current += 1
+			// ParseStack.push("var", line)
+			// body.push({
+			// 	type: "memory",
+			// 	kind: "var",
+			// 	value: element.char,
+			// 	declarations: {
+			// 		id: {
+			// 			name: element.char
+			// 		}
+			// 	}
+			// })
+			// ParseStack.pop()
+			// return current += 1
 		}
 		if (element.ident == 10) {
 			ParseStack.push("mset", line)
