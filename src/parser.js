@@ -27,11 +27,11 @@ export function Parse(tokens, func, verbose=false) {
 			})
 			current += 1
 		}
-		if (element.ident === 7) {
-			ParseStack.push("Equation", line)
-			tokens[current].read = true
-			current += 1
-		}
+		// if (element.ident === 7) {
+		// 	ParseStack.push("Equation", line)
+		// 	tokens[current].read = true
+		// 	current += 1
+		// }
 		// if (status == "Equation") {
 		// 	tokens[current].read = true
 		// 	current += 1
@@ -172,15 +172,36 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
-			ParseStack.push("var", line)
 			tokens[current].read = true
-			if (tokens[current + 1] == '=>') {
-				ParseStack.push("Function " + tokens[current-1].char, line)
-				current += 1
-				
+			let id = tokens[current].char
+			if (tokens[current + 1].ident == 19) {
+				ParseStack.push("Function " + tokens[current].char, line)
+				let paras = []
+				current += 3
+				if (tokens[current].char == "(") {
+					current += 1
+					while (tokens[current + 1].char != ")") {
+						paras.push(tokens[current + 1].char)
+						current += 1
+					}
+				}
+				body.push({
+					type: "function",
+					kind: "init",
+					declarations: {
+						id: {
+							name: id
+						},
+						init: {
+							parameters: paras,
+							value: funcbody
+						}
+					}
+				})
 				ParseStack.pop()
 				return;
 			}
+			ParseStack.push("var", line)
 			body.push({
 				type: "memory",
 				kind: "var",
