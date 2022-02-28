@@ -1,1 +1,1 @@
-run="node index.js ./program.ev --disable-warnings --force" 
+run="node index.js ./program.ev --disable-warnings --force -v" 

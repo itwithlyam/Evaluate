@@ -31,6 +31,10 @@ export function Lexer(script) {
 				case '#':
 					comment = true
 					break;
+				// NOTE: Put all tokens below here. Comments + Strings have priority.
+				case '=>':
+					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})
+					break;
 				case '~':
 					idents.push({char: char, ident: Ident.ROUND, classify: Classify.OPERATION})
 					break;

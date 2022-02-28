@@ -32,51 +32,51 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current].read = true
 			current += 1
 		}
-		if (status == "Equation") {
-			tokens[current].read = true
-			current += 1
-			// console.log(presentblock)
-			if (element.char == '}') {
-				body.push({
-					type: "block",
-					body: presentblock
-				})
-				// console.log(presentblock)
-				presentblock = []
-				ParseStack.pop()
-				return
-			}
-			if (parseFloat(element.char) || element.char == 0) {
-				return presentblock.push({
-					type: "blockelement",
-					value: element.char
-				})
-			}
-			switch(element.char) {
-				case '(':
-				case ')':
-				case '+':
-				case '-':
-				case '*':
-				case '/':
-				case '%':
-				case '¬':
-				case '^':
-				case '>>':
-				case '<<':
-					presentblock.push({
-						type: "blockelement",
-						value: element.char
-					})
-					return;
-			}
-			if (element.char == '~') {
-				return presentblock.push({
-					type: "roundblock",
-					value: element.char
-				})
-			}
-		} 
+		// if (status == "Equation") {
+		// 	tokens[current].read = true
+		// 	current += 1
+		// 	// console.log(presentblock)
+		// 	if (element.char == '}') {
+		// 		body.push({
+		// 			type: "block",
+		// 			body: presentblock
+		// 		})
+		// 		// console.log(presentblock)
+		// 		presentblock = []
+		// 		ParseStack.pop()
+		// 		return
+		// 	}
+		// 	if (parseFloat(element.char) || element.char == 0) {
+		// 		return presentblock.push({
+		// 			type: "blockelement",
+		// 			value: element.char
+		// 		})
+		// 	}
+		// 	switch(element.char) {
+		// 		case '(':
+		// 		case ')':
+		// 		case '+':
+		// 		case '-':
+		// 		case '*':
+		// 		case '/':
+		// 		case '%':
+		// 		case '¬':
+		// 		case '^':
+		// 		case '>>':
+		// 		case '<<':
+		// 			presentblock.push({
+		// 				type: "blockelement",
+		// 				value: element.char
+		// 			})
+		// 			return;
+		// 	}
+		// 	if (element.char == '~') {
+		// 		return presentblock.push({
+		// 			type: "roundblock",
+		// 			value: element.char
+		// 		})
+		// 	}
+		// } 
 		if (status == "Equation") return;
 		switch(element.ident) {
 			case 22:
@@ -106,26 +106,6 @@ export function Parse(tokens, func, verbose=false) {
 				})
 				ParseStack.pop()
 				break;
-			case 19:
-				tokens[current].read = true
-				tokens[current + 1].read = true
-				tokens[current + 2].read = true
-				ParseStack.push("Function " + tokens[current+1].char, line)
-				body.push({
-					type: "function",
-					declarations: {
-						id: {
-							name: tokens[current + 1].char
-						},
-						init: {
-							body: tokens[current + 2].char
-						}
-					},
-					value: `${tokens[current].char} ${tokens[current + 1].char} ${tokens[current + 2].char}`
-				})
-				current += 3
-				ParseStack.pop()
-				return;
 			case 1:
 				body.push({
 					type: "newline",
@@ -194,6 +174,13 @@ export function Parse(tokens, func, verbose=false) {
 			}
 			ParseStack.push("var", line)
 			tokens[current].read = true
+			if (tokens[current + 1] == '=>') {
+				ParseStack.push("Function " + tokens[current-1].char, line)
+				current += 1
+				
+				ParseStack.pop()
+				return;
+			}
 			body.push({
 				type: "memory",
 				kind: "var",
