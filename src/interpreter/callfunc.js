@@ -1,4 +1,5 @@
 import {RuntimeError, ParseTrace} from '../util.js'
+import Interpret from '../interpreter.js'
 
 const StandardLibrary = ["simplify", "printf", "equate"]
 
@@ -10,7 +11,10 @@ import evaluate from "./standard/equate.js"
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace) {
+	execute(func, args, line, trace, memory) {
+		if (Object.hasOwn(memory, func)) {
+			
+		}
 		if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
 		let res = null
 		switch(func) {

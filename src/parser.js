@@ -27,6 +27,7 @@ export function Parse(tokens, func, verbose=false) {
 			})
 			current += 1
 		}
+		// Equations are deprecated
 		// if (element.ident === 7) {
 		// 	ParseStack.push("Equation", line)
 		// 	tokens[current].read = true
@@ -35,13 +36,11 @@ export function Parse(tokens, func, verbose=false) {
 		// if (status == "Equation") {
 		// 	tokens[current].read = true
 		// 	current += 1
-		// 	// console.log(presentblock)
 		// 	if (element.char == '}') {
 		// 		body.push({
 		// 			type: "block",
 		// 			body: presentblock
 		// 		})
-		// 		// console.log(presentblock)
 		// 		presentblock = []
 		// 		ParseStack.pop()
 		// 		return
