@@ -168,6 +168,7 @@ export function Parse(tokens, func, verbose=false) {
 					params: options,
 					value: element.char
 				})
+				console.log(element)
 				ParseStack.pop()
 				return;
 			}
@@ -197,6 +198,7 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current].read = true
 					current += 1
 				}
+				console.log(funcbody)
 				current += 1
 				body.push({
 					type: "function",
