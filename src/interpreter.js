@@ -40,7 +40,12 @@ export function Interpret(AST, unit, verbose) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				ans.push(callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory))
+				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory)
+				if (Array.isArray(res)) {
+					res.forEach(element => {
+						ans.push(element)
+					})
+				} else ans.push(res)
 				current += 1
 				RuntimeStack.pop()
 				break;

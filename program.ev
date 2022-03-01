@@ -1,4 +1,6 @@
 h => {
-  equate("12+12")
+  equate("12*9")
+  printf("FUNCTION YEAH")
+  simplify("2xy+2yx+65yxyx")
 }
 h()
