@@ -154,26 +154,25 @@ export function Parse(tokens, func, verbose=false) {
 			})
 		}
 		if (element.ident == 11) {
-			// console.log(tokens[current])
-			// if (tokens[current+1].char == '(') {
-			// 	tokens[current+1].read = true
-			// 	current += 1
-			// 	let options = []
-			// 	while (tokens[current+1].char != ')') {
-			// 		options.push(tokens[current+1].char)
-			// 		tokens[current+1].read = true
-			// 		current += 1
-			// 	}
-			// 	ParseStack.push("Function Call " + tokens[current+1].char, line)
-			// 	body.push({
-			// 		type: "functioncall",
-			// 		params: options,
-			// 		value: element.char
-			// 	})
-			// 	ParseStack.pop()
-			// 	return;
-			// }
-			// tokens[current].read = true
+			if (tokens[current+1].char == '(') {
+				tokens[current+1].read = true
+				current += 1
+				let options = []
+				while (tokens[current+1].char != ')') {
+					options.push(tokens[current+1].char)
+					tokens[current+1].read = true
+					current += 1
+				}
+				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				body.push({
+					type: "functioncall",
+					params: options,
+					value: element.char
+				})
+				ParseStack.pop()
+				return;
+			}
+			tokens[current].read = true
 
 			if (tokens[current + 1].ident == 19) {
 				let id = tokens[current].char
@@ -215,19 +214,19 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
-			// ParseStack.push("var", line)
-			// body.push({
-			// 	type: "memory",
-			// 	kind: "var",
-			// 	value: element.char,
-			// 	declarations: {
-			// 		id: {
-			// 			name: element.char
-			// 		}
-			// 	}
-			// })
-			// ParseStack.pop()
-			// return current += 1
+			ParseStack.push("var", line)
+			body.push({
+				type: "memory",
+				kind: "var",
+				value: element.char,
+				declarations: {
+					id: {
+						name: element.char
+					}
+				}
+			})
+			ParseStack.pop()
+			return current += 1
 		}
 		if (element.ident == 10) {
 			ParseStack.push("mset", line)
