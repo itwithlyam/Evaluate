@@ -175,6 +175,7 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current].read = true
 
 			if (tokens[current + 1].ident == 19) {
+				// the inevitable cause of lag
 				let id = tokens[current].char
 				tokens[current].read = true
 				ParseStack.push("Function " + tokens[current].char, line)

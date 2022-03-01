@@ -1,1 +1,3 @@
-printf("Hello")
+h => {
+  equate("12+12")
+}

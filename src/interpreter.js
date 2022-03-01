@@ -46,7 +46,6 @@ export function Interpret(AST, unit, verbose) {
 				break;
 			case 'function':
 				RuntimeStack.push("Function " + element.declarations.id.name, line)
-				console.log(element.declarations.init.value)
 				FunctionMemory = initfunc.execute(FunctionMemory, element)
 				current += 1
 				return RuntimeStack.pop()
