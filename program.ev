@@ -1,1 +1,4 @@
-equate("12")
+h => {
+	printf("Functions? Finally...")
+}
+h()

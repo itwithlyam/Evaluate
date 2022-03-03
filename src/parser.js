@@ -197,7 +197,6 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current].read = true
 					current += 1
 				}
-				console.log(funcbody)
 				current += 1
 				body.push({
 					type: "function",
