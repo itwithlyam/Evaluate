@@ -168,7 +168,6 @@ export function Parse(tokens, func, verbose=false) {
 					params: options,
 					value: element.char
 				})
-				console.log(element)
 				ParseStack.pop()
 				return;
 			}

@@ -36,9 +36,11 @@ Run `make macosapp`, the output will be a .app file
 ## Run 
 Template: `evaluate <input> [args]`
 
-Valid arguments:
+CLI Flags:
 ```
 --input <file> -i <file> - Path to the target file
---verbose -v - Outputs the location of the interpreter at every operation
+--verbose -v - Outputs stack modifications
 --version - Version of Evaluate installation
+--force -f - Forces the interpreter to run
+--disable-warnings - Do not show warnings
 ```

@@ -13,8 +13,8 @@ export default {
 	description: "run function",
 	execute(func, args, line, trace, memory) {
 		let res = null
-		if (Object.hasOwn(memory, func)) {
-			res = Interpret(memory[func].ast, true, false)
+		if (memory.hasOwnProperty(func)) {
+			res = Interpret(memory[func].ast, true, false) 
 		} else {
 			if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
 			switch(func) {
