@@ -1,4 +1,5 @@
 h => {
-	printf("Functions? Finally...")
+	panic()
 }
 h()
+printf("No")
