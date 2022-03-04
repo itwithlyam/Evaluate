@@ -1,5 +1,10 @@
-h => {
+panicer => {
 	panic()
 }
-h()
-printf("No")
+printer => {
+	printf("Runnning panic")
+}
+
+printer()
+panicer()
+printer()
