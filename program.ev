@@ -1,10 +1,1 @@
-panicer => {
-	panic()
-}
-printer => {
-	printf("Runnning panic")
-}
-
-printer()
-panicer()
-printer()
+equate("1+1")

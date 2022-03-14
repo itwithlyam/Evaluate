@@ -1,6 +1,8 @@
 # Evaluate
 _A bad interpreter that works_
 
+**Contributors needed**
+
 ## Example program
 Input 
 ```
@@ -10,7 +12,7 @@ var a
 Result: `12`  
 Input: 
 ```
-{210*4};
+equate("240*4")
 ```
 Result: `840`
 

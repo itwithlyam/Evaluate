@@ -29,7 +29,7 @@ export default {
 					res = evaluate(args, line, trace)
 					break;
 				case "panic":
-					res = panic()
+					res = panic(line, trace)
 					break;
 			}
 		}
