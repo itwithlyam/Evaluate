@@ -3,7 +3,10 @@ import {RuntimeError, ParseTrace} from '../../util.js'
 export default function (args, line, trace) {
 	try {
 		let statement = args.join(' ')
-		if (Boolean(statement)) {
+		if (eval(`( 
+			if (${statement}) return true
+			else return false
+)`)) {
 			return "Logic " + statement + " returned True"
 		} else {
 			return "Logic " + statement + " returned False"
