@@ -3,9 +3,9 @@ import {RuntimeError, ParseTrace} from '../../util.js'
 export default function (args, line, trace) {
 	try {
 		let statement = args.join(' ')
-		if (Function(`
-	if (${statement}) return true
-`)) {
+		let func = Function(`if (${statement}) return true
+else return false`)
+		if (func()) {
 			return "Logic " + statement + " returned True"
 		} else {
 			return "Logic " + statement + " returned False"
