@@ -6,7 +6,7 @@ export default function eqfunc(args, line, trace, compiled) {
 		let statement = args.join(' ').split(' ')
 		let a = equate.execute(statement, line)
 		if (!compiled) return a
-		return `printf(${statement.join(' ')});`
+		return `printf("%d\\n", ${statement.join(' ')});`
 	} catch(err) {
 		console.log(err)
 		throw new RuntimeError("StandardLibraryEquate", "An error occured during evaluation", line, ParseTrace(trace))
