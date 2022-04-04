@@ -42,7 +42,7 @@ export default function runner() {
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens, false, verbose)
-		Interpret(script, false, verbose)
+		Interpret(script, false, verbose, true)
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log(err)

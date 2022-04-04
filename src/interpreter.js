@@ -4,6 +4,7 @@ import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 import chalk from "chalk"
 import fifo from 'fifo'
+import Generator from './generator.js'
 
 // Expressors
 import equation from './interpreter/equate.js'
@@ -26,7 +27,7 @@ function pushdata(id, value, type) {
 	}
 }
 
-export function Interpret(AST, unit, verbose) {
+export function Interpret(AST, unit, verbose, compiled) {
 	const RuntimeStack = new StackTrace(verbose, "Interpreter Stack")
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
@@ -40,7 +41,7 @@ export function Interpret(AST, unit, verbose) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory)
+				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
 				if (Array.isArray(res)) {
 					res.forEach(element => {
 						ans.push(element)
@@ -97,7 +98,7 @@ export function Interpret(AST, unit, verbose) {
 				break
 		}
 	})
-	if (!unit) {
+	if (!unit && !compiled) {
 		if (!ans[0] && ans[0] != 0) return
 		const returns = fifo()
 		ans.forEach(value => {
@@ -107,6 +108,8 @@ export function Interpret(AST, unit, verbose) {
 			console.log(value)
 		})
 		return;
+	} else if (compiled) {
+		return Generator(AST, ans, "output")
 	}
 	return ans
 }

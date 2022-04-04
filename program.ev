@@ -1,1 +1,1 @@
-logic((766==true) && (64==false))
+equate("10")

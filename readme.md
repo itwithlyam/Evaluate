@@ -1,7 +1,7 @@
 # Evaluate
 _A bad interpreter that works_
 
-**Contributors needed**
+**We use Jira to track bugs and new features, so in some commits and branches there will be a Jira issue ID.**
 
 ## Example program
 Input 
