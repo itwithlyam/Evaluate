@@ -1,5 +1,5 @@
 # Evaluate
-_A bad interpreter that works_
+_A hybrid programming language that was "bodged" together. It can both compile and interpret._
 
 **Contributors needed**
 
