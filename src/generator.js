@@ -4,7 +4,7 @@ export default function Generator(AST, code, output) {
 
     // stext = section .text
     // sdata = section .data
-    // labels = data within stext (i.e. varname: db "varcontent",10,0)
+    // labels = values within stext (i.e. varname: db "varcontent",10,0)
 
     // Preprocessor
 
@@ -13,13 +13,12 @@ export default function Generator(AST, code, output) {
     let labels = []
 
     code.forEach(section => {
-        console.log(section.type)
         if (section.type === "text") stext.push(section.commands)
         if (section.type === "data") sdata.push(section.commands)
         if (section.type === "label") labels.push(`${section.label}: ${section.commands}`)
     })
 
-    if (sdata) sdata.unshift("section .data")
+    if (sdata[0]) sdata.unshift("section .data")
 
     // Generator
 

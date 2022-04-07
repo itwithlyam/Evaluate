@@ -1,1 +1,1 @@
-printf("HelloWorld" "Hello, World!")
+printf("Hello", "Hello World")
