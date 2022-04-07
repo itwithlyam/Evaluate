@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const version = "1.1.2-dev.2"
+const version = "1.2.0-dev"
 const devmode = true
 
 const argdef = [
