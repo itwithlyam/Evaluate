@@ -1,1 +1,1 @@
-printf("m1" "yes")
+printf("HelloWorld" "Hello, World!")
