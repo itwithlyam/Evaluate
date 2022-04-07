@@ -44,11 +44,12 @@ Template: `evaluate <input> [args]`
 
 CLI Flags:
 ```
---input <file> -i <file> - Path to the target file
+--input <file> -i <file> - Path to the target file - Default
 --verbose -v - Outputs stack modifications
 --version - Version of Evaluate installation
 --force -f - Forces the interpreter to run
 --disable-warnings - Do not show warnings
+--compile <output> -o <output> - Switch between the interpreter and in-built compiler, takes the target file name
 ```
 
 ## Git format
