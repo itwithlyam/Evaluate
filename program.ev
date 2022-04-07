@@ -1,1 +1,2 @@
-printf("Hello", "Hello World")
+logic("Logic1", "1==1")
+printf("Hello", "No")

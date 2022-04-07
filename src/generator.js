@@ -13,8 +13,8 @@ export default function Generator(AST, code, output) {
     let labels = []
 
     code.forEach(section => {
-        if (section.type === "text") stext.push(section.commands)
-        if (section.type === "data") sdata.push(section.commands)
+        if (section.type === "text") stext.push(section.commands + "\n")
+        if (section.type === "data") sdata.push(section.commands + "\n")
         if (section.type === "label") labels.push(`${section.label}: ${section.commands}`)
     })
 

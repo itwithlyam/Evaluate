@@ -2,21 +2,22 @@ import {RuntimeError, ParseTrace} from '../../util.js'
 
 export default function (args, line, trace, compiled) {
 	try {
-		let statement = args.join(' ')
-		if (!compiled) {
-			let func = Function(`if (${statement}) return true
+		let statement = args[1]
+		let func = Function(`if (${statement}) return true
 	else return false`)
-			if (func()) {
-				return "Logic " + statement + " returned True"
+		let truth = func()
+		if (!compiled) {
+			if (truth) {
+				return args[0] + ": True"
 			} else {
-				return "Logic " + statement + " returned False"
+				return args[0] + ": False"			
 			}
 		} else {
-			return `if ((${statement}) == 1) {
-				printf("${statement}: True\\n");
+			if (truth) {
+				return [{commands: `mov eax,4\nmov ebx,1\nmov ecx,${args[0]}\nmov edx,${args[0]}len\nint 0x80`, type: "text"}, {label: args[0], commands: `db "${args[0]}: True",10,0`, type: "label"}, {label: args[0]+"len", commands: `equ $-${args[0]}`, type: "label"}]
 			} else {
-				printf("${statement}: False\\n");
-			}`
+				return [{commands: `mov eax,4\nmov ebx,1\nmov ecx,${args[0]}\nmov edx,${args[0]}len\nint 0x80`, type: "text"}, {label: args[0], commands: `db "${args[0]}: False",10,0`, type: "label"}, {label: args[0]+"len", commands: `equ $-${args[0]}`, type: "label"}]
+			}
 		}
 	} catch(err) {
 		throw new RuntimeError("StandardLibraryLogic", "An error occured during evaluation of logic", line, ParseTrace(trace))

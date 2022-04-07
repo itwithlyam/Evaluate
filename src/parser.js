@@ -167,7 +167,9 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current+1].read = true
 					current += 1
 				}
-				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				tokens[current.read] = true
+				current += 1
+				ParseStack.push("Function Call " + element.char, line)
 				body.push({
 					type: "functioncall",
 					params: options,
