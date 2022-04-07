@@ -1,7 +1,7 @@
 # Evaluate
 _A hybrid programming language that was "bodged" together. It can both compile and interpret._
 
-**Contributors needed**
+**We use Jira to track bugs and new features, so in some commits and branches there will be a Jira issue ID.**
 
 ## Example program
 Input 

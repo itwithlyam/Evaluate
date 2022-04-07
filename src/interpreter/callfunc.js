@@ -13,7 +13,7 @@ import logic from "./standard/logic.js"
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory) {
+	execute(func, args, line, trace, memory, compiled) {
 		let res = null
 		if (memory.hasOwnProperty(func)) {
 			res = Interpret(memory[func].ast, true, false) 
@@ -21,19 +21,19 @@ export default {
 			if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
-					res = simplify(args, line, trace)
+					res = simplify(args, line, trace, compiled)
 					break;
 				case 'printf':
-					res = output(args, line, trace)
+					res = output(args, line, trace, compiled)
 					break;
 				case "equate":
-					res = evaluate(args, line, trace)
+					res = evaluate(args, line, trace, compiled)
 					break;
 				case "panic":
-					res = panic(line, trace)
+					res = panic(line, trace, compiled)
 					break;
 				case "logic":
-					res = logic(args, line, trace)
+					res = logic(args, line, trace, compiled)
 					break;
 			}
 		}

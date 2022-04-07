@@ -1,14 +1,22 @@
 import {RuntimeError, ParseTrace} from '../../util.js'
 
-export default function (args, line, trace) {
+export default function (args, line, trace, compiled) {
 	try {
 		let statement = args.join(' ')
-		let func = Function(`if (${statement}) return true
-else return false`)
-		if (func()) {
-			return "Logic " + statement + " returned True"
+		if (!compiled) {
+			let func = Function(`if (${statement}) return true
+	else return false`)
+			if (func()) {
+				return "Logic " + statement + " returned True"
+			} else {
+				return "Logic " + statement + " returned False"
+			}
 		} else {
-			return "Logic " + statement + " returned False"
+			return `if ((${statement}) == 1) {
+				printf("${statement}: True\\n");
+			} else {
+				printf("${statement}: False\\n");
+			}`
 		}
 	} catch(err) {
 		throw new RuntimeError("StandardLibraryLogic", "An error occured during evaluation of logic", line, ParseTrace(trace))
