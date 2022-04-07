@@ -13,7 +13,10 @@ export function Lexer(script) {
     	let chars = line.split(negatives)
 			let comment = false
 			chars.forEach((char) => {
-			if (str && char && char != '"') return cstr += " " + char
+			if (str && char && char != '"') {
+				if (cstr) return cstr += " " + char
+				else return cstr += char
+			}
 			if (comment) return
 			if (parseFloat(char) || Math.abs(parseFloat(char)) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': Ident.NUMBER, 'classify': Classify.CHAR}
