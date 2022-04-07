@@ -1,5 +1,5 @@
 # Evaluate
-_A hybrid programming language that was "bodged" together. It can both compile and interpret._
+_A hybrid programming language. It can both compile and interpret._
 
 **We use Jira to track bugs and new features, so in some commits and branches there will be a Jira issue ID.**
 
@@ -19,12 +19,16 @@ Result: `840`
 **Syntax guide: https://itwithlyam.gitbook.io/evaluate**
 
 ## Installation
-**If it exists, download the binary for your system. If not, then build from source:**
+
+1. Install NASM (The Netwide Assembler) on your desired computer. This is a dependency of Evaluate's compiler.
+2. **If it exists, download the Evaluate binary for your OS. If not, then build from source:**
 
 ### Build from source
 
-1. Install [GNU Make](https://www.gnu.org/software/make/).
-2. Run `make install` in the source code directory to install required dependencies.
+1. Install [GNU Make](https://www.gnu.org/software/make/). Make sure to add to PATH or envrionment variables.
+2. Install [Node.js and npm](https://www.nodejs.org). Make sure to select npm when given the option by the node installer. Make sure to add to PATH or environment variables.
+3. Install the latest release of [NASM (the Netwide Assembler)](https://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D) for your OS. Make sure to add to PATH or environment variables.
+4. Run `make install` in the source code directory to install required libraries.
 
 #### Windows
 Run `make win`, the output will be a .exe file
@@ -46,3 +50,14 @@ CLI Flags:
 --force -f - Forces the interpreter to run
 --disable-warnings - Do not show warnings
 ```
+
+## Git format
+
+As you might have noticed, we have multiple GitHub branches. The order of reliability follows:
+
+1. Featured Experiments (other branches)
+2. Experimental Build (main)
+3. Public Test Build - PTB (production)
+4. Tags (GitHub releases)
+
+with 1 being the least reliable and littered with bugs and 4 being the most reliable and without many bugs. To run an experimental build or featured experiment, you must use the --force flag.
