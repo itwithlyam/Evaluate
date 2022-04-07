@@ -19,6 +19,8 @@ export default function Generator(AST, code, output) {
         if (section.type === "label") labels.push(`${section.label}: ${section.commands}`)
     })
 
+    if (sdata) sdata.unshift("section .data")
+
     // Generator
 
     let nasm = `
