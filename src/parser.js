@@ -154,15 +154,22 @@ export function Parse(tokens, func, verbose=false) {
 		}
 		if (element.ident == 11) {
 			if (tokens[current+1].char == '(') {
-				tokens[current+1].read = true
 				current += 1
+				tokens[current].read = true
 				let options = []
-				while (tokens[current+1].char != ')') {
-					options.push(tokens[current+1].char)
+				while (tokens[current].char != ')') {
+					if (tokens[current].char == "," || tokens[current].char == "(" || tokens[current].char == ")") {
+						tokens[current].read = true
+						current += 1
+						continue;
+					}
+					options.push(tokens[current].char)
 					tokens[current+1].read = true
 					current += 1
 				}
-				ParseStack.push("Function Call " + tokens[current+1].char, line)
+				tokens[current.read] = true
+				current += 1
+				ParseStack.push("Function Call " + element.char, line)
 				body.push({
 					type: "functioncall",
 					params: options,

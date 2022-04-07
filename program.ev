@@ -1,1 +1,4 @@
-printf("HelloWorld" "Hello, World!")
+logic("Logic1", "1==1")
+printf("Printf1", "No")
+simplify("Simplification1", "2x + 2x")
+equate("Equate1", "12+12")

@@ -109,7 +109,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 		})
 		return;
 	} else if (compiled) {
-		return Generator(AST, ans, "output")
+		return Generator(AST, ans, compiled)
 	}
 	return ans
 }

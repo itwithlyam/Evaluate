@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const version = "1.1.2-dev.2"
+const version = "1.2.0-dev"
 const devmode = true
 
 const argdef = [
@@ -8,7 +8,8 @@ const argdef = [
 	{name: 'verbose', alias: 'v', type: Boolean},
 	{name: 'version', type: Boolean},
 	{name: 'force', alias: 'f', type: Boolean},
-	{name: 'disable-warnings', type: Boolean}
+	{name: 'disable-warnings', type: Boolean},
+	{name: 'compile', type: String, alias: 'o'}
 ]
 
 import stopwatch from 'statman-stopwatch'
@@ -42,7 +43,7 @@ export default function runner() {
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens, false, verbose)
-		Interpret(script, false, verbose, true)
+		Interpret(script, false, verbose, options.compile)
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log(err)

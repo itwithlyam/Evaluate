@@ -1,4 +1,4 @@
-VER = 1.1.2-dev.2
+VER = 1.2.0-dev
 COLOR = '\033[0;31m'
 BLUE = '\033[0;34m'
 NC='\033[0m'
@@ -12,34 +12,41 @@ install:
 	@echo -e ${COLOR}
 	@echo "Installing dependencies"
 	@echo -e ${NC}
-	npm install 
-	npm install caxa
+	@npm install 
+	@npm install caxa
+	@echo -e ${COLOR}
+	@echo "Checking for NASM"
+	@echo -e ${NC}
+	@nasm -v 
+	@echo -e ${BLUE}
+	@echo "Dependencies installed"
+	@echo -e ${NC}
 
 unix:
 	@echo -e ${COLOR}
 	@echo "Building for Unix platforms"
 	@echo -e ${NC}
-	npx caxa --input '.' --output 'Evaluate-${VER}' ${ARGS}
+	@npx caxa --input '.' --output 'Evaluate-${VER}' ${ARGS}
 	@echo "Build complete"
 
 macosapp:
 	@ech -e ${COLOR}
 	@echo "Building for a MacOS (.app)"
 	@echo -e ${NC}
-	npx caxa --input '.' --output 'Evaluate-${VER}.app' ${ARGS}
+	@npx caxa --input '.' --output 'Evaluate-${VER}.app' ${ARGS}
 	@echo "Build complete"
 
 win:
 	@echo -e ${COLOR}
 	@echo "Building for Windows platforms (.exe)"
 	@echo -e ${NC}
-	npx caxa --input '.' --output 'Evaluate-${VER}.exe' ${ARGS}
+	@npx caxa --input '.' --output 'Evaluate-${VER}.exe' ${ARGS}
 	@echo "Build complete"
 
 unixsh:
 	@echo -e ${COLOR}
 	@echo "Building for Unix platforms (.sh)"
 	@echo -e ${NC}
-	npx caxa --input '.' --output 'Evaluate-${VER}.sh' ${ARGS}
+	@npx caxa --input '.' --output 'Evaluate-${VER}.sh' ${ARGS}
 	@echo "Build complete"
 	
