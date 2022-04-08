@@ -1,2 +1,1 @@
-Int a = 1234432
-String b = "Hello, World!"
+equate("first", "12+12-12+12")

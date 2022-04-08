@@ -27,8 +27,12 @@ export default function Generator(code, output) {
     let wlabels = []
     let wsbss = []
 
-    code.forEach(sector => {
-        sector.forEach(section => {
+    console.log(code)
+
+    code.forEach(section => {
+        console.log(section)
+        //sector.forEach(section => {
+            if (!section.os) return
             if (section.os.includes('mac')) {
                 if (section.type === "text") {
                     mstext.push(section.commands + "\n")
@@ -39,7 +43,7 @@ export default function Generator(code, output) {
                 if (section.type === "bss") {
                     msbss.push(`${section.id} ${section.mode} ${section.bytes}`)
                 }
-                if (section.type === "labels") {
+                if (section.type === "label") {
                     mlabels.push(`${section.label}: ${section.commands}`)
                 }
             }
@@ -53,7 +57,7 @@ export default function Generator(code, output) {
                 if (section.type === "bss") {
                     wsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
                 }
-                if (section.type === "labels") {
+                if (section.type === "label") {
                     wlabels.push(`${section.label}: ${section.commands}`)
                 }
             }
@@ -67,7 +71,7 @@ export default function Generator(code, output) {
                 if (section.type === "bss") {
                     lsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
                 }
-                if (section.type === "labels") {
+                if (section.type === "label") {
                     llabels.push(`${section.label}: ${section.commands}`)
                 }
             }
@@ -134,7 +138,7 @@ export default function Generator(code, output) {
             // if (section.type === "mlabels") {
             //     mlabels.push(`${section.label}: ${section.commands}`)
             // }
-        })
+        //})
     })
 
     console.log(code)
@@ -153,9 +157,11 @@ export default function Generator(code, output) {
 
         section .text
 
+            global _start
+
             ${llabels.join("\n")}
 
-            main:
+            _start:
                 ${lstext.join("\n")}
 
                 jmp end
@@ -181,7 +187,7 @@ export default function Generator(code, output) {
                 jmp end
 
             end:
-                mov eax,1
+                mov eax,0x20000001
                 int 0x80
 
         ${msdata.join('\n')}
