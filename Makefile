@@ -1,4 +1,4 @@
-VER = 1.2.0-dev
+VER = 2.0.0-dev
 COLOR = '\033[0;31m'
 BLUE = '\033[0;34m'
 NC='\033[0m'
@@ -18,6 +18,10 @@ install:
 	@echo "Checking for NASM"
 	@echo -e ${NC}
 	@nasm -v 
+	@echo -e ${COLOR}
+	@echo "Checking for linker"
+	@echo -e ${NC}
+	@ld -v
 	@echo -e ${BLUE}
 	@echo "Dependencies installed"
 	@echo -e ${NC}

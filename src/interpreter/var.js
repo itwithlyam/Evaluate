@@ -1,9 +1,10 @@
 import {RuntimeError, ParseTrace} from '../util.js'
+import consola from 'consola'
 
 
 export default {
 	name: "var",
-	description: "get variables from memory",
+	description: "get variables from memory (DEPRECATED)",
 	execute(VarMemory, element, RuntimeStack, line) {
 		let ans = 0
 		let id = element.declarations.id.name

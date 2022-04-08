@@ -12,6 +12,8 @@ import variable from './interpreter/var.js'
 import mset from './interpreter/mset.js'
 import callfunc from './interpreter/callfunc.js'
 import initfunc from './interpreter/initfunc.js'
+import declare from './interpreter/declare.js'
+import { e } from 'mathjs'
 
 // Memory 
 let VarMemory = {}
@@ -43,8 +45,8 @@ export function Interpret(AST, unit, verbose, compiled) {
 				RuntimeStack.push(`Function ${element.value}`, line)
 				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
 				if (Array.isArray(res)) {
-					res.forEach(element => {
-						ans.push(element)
+					res.forEach(e => {
+						ans.push(e)
 					})
 				} else ans.push(res)
 				current += 1
@@ -78,10 +80,55 @@ export function Interpret(AST, unit, verbose, compiled) {
 					return;
 				}
 				if (element.kind === 'var') {
+					if (!element.char) return current += 1
 					RuntimeStack.push("var", line)
 					ans.push(variable.execute(VarMemory, element, RuntimeStack, line))
 					current += 1
 					RuntimeStack.pop()
+				}
+				if (element.kind === 'set') {
+					let code;
+					switch(element.declarations.annotation) {
+						case 'Char':
+							RuntimeStack.push("declare char", line)
+							code = declare.execute("char", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_8':
+							RuntimeStack.push("declare 8 bit integer", line)
+							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_16':
+							RuntimeStack.push("declare 16 bit integer", line)
+							code = declare.execute("int16", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_32':
+							RuntimeStack.push("declare 32 bit integer", line)
+							code = declare.execute("int32", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_64':
+							RuntimeStack.push("declare 64 bit integer", line)
+							code = declare.execute("int64", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+					}
+					if (Array.isArray(code)) {
+						code.forEach(e => {
+							ans.push(e)
+						})
+					} else ans.push(code)
 				}
 				break;
 			case 'block':
@@ -109,7 +156,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 		})
 		return;
 	} else if (compiled) {
-		return Generator(AST, ans, compiled)
+		return Generator(ans, compiled)
 	}
 	return ans
 }
