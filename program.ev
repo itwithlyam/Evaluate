@@ -1,1 +1,2 @@
-Int a = "hi"
+Int a = 1234432
+String b = "Hello, World!"

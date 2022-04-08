@@ -263,7 +263,7 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current + 1].read = true
 			let id = tokens[current + 1].char
 			let value = null;
-			if (tokens[current + 2].ident == 32) {
+			if (tokens[current + 2].ident == 13) {
 				tokens[current + 2].read = true
 				if (!parseInt(tokens[current + 3].char)) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
 				tokens[current + 3].read = true
@@ -295,7 +295,7 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current + 1].read = true
 			let id = tokens[current + 1].char
 			let value = null;
-			if (tokens[current + 2].ident == 32) {
+			if (tokens[current + 2].ident == 13) {
 				tokens[current + 2].read = true
 				if (tokens[current + 3].ident != 18) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
 				tokens[current + 3].read = true

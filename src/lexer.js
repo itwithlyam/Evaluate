@@ -41,6 +41,9 @@ export function Lexer(script) {
 				case 'Int':
 					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
 					break;
+				case '=':
+					idents.push({char: char, ident: Ident.EQUALS, classify: Classify.MEMORY})
+					break;
 				case '=>':
 					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})
 					break;
