@@ -220,17 +220,17 @@ export default function Generator(code, output) {
 
     switch(os.type()) {
         case "Windows_NT":
-            writeFileSync(output + ".s", wnasm)
+            writeFileSync(output + ".asm", wnasm)
             break;
         case "Darwin":
-            writeFileSync(output + ".s", mnasm)
+            writeFileSync(output + ".asm", mnasm)
             break;
         case "Linux":
-            writeFileSync(output + ".s", lnasm)
+            writeFileSync(output + ".asm", lnasm)
             break;
         default:
             console.log("Unknown OS, defaulting to Linux")
-            writeFileSync(output + ".s", lnasm)
+            writeFileSync(output + ".asm", lnasm)
             break;
     }
 
