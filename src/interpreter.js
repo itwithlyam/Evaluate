@@ -88,13 +88,15 @@ export function Interpret(AST, unit, verbose, compiled) {
 					switch(element.declarations.annotation) {
 						case 'string':
 							RuntimeStack.push("declare string", line)
-							declare.execute("string", element.declarations.id.name, element.declarations.init.value)
+							ans.push(declare.execute("string", element.declarations.id.name, element.declarations.init.value))
+							current += 1
 							RuntimeStack.pop()
 							break;
 
 						case 'int':
 							RuntimeStack.push("declare int", line)
-							declare.execute("int", element.declarations.id.name, element.declarations.init.value)
+							ans.push(declare.execute("int", element.declarations.id.name, element.declarations.init.value))
+							current += 1
 							RuntimeStack.pop()
 							break;
 					}
@@ -125,7 +127,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 		})
 		return;
 	} else if (compiled) {
-		return Generator(AST, ans, compiled)
+		return Generator(ans, compiled)
 	}
 	return ans
 }
