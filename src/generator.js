@@ -28,6 +28,7 @@ export default function Generator(code, output) {
     let wsbss = []
 
     code.forEach(section => {
+        console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
             if (section.os.includes('mac')) {

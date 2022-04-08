@@ -1,4 +1,4 @@
-String x = "Yes my name is Lyam"
+Int x = 1234
 
 equate("first", "12+12-12+12")
 logic("second", "1+1==2")

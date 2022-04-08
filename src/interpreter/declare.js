@@ -4,9 +4,9 @@ export default {
     execute(annotation, id, value) {
         switch (annotation) {
             case "string":
-                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1}, {type: "text", commands: `mov rdx, "${value}"\nmov [${id}], rdx`}]
+                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov r12, "${value}"\nmov [${id}], r12`, os: ['mac', 'win', 'linux']}]
             case "int":
-                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1}, {type: "text", commands: `mov edx, ${value}\nmov [${id}], edx`}]
+                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov r12, ${value}\nmov [${id}], r12`, os: ['mac', 'win', 'linux']}]
         }
     }
 }

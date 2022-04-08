@@ -153,6 +153,11 @@ export function Parse(tokens, func, verbose=false) {
 			})
 		}
 		if (element.ident == 11) {
+			if (element.char == '') {
+				tokens[current].read = true
+				current += 1
+				return;
+			}
 			if (tokens[current+1].char == '(') {
 				current += 1
 				tokens[current].read = true
@@ -221,7 +226,6 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
-			if (!element.char) return current += 1
 			ParseStack.push("var", line)
 			body.push({
 				type: "memory",

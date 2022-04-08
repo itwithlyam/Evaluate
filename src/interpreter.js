@@ -13,6 +13,7 @@ import mset from './interpreter/mset.js'
 import callfunc from './interpreter/callfunc.js'
 import initfunc from './interpreter/initfunc.js'
 import declare from './interpreter/declare.js'
+import { e } from 'mathjs'
 
 // Memory 
 let VarMemory = {}
@@ -44,8 +45,8 @@ export function Interpret(AST, unit, verbose, compiled) {
 				RuntimeStack.push(`Function ${element.value}`, line)
 				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
 				if (Array.isArray(res)) {
-					res.forEach(element => {
-						ans.push(element)
+					res.forEach(e => {
+						ans.push(e)
 					})
 				} else ans.push(res)
 				current += 1
@@ -86,21 +87,28 @@ export function Interpret(AST, unit, verbose, compiled) {
 					RuntimeStack.pop()
 				}
 				if (element.kind === 'set') {
+					console.log("yes")
+					let code;
 					switch(element.declarations.annotation) {
 						case 'string':
 							RuntimeStack.push("declare string", line)
-							ans.push(declare.execute("string", element.declarations.id.name, element.declarations.init.value))
+							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
 							current += 1
 							RuntimeStack.pop()
 							break;
 
 						case 'int':
 							RuntimeStack.push("declare int", line)
-							ans.push(declare.execute("int", element.declarations.id.name, element.declarations.init.value))
+							code = declare.execute("int", element.declarations.id.name, element.declarations.init.value)
 							current += 1
 							RuntimeStack.pop()
 							break;
 					}
+					if (Array.isArray(code)) {
+						code.forEach(e => {
+							ans.push(e)
+						})
+					} else ans.push(code)
 				}
 				break;
 			case 'block':
