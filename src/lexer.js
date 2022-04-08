@@ -15,7 +15,6 @@ export function Lexer(script) {
 			chars.forEach((char) => {
 			if (str && char != '"') {
 				if (char === undefined) return
-				console.log(char)
 				cstr += char
 				return
 			}

@@ -27,10 +27,7 @@ export default function Generator(code, output) {
     let wlabels = []
     let wsbss = []
 
-    console.log(code)
-
     code.forEach(section => {
-        console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
             if (section.os.includes('mac')) {
@@ -140,8 +137,6 @@ export default function Generator(code, output) {
             // }
         //})
     })
-
-    console.log(code)
 
     if (lsdata[0]) lsdata.unshift("section .data")
     if (lsbss[0]) lsbss.unshift("section .bss")

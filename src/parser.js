@@ -167,7 +167,6 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current+1].read = true
 					current += 1
 				}
-				console.log(options)
 				tokens[current.read] = true
 				current += 1
 				ParseStack.push("Function Call " + element.char, line)
@@ -222,6 +221,7 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
+			if (!element.char) return current += 1
 			ParseStack.push("var", line)
 			body.push({
 				type: "memory",

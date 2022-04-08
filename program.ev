@@ -1,3 +1,7 @@
+String x = "Yes my name is Lyam"
+
 equate("first", "12+12-12+12")
 logic("second", "1+1==2")
 printf("third", "1+1")
+simplify("fourth", "2x + 2x * 7x / 9y * 9u ^ x / y")
+panic()

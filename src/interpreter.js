@@ -79,8 +79,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 					return;
 				}
 				if (element.kind === 'var') {
-					console.log(element.char)
-					if (!element.char) return
+					if (!element.char) return current += 1
 					RuntimeStack.push("var", line)
 					ans.push(variable.execute(VarMemory, element, RuntimeStack, line))
 					current += 1
