@@ -12,6 +12,7 @@ import variable from './interpreter/var.js'
 import mset from './interpreter/mset.js'
 import callfunc from './interpreter/callfunc.js'
 import initfunc from './interpreter/initfunc.js'
+import declare from './interpreter/declare.js'
 
 // Memory 
 let VarMemory = {}
@@ -82,6 +83,21 @@ export function Interpret(AST, unit, verbose, compiled) {
 					ans.push(variable.execute(VarMemory, element, RuntimeStack, line))
 					current += 1
 					RuntimeStack.pop()
+				}
+				if (element.kind === 'set') {
+					switch(element.declarations.annotation) {
+						case 'string':
+							RuntimeStack.push("declare string", line)
+							declare.execute("string", element.declarations.id.name, element.declarations.init.value)
+							RuntimeStack.pop()
+							break;
+
+						case 'int':
+							RuntimeStack.push("declare int", line)
+							declare.execute("int", element.declarations.id.name, element.declarations.init.value)
+							RuntimeStack.pop()
+							break;
+					}
 				}
 				break;
 			case 'block':
