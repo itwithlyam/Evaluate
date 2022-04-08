@@ -3,8 +3,8 @@ export default {
     description: "declares memory",
     execute(annotation, id, value) {
         switch (annotation) {
-            case "string":
-                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov rdx, "${value}"\nmov [${id}], rdx`, os: ['mac', 'win', 'linux']}]
+            case "char":
+                return [{type: "bss", id: id, mode: "resb", bytes: 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov edx, "${value}"\nmov [${id}], edx`, os: ['mac', 'win', 'linux']}]
             case "int8":
                 return [{type: "bss", id: id, mode: "resb", bytes: 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov dh, ${value}\nmov [${id}], dh`, os: ['mac', 'win', 'linux']}]
             case "int16":

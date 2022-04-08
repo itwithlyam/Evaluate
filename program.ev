@@ -1,7 +1,6 @@
-Int_64 x = "1234"
+Int_8 a = 255
+Int_16 b = 65535
+Int_32 c = 2147483647
+Int_64 d = 18446744073709551615
 
-equate("first", "12+12-12+12")
-logic("second", "1+1==2")
-printf("third", "1+1")
-simplify("fourth", "2x + 2x * 7x / 9y * 9u ^ x / y")
-panic()
+Char e = "a"

@@ -296,7 +296,7 @@ export function Parse(tokens, func, verbose=false) {
 		}
 		
 		if (element.ident == 30) {
-			ParseStack.push("string declaration", line)
+			ParseStack.push("char declaration", line)
 			tokens[current].read = true
 			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
 			tokens[current + 1].read = true
@@ -320,7 +320,7 @@ export function Parse(tokens, func, verbose=false) {
 					init: {
 						value: value
 					},
-					annotation: "String"
+					annotation: "Char"
 				}
 			})
 

@@ -90,9 +90,9 @@ export function Interpret(AST, unit, verbose, compiled) {
 					console.log("yes")
 					let code;
 					switch(element.declarations.annotation) {
-						case 'String':
-							RuntimeStack.push("declare string", line)
-							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
+						case 'Char':
+							RuntimeStack.push("declare char", line)
+							code = declare.execute("char", element.declarations.id.name, element.declarations.init.value)
 							current += 1
 							RuntimeStack.pop()
 							break;
