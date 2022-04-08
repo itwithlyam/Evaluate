@@ -29,69 +29,111 @@ export default function Generator(code, output) {
 
     code.forEach(sector => {
         sector.forEach(section => {
+            if (section.os.includes('mac')) {
+                if (section.type === "text") {
+                    mstext.push(section.commands + "\n")
+                }
+                if (section.type === "data") {
+                    msdata.push(section.commands + "\n")
+                }
+                if (section.type === "bss") {
+                    msbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+                }
+                if (section.type === "labels") {
+                    mlabels.push(`${section.label}: ${section.commands}`)
+                }
+            }
+            if (section.os.includes('win')) {
+                if (section.type === "text") {
+                    wstext.push(section.commands + "\n")
+                }
+                if (section.type === "data") {
+                    wsdata.push(section.commands + "\n")
+                }
+                if (section.type === "bss") {
+                    wsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+                }
+                if (section.type === "labels") {
+                    wlabels.push(`${section.label}: ${section.commands}`)
+                }
+            }
+            if (section.os.includes('linux')) {
+                if (section.type === "text") {
+                    lstext.push(section.commands + "\n")
+                }
+                if (section.type === "data") {
+                    lsdata.push(section.commands + "\n")
+                }
+                if (section.type === "bss") {
+                    lsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+                }
+                if (section.type === "labels") {
+                    llabels.push(`${section.label}: ${section.commands}`)
+                }
+            }
             // Universal
-            if (section.type === "text") {
-                lstext.push(section.commands + "\n")
-                wstext.push(section.commands + "\n")
-                mstext.push(section.commands + "\n")
-            }
-            if (section.type === "data") {
-                lsdata.push(section.commands + "\n")
-                wsdata.push(section.commands + "\n")
-                msdata.push(section.commands + "\n")
-            }
-            if (section.type === "label") {
-                llabels.push(`${section.label}: ${section.commands}`)
-                wlabels.push(`${section.label}: ${section.commands}`)
-                mlabels.push(`${section.label}: ${section.commands}`)
-            }
-            if (section.type === "bss") {
-                lsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
-                wsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
-                msbss.push(`${section.id} ${section.mode} ${section.bytes}`)
-            }
+            // if (section.type === "text") {
+            //     lstext.push(section.commands + "\n")
+            //     wstext.push(section.commands + "\n")
+            //     mstext.push(section.commands + "\n")
+            // }
+            // if (section.type === "data") {
+            //     lsdata.push(section.commands + "\n")
+            //     wsdata.push(section.commands + "\n")
+            //     msdata.push(section.commands + "\n")
+            // }
+            // if (section.type === "label") {
+            //     llabels.push(`${section.label}: ${section.commands}`)
+            //     wlabels.push(`${section.label}: ${section.commands}`)
+            //     mlabels.push(`${section.label}: ${section.commands}`)
+            // }
+            // if (section.type === "bss") {
+            //     lsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+            //     wsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+            //     msbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+            // }
 
-            // Linux
-            if (section.type === "ltext") {
-                lstext.push(section.commands + "\n")
-            }
-            if (section.type === "ldata") {
-                lsdata.push(section.commands + "\n")
-            }
-            if (section.type === "lbss") {
-                lsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
-            }
-            if (section.type === "llabels") {
-                llabels.push(`${section.label}: ${section.commands}`)
-            }
+            // // Linux
+            // if (section.type === "ltext") {
+            //     lstext.push(section.commands + "\n")
+            // }
+            // if (section.type === "ldata") {
+            //     lsdata.push(section.commands + "\n")
+            // }
+            // if (section.type === "lbss") {
+            //     lsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+            // }
+            // if (section.type === "llabels") {
+            //     llabels.push(`${section.label}: ${section.commands}`)
+            // }
 
-            // Windows
-            if (section.type === "wtext") {
-                wstext.push(section.commands + "\n")
-            }
-            if (section.type === "wdata") {
-                wsdata.push(section.commands + "\n")
-            }
-            if (section.type === "wbss") {
-                wsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
-            }
-            if (section.type === "wlabels") {
-                wlabels.push(`${section.label}: ${section.commands}`)
-            }
+            // // Windows
+            // if (section.type === "wtext") {
+            //     wstext.push(section.commands + "\n")
+            // }
+            // if (section.type === "wdata") {
+            //     wsdata.push(section.commands + "\n")
+            // }
+            // if (section.type === "wbss") {
+            //     wsbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+            // }
+            // if (section.type === "wlabels") {
+            //     wlabels.push(`${section.label}: ${section.commands}`)
+            // }
 
-            // MacOS
-            if (section.type === "mtext") {
-                mstext.push(section.commands + "\n")
-            }
-            if (section.type === "mdata") {
-                msdata.push(section.commands + "\n")
-            }
-            if (section.type === "mbss") {
-                msbss.push(`${section.id} ${section.mode} ${section.bytes}`)
-            }
-            if (section.type === "mlabels") {
-                mlabels.push(`${section.label}: ${section.commands}`)
-            }
+            // // MacOS
+            // if (section.type === "mtext") {
+            //     mstext.push(section.commands + "\n")
+            // }
+            // if (section.type === "mdata") {
+            //     msdata.push(section.commands + "\n")
+            // }
+            // if (section.type === "mbss") {
+            //     msbss.push(`${section.id} ${section.mode} ${section.bytes}`)
+            // }
+            // if (section.type === "mlabels") {
+            //     mlabels.push(`${section.label}: ${section.commands}`)
+            // }
         })
     })
 
