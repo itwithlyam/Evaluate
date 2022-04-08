@@ -13,9 +13,10 @@ export function Lexer(script) {
     	let chars = line.split(negatives)
 			let comment = false
 			chars.forEach((char) => {
-			if (str && char && char != '"') {
-				if (cstr) return cstr += " " + char
-				else return cstr += char
+			if (str && char != '"') {
+				if (char === undefined) return
+				cstr += char
+				return
 			}
 			if (comment) return
 			if (parseFloat(char) || Math.abs(parseFloat(char)) || char === 0 && char != "") {
@@ -35,6 +36,18 @@ export function Lexer(script) {
 					comment = true
 					break;
 				// NOTE: Put all tokens below here. Comments + Strings have priority.
+				case 'Char':
+					idents.push({char: char, ident: Ident.MSTRING, classify: Classify.MEMORY})
+					break;
+				case 'Int_8':
+				case 'Int_16':
+				case 'Int_32':
+				case 'Int_64':
+					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
+					break;
+				case '=':
+					idents.push({char: char, ident: Ident.EQUALS, classify: Classify.MEMORY})
+					break;
 				case '=>':
 					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})
 					break;
@@ -115,6 +128,7 @@ export function Lexer(script) {
 					return idents.push(payload10)
 					break;
 				default:
+					if (char == ' ') return;
 					const readmem = {'char': char, 'ident': Ident.TERM, 'classify': Classify.CHAR}
 					return idents.push(readmem)
 					break;
