@@ -9,7 +9,7 @@ const argdef = [
 	{name: 'version', type: Boolean},
 	{name: 'force', alias: 'f', type: Boolean},
 	{name: 'disable-warnings', type: Boolean},
-	{name: 'compile', type: String, alias: 'o'}
+	{name: 'output', type: String, alias: 'o'}
 ]
 
 import stopwatch from 'statman-stopwatch'
@@ -43,7 +43,7 @@ export default function runner() {
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens, false, verbose)
-		Interpret(script, false, verbose, options.compile)
+		Interpret(script, false, verbose, options.output || "output")
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log(err)

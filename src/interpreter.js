@@ -87,7 +87,6 @@ export function Interpret(AST, unit, verbose, compiled) {
 					RuntimeStack.pop()
 				}
 				if (element.kind === 'set') {
-					console.log("yes")
 					let code;
 					switch(element.declarations.annotation) {
 						case 'Char':

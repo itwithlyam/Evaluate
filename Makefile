@@ -18,6 +18,10 @@ install:
 	@echo "Checking for NASM"
 	@echo -e ${NC}
 	@nasm -v 
+	@echo -e ${COLOR}
+	@echo "Checking for linker"
+	@echo -e ${NC}
+	@ld -v
 	@echo -e ${BLUE}
 	@echo "Dependencies installed"
 	@echo -e ${NC}
