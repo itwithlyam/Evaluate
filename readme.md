@@ -1,8 +1,6 @@
 # Evaluate
 _A hybrid programming language. It can both compile and interpret._
 
-**We use Jira to track bugs and new features, so in some commits and branches there will be a Jira issue ID.**
-
 ## Example program
 Input 
 ```
@@ -56,9 +54,9 @@ CLI Flags:
 
 As you might have noticed, we have multiple GitHub branches. The order of reliability follows:
 
-1. Featured Experiments (other branches)
+1. Featured Experiments (branches starting with "EVAL", this is a Jira ID)
 2. Experimental Build (main)
-3. Public Test Build - PTB (production)
-4. Tags (GitHub releases)
+3. PTB - Public Test Build
+4. Production
 
 with 1 being the least reliable and littered with bugs and 4 being the most reliable and without many bugs. To run an experimental build or featured experiment, you must use the --force flag.
