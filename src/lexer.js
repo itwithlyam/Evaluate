@@ -36,8 +36,10 @@ export function Lexer(script) {
 					break;
 				// NOTE: Put all tokens below here. Comments + Strings have priority.
 				case 'String':
-				case 'Integer':
-					idents.push({char: char, ident: Ident.MEMSET, classify: Classify.MEMORY})
+					idents.push({char: char, ident: Ident.MSTRING, classify: Classify.MEMORY})
+					break;
+				case 'Int':
+					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
 					break;
 				case '=>':
 					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})

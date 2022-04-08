@@ -256,6 +256,70 @@ export function Parse(tokens, func, verbose=false) {
 			ParseStack.pop()
 			return current += 3
 		}
+		if (element.ident == 30) {
+			ParseStack.push("integer declaration", line)
+			tokens[current].read = true
+			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
+			tokens[current + 1].read = true
+			let id = tokens[current + 1].char
+			let value = null;
+			if (tokens[current + 2].ident == 32) {
+				tokens[current + 2].read = true
+				if (!parseInt(tokens[current + 3].char)) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				tokens[current + 3].read = true
+				value = tokens[current + 3].char
+				current += 4
+			} else { current += 2 }
+			
+			body.push({
+				type: "memory",
+				kind: "set",
+				declarations: {
+					id: {
+						name: id
+					},
+					init: {
+						value: value
+					},
+					annotation: "int"
+				}
+			})
+
+			ParseStack.pop()
+			return;
+		}
+		if (element.ident == 31) {
+			ParseStack.push("string declaration", line)
+			tokens[current].read = true
+			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
+			tokens[current + 1].read = true
+			let id = tokens[current + 1].char
+			let value = null;
+			if (tokens[current + 2].ident == 32) {
+				tokens[current + 2].read = true
+				if (tokens[current + 3].ident != 18) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				tokens[current + 3].read = true
+				value = tokens[current + 3].char
+				current += 4
+			} else { current += 2 }
+			
+			body.push({
+				type: "memory",
+				kind: "set",
+				declarations: {
+					id: {
+						name: id
+					},
+					init: {
+						value: value
+					},
+					annotation: "string"
+				}
+			})
+
+			ParseStack.pop()
+			return;
+		}
 	})
 	let AST = {
 		type: "Program",
