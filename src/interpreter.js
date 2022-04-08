@@ -90,16 +90,37 @@ export function Interpret(AST, unit, verbose, compiled) {
 					console.log("yes")
 					let code;
 					switch(element.declarations.annotation) {
-						case 'string':
+						case 'String':
 							RuntimeStack.push("declare string", line)
 							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
 							current += 1
 							RuntimeStack.pop()
 							break;
 
-						case 'int':
-							RuntimeStack.push("declare int", line)
-							code = declare.execute("int", element.declarations.id.name, element.declarations.init.value)
+						case 'Int_8':
+							RuntimeStack.push("declare 8 bit integer", line)
+							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_16':
+							RuntimeStack.push("declare 16 bit integer", line)
+							code = declare.execute("int16", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_32':
+							RuntimeStack.push("declare 32 bit integer", line)
+							code = declare.execute("int32", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
+
+						case 'Int_64':
+							RuntimeStack.push("declare 64 bit integer", line)
+							code = declare.execute("int64", element.declarations.id.name, element.declarations.init.value)
 							current += 1
 							RuntimeStack.pop()
 							break;

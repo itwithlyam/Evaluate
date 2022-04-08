@@ -181,8 +181,8 @@ export const Ident = {
 	LEFTSHIFT: 27,
 	RIGHTSHIFT: 28,
 	ROUND: 29,
-	MINT: 30,
-	MSTRING: 31
+	MSTRING: 30,
+	MINT: 31
 }
 
 export const Classify = {

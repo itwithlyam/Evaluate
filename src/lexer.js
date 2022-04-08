@@ -39,7 +39,10 @@ export function Lexer(script) {
 				case 'String':
 					idents.push({char: char, ident: Ident.MSTRING, classify: Classify.MEMORY})
 					break;
-				case 'Int':
+				case 'Int_8':
+				case 'Int_16':
+				case 'Int_32':
+				case 'Int_64':
 					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
 					break;
 				case '=':

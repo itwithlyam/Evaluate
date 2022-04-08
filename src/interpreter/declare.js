@@ -4,9 +4,16 @@ export default {
     execute(annotation, id, value) {
         switch (annotation) {
             case "string":
-                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov r12, "${value}"\nmov [${id}], r12`, os: ['mac', 'win', 'linux']}]
-            case "int":
-                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov r12, ${value}\nmov [${id}], r12`, os: ['mac', 'win', 'linux']}]
-        }
+                return [{type: "bss", id: id, mode: "resb", bytes: value.length || 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov rdx, "${value}"\nmov [${id}], rdx`, os: ['mac', 'win', 'linux']}]
+            case "int8":
+                return [{type: "bss", id: id, mode: "resb", bytes: 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov dh, ${value}\nmov [${id}], dh`, os: ['mac', 'win', 'linux']}]
+            case "int16":
+                return [{type: "bss", id: id, mode: "resb", bytes: 2, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov dx, ${value}\nmov [${id}], dx`, os: ['mac', 'win', 'linux']}]
+            case "int32":
+                return [{type: "bss", id: id, mode: "resb", bytes: 4, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov edx, ${value}\nmov [${id}], edx`, os: ['mac', 'win', 'linux']}]
+            case "int64":
+                return [{type: "bss", id: id, mode: "resb", bytes: 8, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov rdx, ${value}\nmov [${id}], rdx`, os: ['mac', 'win', 'linux']}]
+    
+            }
     }
 }

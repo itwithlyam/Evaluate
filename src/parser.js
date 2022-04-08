@@ -261,8 +261,9 @@ export function Parse(tokens, func, verbose=false) {
 			ParseStack.pop()
 			return current += 3
 		}
-		if (element.ident == 30) {
-			ParseStack.push("integer declaration", line)
+		if (element.ident == 31) {
+			let mode = element.char
+			ParseStack.push(mode + " declaration", line)
 			tokens[current].read = true
 			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
 			tokens[current + 1].read = true
@@ -286,14 +287,15 @@ export function Parse(tokens, func, verbose=false) {
 					init: {
 						value: value
 					},
-					annotation: "int"
+					annotation: mode
 				}
 			})
 
 			ParseStack.pop()
 			return;
 		}
-		if (element.ident == 31) {
+		
+		if (element.ident == 30) {
 			ParseStack.push("string declaration", line)
 			tokens[current].read = true
 			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
@@ -318,7 +320,7 @@ export function Parse(tokens, func, verbose=false) {
 					init: {
 						value: value
 					},
-					annotation: "string"
+					annotation: "String"
 				}
 			})
 
