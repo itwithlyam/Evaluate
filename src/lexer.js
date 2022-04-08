@@ -13,9 +13,11 @@ export function Lexer(script) {
     	let chars = line.split(negatives)
 			let comment = false
 			chars.forEach((char) => {
-			if (str && char && char != '"') {
-				if (cstr) return cstr += " " + char
-				else return cstr += char
+			if (str && char != '"') {
+				if (char === undefined) return
+				console.log(char)
+				cstr += char
+				return
 			}
 			if (comment) return
 			if (parseFloat(char) || Math.abs(parseFloat(char)) || char === 0 && char != "") {
@@ -124,6 +126,7 @@ export function Lexer(script) {
 					return idents.push(payload10)
 					break;
 				default:
+					if (char == ' ') return;
 					const readmem = {'char': char, 'ident': Ident.TERM, 'classify': Classify.CHAR}
 					return idents.push(readmem)
 					break;

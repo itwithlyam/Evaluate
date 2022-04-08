@@ -1,3 +1,3 @@
 equate("first", "12+12-12+12")
-#logic("second", "1+1==2")
-printf("second", "1+1")
+logic("second", "1+1==2")
+printf("third", "1+1")
