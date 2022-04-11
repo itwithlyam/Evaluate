@@ -320,7 +320,7 @@ export function Parse(tokens, func, verbose=false) {
 					init: {
 						value: value
 					},
-					annotation: "Char"
+					annotation: element.char
 				}
 			})
 

@@ -13,6 +13,8 @@ export default {
                 return [{type: "bss", id: id, mode: "resb", bytes: 4, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov edx, ${value}\nmov [${id}], edx`, os: ['mac', 'win', 'linux']}]
             case "int64":
                 return [{type: "bss", id: id, mode: "resb", bytes: 8, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov rdx, ${value}\nmov [${id}], rdx`, os: ['mac', 'win', 'linux']}]
+            case "string":
+                return [{type: "bss", id: id, mode: "resb", bytes: 1, os: ['mac', 'win', 'linux']}, {type: "text", commands: `mov edx, "${value}"\nmov [${id}], edx`, os: ['mac', 'win', 'linux']}]
     
             }
     }
