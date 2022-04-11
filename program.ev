@@ -1,1 +1,1 @@
-printf("Yes", "yes")
+String x = "Hello, World!"
