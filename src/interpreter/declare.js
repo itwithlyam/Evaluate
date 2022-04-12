@@ -98,7 +98,7 @@ export default {
           {
               type: "text",
               commands: `
-                lea ebx, ${id}label\n
+                mov ebx, ${id}label\n
                 call loop\n
               `,
               os: ['win', 'macos', 'linux']
@@ -113,6 +113,8 @@ export default {
 
                 cmp al,0\n
                 je StrEnd\n
+
+                add [${id}], al\n
 
                 inc ebx\n
                 jmp loop\n
