@@ -123,6 +123,13 @@ export function Interpret(AST, unit, verbose, compiled) {
 							current += 1
 							RuntimeStack.pop()
 							break;
+
+						case 'String':
+							RuntimeStack.push("declare string", line)
+							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
 					}
 					if (Array.isArray(code)) {
 						code.forEach(e => {

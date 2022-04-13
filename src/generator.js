@@ -156,6 +156,8 @@ export default function Generator(code, output) {
 
             ${llabels.join("\n")}
 
+            StrEnd: ret
+
             _start:
                 ${lstext.join("\n")}
 
@@ -175,6 +177,8 @@ export default function Generator(code, output) {
 
         section .text
             ${mlabels.join("\n")}
+
+            StrEnd: ret
 
             start:
                 ${mstext.join("\n")}
@@ -197,6 +201,8 @@ export default function Generator(code, output) {
             global _WinMain@16
 
             ${wlabels.join("\n")}
+
+            StrEnd: ret
 
             _WinMain@16:
                 ${wstext.join("\n")}
