@@ -1,2 +1,1 @@
-String x = "Hello, World!"
-String y = "Goodnight, World!"
+printf("Yes", "yes")
