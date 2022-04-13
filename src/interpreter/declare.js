@@ -117,7 +117,7 @@ export default {
                 add [${id}], al\n
 
                 inc ebx\n
-                jmp loop\n
+                jmp ${id}loop\n
               `,
               os: ['win', 'linux', 'macos']
           },
