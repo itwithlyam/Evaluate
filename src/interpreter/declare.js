@@ -99,13 +99,13 @@ export default {
               type: "text",
               commands: `
                 mov ebx, ${id}label\n
-                call loop\n
+                call ${id}loop\n
               `,
               os: ['win', 'macos', 'linux']
           },
           {
               type: "label",
-              label: "loop",
+              label: id+"loop",
               commands: `
                 mov al, [ebx]\n
                 or al,al\n
@@ -121,12 +121,6 @@ export default {
               `,
               os: ['win', 'linux', 'macos']
           },
-          {
-              type: "label",
-              label: "StrEnd",
-              commands: `ret`,
-              os: ['win', 'linux', 'macos']
-          }
         ];
     }
   },
