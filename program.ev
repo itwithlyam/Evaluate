@@ -1,1 +1,3 @@
-printf("Yes", "yes")
+String hello = "Good morning, World!"
+String date = "15th April 2022"
+printf("Yes", "{hello}\nToday is the {date}.\n")

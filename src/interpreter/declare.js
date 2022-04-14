@@ -13,6 +13,12 @@ export default {
             os: ["mac", "win", "linux"],
           },
           {
+            type: "label",
+            label: id+"len",
+            commands: "equ 1",
+            os: ['mac','win','linux']
+          },
+          {
             type: "text",
             commands: `mov edx, "${value}"\nmov [${id}], edx`,
             os: ["mac", "win", "linux"],
@@ -26,6 +32,12 @@ export default {
             mode: "resb",
             bytes: 1,
             os: ["mac", "win", "linux"],
+          },
+          {
+            type: "label",
+            label: id+"len",
+            commands: "equ " + value.length,
+            os: ['mac','win','linux']
           },
           {
             type: "text",
@@ -43,6 +55,12 @@ export default {
             os: ["mac", "win", "linux"],
           },
           {
+            type: "label",
+            label: id+"len",
+            commands: "equ " + value.length,
+            os: ['mac','win','linux']
+          },
+          {
             type: "text",
             commands: `mov dx, ${value}\nmov [${id}], dx`,
             os: ["mac", "win", "linux"],
@@ -56,6 +74,12 @@ export default {
             mode: "resb",
             bytes: 4,
             os: ["mac", "win", "linux"],
+          },
+          {
+            type: "label",
+            label: id+"len",
+            commands: "equ " + value.length,
+            os: ['mac','win','linux']
           },
           {
             type: "text",
@@ -73,12 +97,19 @@ export default {
             os: ["mac", "win", "linux"],
           },
           {
+            type: "label",
+            label: id+"len",
+            commands: "equ " + value.length,
+            os: ['mac','win','linux']
+          },
+          {
             type: "text",
             commands: `mov rdx, ${value}\nmov [${id}], rdx`,
             os: ["mac", "win", "linux"],
           },
         ];
       case "string":
+        // Null termination be like
         return [
           {
             type: "bss",
@@ -96,9 +127,16 @@ export default {
             os: ["mac", "win", "linux"],
           },
           {
+            type: "label",
+            label: id+"len",
+            commands: "equ " + value.length,
+            os: ['mac','win','linux']
+          },
+          {
               type: "text",
               commands: `
                 mov ebx, ${id}label\n
+                mov ecx, 0\n
                 call ${id}loop\n
               `,
               os: ['win', 'macos', 'linux']
@@ -114,9 +152,10 @@ export default {
                 cmp al,0\n
                 je StrEnd\n
 
-                add [${id}], al\n
+                add [${id}+ecx], al\n
 
                 inc ebx\n
+                inc ecx\n
                 jmp ${id}loop\n
               `,
               os: ['win', 'linux', 'macos']
