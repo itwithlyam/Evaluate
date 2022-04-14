@@ -102,6 +102,13 @@ export function Interpret(AST, unit, verbose, compiled) {
 							current += 1
 							RuntimeStack.pop()
 							break;
+						
+						case 'Bool':
+							RuntimeStack.push("declare boolean", line)
+							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
 
 						case 'Int_16':
 							RuntimeStack.push("declare 16 bit integer", line)

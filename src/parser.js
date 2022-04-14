@@ -327,7 +327,7 @@ export function Parse(tokens, func, verbose=false) {
 			let value = null;
 			if (tokens[current + 2].ident == 13) {
 				tokens[current + 2].read = true
-				if (tokens[current + 3].ident != 18) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				if (tokens[current + 3].ident != 18 && element.ident != 35) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
 				tokens[current + 3].read = true
 				value = tokens[current + 3].char
 				if (value === "true" && element.ident === 35) value = 1
@@ -359,6 +359,6 @@ export function Parse(tokens, func, verbose=false) {
 		length: tokens.length,
 		body: body
 	}
-	if (f&unc) AST.type = "Function"
+	if (func) AST.type = "Function"
 	return AST
 }
