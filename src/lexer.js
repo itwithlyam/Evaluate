@@ -52,6 +52,15 @@ export function Lexer(script) {
 					break;
 
 				// Everything else
+				case 'AND':
+					idents.push({char: char, ident: Ident.AND, classify: Classify.BOOLEAN})
+					break;
+				case 'OR':
+					idents.push({char: char, ident: Ident.OR, classify: Classify.BOOLEAN})
+					break;
+				case 'NOT':
+					idents.push({char: char, ident: Ident.NOT, classify: Classify.BOOLEAN})
+					break;
 				case '=':
 					idents.push({char: char, ident: Ident.EQUALS, classify: Classify.MEMORY})
 					break;

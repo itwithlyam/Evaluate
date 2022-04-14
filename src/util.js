@@ -182,7 +182,10 @@ export const Ident = {
 	RIGHTSHIFT: 28,
 	ROUND: 29,
 	MSTRING: 30,
-	MINT: 31
+	MINT: 31,
+	AND: 32,
+	OR: 33,
+	NOT: 34
 }
 
 export const Classify = {
