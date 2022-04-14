@@ -318,8 +318,8 @@ export function Parse(tokens, func, verbose=false) {
 			return;
 		}
 		
-		if (element.ident == 30) {
-			ParseStack.push("char declaration", line)
+		if (element.ident == 30 || element.ident == 35) {
+			ParseStack.push(element.char + " declaration", line)
 			tokens[current].read = true
 			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
 			tokens[current + 1].read = true
@@ -330,6 +330,8 @@ export function Parse(tokens, func, verbose=false) {
 				if (tokens[current + 3].ident != 18) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
 				tokens[current + 3].read = true
 				value = tokens[current + 3].char
+				if (value === "true" && element.ident === 35) value = 1
+				else if (element.ident === 35) value = 0
 				current += 4
 			} else { current += 2 }
 			
@@ -357,6 +359,6 @@ export function Parse(tokens, func, verbose=false) {
 		length: tokens.length,
 		body: body
 	}
-	if (func) AST.type = "Function"
+	if (f&unc) AST.type = "Function"
 	return AST
 }
