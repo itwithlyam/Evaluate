@@ -13,7 +13,11 @@ import mset from './interpreter/mset.js'
 import callfunc from './interpreter/callfunc.js'
 import initfunc from './interpreter/initfunc.js'
 import declare from './interpreter/declare.js'
-import { e } from 'mathjs'
+
+// Logic gates
+import andgate from './interpreter/logic/and.js'
+import orgate from './interpreter/logic/or.js'
+import notgate from './interpreter/logic/not.js'
 
 // Memory 
 let VarMemory = {}
@@ -151,9 +155,29 @@ export function Interpret(AST, unit, verbose, compiled) {
 				current += 1
 				RuntimeStack.pop()
 				break;
+			case "boolean":
+				let code = []
+				switch (element.kind) {
+					case 'AND':
+						code = andgate.execute(element.params)
+						break;
+					case 'OR':
+						code = orgate.execute(element.params)
+						break;
+					case 'NOT':
+						code = notgate.execute(element.params)
+						break;
+				}
+				if (Array.isArray(code)) {
+					code.forEach(e => {
+						ans.push(e)
+					})
+				} else ans.push(code)
+				break;
 			case 'EOF':
 				break;
 			default:
+				console.log(AST)
 				console.log(chalk.yellow("Warning: Expressor '" + element.value + "' is still a work in progress: Line " + line))
 				current += 1
 				break
