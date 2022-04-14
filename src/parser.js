@@ -77,23 +77,46 @@ export function Parse(tokens, func, verbose=false) {
 		// 	}
 		// } 
 		if (status == "Equation") return;
+		if (element.classify === 9) {
+			switch(element.ident) {
+				case '32':
+					// AND
+					body.push({
+						type: "boolean",
+						kind: "AND",
+						value: tokens[current-1].char + " AND " + tokens[current+1].char
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					return
+				case '33':
+					// OR
+					body.push({
+						type: "boolean",
+						kind: "OR",
+						value: tokens[current-1].char + " OR " + tokens[current+1].char
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					return
+				case '34':
+					// NOT
+					body.push({
+						type: "boolean",
+						kind: "NOT",
+						value: "NOT " + tokens[current+1].char
+					})
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 2
+					return
+			}
+		}
 		switch(element.ident) {
-			case 22:
-				tokens[current].read = true
-			current += 1
-				body.push({
-					type: "boolean",
-					value: "true"
-				})
-				break;
-			case 23:
-				tokens[current].read = true
-				current += 1
-				body.push({
-					type: "boolean",
-					value: "false"
-				})
-				break;
 			case 21:
 				tokens[current].read = true
 				current += 1
