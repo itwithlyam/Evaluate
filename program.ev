@@ -1,3 +1,4 @@
 String hello = "Good morning, World!"
 String date = "15th April 2022"
-printf("Yes", "{hello}\nToday is the {date}.\n")
+Int_64 num = 1244655439523945790
+printf("Yes", "{hello}\nToday is the {date}.\nMy favourite number is: {num}.\n")
