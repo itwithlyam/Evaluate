@@ -185,7 +185,8 @@ export const Ident = {
 	MINT: 31,
 	AND: 32,
 	OR: 33,
-	NOT: 34
+	NOT: 34,
+	MBOOL: 35
 }
 
 export const Classify = {

@@ -50,6 +50,10 @@ export function Lexer(script) {
 				case 'Int_64':
 					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
 					break;
+				// Binary-based
+				case 'Bool':
+					idents.push({char: char, ident: Ident.MBOOL, classify: Classify.MEMORY})
+					break;
 
 				// Everything else
 				case 'AND':
