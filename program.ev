@@ -1,2 +1,4 @@
-String x = "Hello, World!"
-String y = "Goodnight, World!"
+String hello = "Good morning, World!"
+String date = "15th April 2022"
+Int_64 num = 1244655439523945790
+printf("Yes", "{hello}\nToday is the {date}.\nMy favourite number is: {num}.\n")
