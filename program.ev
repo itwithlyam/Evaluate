@@ -1,1 +1,1 @@
-1 AND 1
+printf("id", "Hello, world!")

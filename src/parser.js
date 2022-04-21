@@ -13,7 +13,7 @@ export function Parse(tokens, func, verbose=false) {
 	let sbracket = false
 
 	tokens.forEach((element) => {
-		// console.log(element)
+		console.log(element)
 		let status = ParseStack.status()
 		// console.log(status)
 		if (element.read) return;
