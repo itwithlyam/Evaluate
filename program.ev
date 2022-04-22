@@ -1,1 +1,2 @@
-simplify("id", "7y * 1143837587583758375 / 12")
+String name = "whoever you are"
+printf("text", "Hello, {name}!\n")
