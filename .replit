@@ -1,1 +1,1 @@
-run="node index.js ./program.ev --disable-warnings --force && nasm output.asm -o output.o -f elf && ld -o output ./output.o -m elf_i386 -s && ./output" 
+run="npm start && npm run build && ./debug" 

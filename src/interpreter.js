@@ -40,6 +40,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 	let current = 0
 	let line = 0
 	let ans = []
+	console.log(AST)
 	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'pass':
@@ -177,7 +178,6 @@ export function Interpret(AST, unit, verbose, compiled) {
 			case 'EOF':
 				break;
 			default:
-				console.log(AST)
 				console.log(chalk.yellow("Warning: Expressor '" + element.value + "' is still a work in progress: Line " + line))
 				current += 1
 				break

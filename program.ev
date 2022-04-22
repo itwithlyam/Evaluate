@@ -1,1 +1,2 @@
-printf("id", "Hello, world!")
+String hello = "Hello"
+printf("id", "Hello, world\n{hello}!")
