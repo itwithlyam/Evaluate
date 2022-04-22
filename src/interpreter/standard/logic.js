@@ -3,7 +3,6 @@ import {RuntimeError, ParseTrace} from '../../util.js'
 export default function (args, line, trace, compiled) {
 	try {
 		let statement = args[1]
-		console.log(statement)
 		let func = Function(`if (${statement}) return true
 	else return false`)
 		let truth = func()
