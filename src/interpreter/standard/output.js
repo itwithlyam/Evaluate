@@ -3,7 +3,6 @@ import {simplify} from 'mathjs'
 
 export default function outputfunc(args, line, trace, compiled) {
 	try {
-		console.log(args)
 		if (!compiled) return args.join(' ')
 		let ret = []
 		/* {label: args[0], commands: `db "${args[0]}: ${args[1]}",0`, type: "label", os: ['mac', 'linux', 'win']}, */
@@ -11,7 +10,6 @@ export default function outputfunc(args, line, trace, compiled) {
 		let concat = false
 		args[1].split(/(\\n)|({)|(})/gi).forEach(l => {
 			if (!l) return
-			console.log(l)
 			counter++
 			if (l === '\\n') {
 				ret.push({commands: `db 10,0`, type: "label", label: args[0]+counter, os: ['mac', 'linux', 'win']})

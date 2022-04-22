@@ -1,1 +1,1 @@
-run="npm start && npm run build && ./debug" 
+run="npm start && npm run build && ./output" 

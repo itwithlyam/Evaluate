@@ -1,2 +1,1 @@
-String hello = "Hello"
-printf("id", "Hello, world\n{hello}!")
+simplify("id", "7y * 1143837587583758375 / 12")

@@ -24,7 +24,6 @@ export default {
 					res = simplify(args, line, trace, compiled)
 					break;
 				case 'printf':
-					console.log("here")
 					res = output(args, line, trace, compiled)
 					break;
 				case "equate":
