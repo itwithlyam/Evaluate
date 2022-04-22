@@ -13,7 +13,11 @@ import mset from './interpreter/mset.js'
 import callfunc from './interpreter/callfunc.js'
 import initfunc from './interpreter/initfunc.js'
 import declare from './interpreter/declare.js'
-import { e } from 'mathjs'
+
+// Logic gates
+import andgate from './interpreter/logic/and.js'
+import orgate from './interpreter/logic/or.js'
+import notgate from './interpreter/logic/not.js'
 
 // Memory 
 let VarMemory = {}
@@ -36,6 +40,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 	let current = 0
 	let line = 0
 	let ans = []
+	// console.log(AST)
 	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'pass':
@@ -102,6 +107,13 @@ export function Interpret(AST, unit, verbose, compiled) {
 							current += 1
 							RuntimeStack.pop()
 							break;
+						
+						case 'Bool':
+							RuntimeStack.push("declare boolean", line)
+							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
 
 						case 'Int_16':
 							RuntimeStack.push("declare 16 bit integer", line)
@@ -143,6 +155,25 @@ export function Interpret(AST, unit, verbose, compiled) {
 				ans.push(equation.execute(element.body))
 				current += 1
 				RuntimeStack.pop()
+				break;
+			case "boolean":
+				let code = []
+				switch (element.kind) {
+					case 'AND':
+						code = andgate.execute(element.params)
+						break;
+					case 'OR':
+						code = orgate.execute(element.params)
+						break;
+					case 'NOT':
+						code = notgate.execute(element.params)
+						break;
+				}
+				if (Array.isArray(code)) {
+					code.forEach(e => {
+						ans.push(e)
+					})
+				} else ans.push(code)
 				break;
 			case 'EOF':
 				break;

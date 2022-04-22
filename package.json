@@ -4,9 +4,8 @@
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
-    "start": "node index.js program.ev --force --disable-warnings",
-    "testw": "mocha"
+		"build": "nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o",
+    "start": "node index.js program.ev --force --disable-warnings"
   },
   "author": "",
   "license": "MIT",

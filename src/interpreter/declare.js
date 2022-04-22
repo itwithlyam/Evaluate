@@ -36,7 +36,7 @@ export default {
           {
             type: "label",
             label: id+"len",
-            commands: "equ " + value.length,
+            commands: "equ " + (""+value).length,
             os: ['mac','win','linux']
           },
           {

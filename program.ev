@@ -1,4 +1,6 @@
-String hello = "Good morning, World!"
-String date = "15th April 2022"
-Int_64 num = 1244655439523945790
-printf("Yes", "{hello}\nToday is the {date}.\nMy favourite number is: {num}.\n")
+String name = "varable"
+printf("printf", "Hello, {name}!\n")
+equate("equate", "12*7+(12+5)")
+simplify("simplify", "12x - 12x + 12x / 8 * 9y + 9 - 4 / 12 + 7(8x /9^2)")
+logic("logic", "12 == 12")
+panic()

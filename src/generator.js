@@ -28,6 +28,7 @@ export default function Generator(code, output) {
     let wsbss = []
 
     code.forEach(section => {
+			//console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
             if (section.os.includes('mac')) {
@@ -165,6 +166,7 @@ export default function Generator(code, output) {
 
             end:
                 mov eax,1
+mov ebx,0
                 int 0x80
 
         ${lsdata.join('\n')}
@@ -187,6 +189,7 @@ export default function Generator(code, output) {
 
             end:
                 mov eax,0x20000001
+								mov ebx,0
                 int 0x80
 
         ${msdata.join('\n')}
@@ -211,6 +214,7 @@ export default function Generator(code, output) {
 
             end:
                 mov eax,1
+mov ebx,0
                 int 0x80
 
         ${wsdata.join('\n')}

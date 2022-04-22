@@ -50,8 +50,21 @@ export function Lexer(script) {
 				case 'Int_64':
 					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
 					break;
+				// Binary-based
+				case 'Bool':
+					idents.push({char: char, ident: Ident.MBOOL, classify: Classify.MEMORY})
+					break;
 
 				// Everything else
+				case 'AND':
+					idents.push({char: char, ident: Ident.AND, classify: Classify.BOOLEAN})
+					break;
+				case 'OR':
+					idents.push({char: char, ident: Ident.OR, classify: Classify.BOOLEAN})
+					break;
+				case 'NOT':
+					idents.push({char: char, ident: Ident.NOT, classify: Classify.BOOLEAN})
+					break;
 				case '=':
 					idents.push({char: char, ident: Ident.EQUALS, classify: Classify.MEMORY})
 					break;

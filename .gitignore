@@ -13,3 +13,5 @@ output.cpp
 *.asm
 *.o
 *.out
+output
+debug

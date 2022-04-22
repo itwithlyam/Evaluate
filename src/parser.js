@@ -5,7 +5,7 @@ export function Parse(tokens, func, verbose=false) {
 	ParseStack.push("Program Start", 0)
 	let body = []
 	let presentblock = []
-	let current = 0;
+	let current = 0; // Tokens pointer
 	let block = false
 	let line = 0
 	let bar = false
@@ -13,11 +13,12 @@ export function Parse(tokens, func, verbose=false) {
 	let sbracket = false
 
 	tokens.forEach((element) => {
-		// console.log(element)
+		//console.log(tokens)
 		let status = ParseStack.status()
 		// console.log(status)
-
 		if (element.read) return;
+		//if (element.ident == 11) return current++;
+		if (element.ident == 0) return current++;
 		if (element.ident == 6) {
 			if (bar && status == "Equation") throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
 			bar = true
@@ -77,23 +78,53 @@ export function Parse(tokens, func, verbose=false) {
 		// 	}
 		// } 
 		if (status == "Equation") return;
+		if (element.classify === 9) {
+			ParseStack.push("logic gate", line)
+			switch(element.ident) {
+				case 32:
+					// AND
+					body.push({
+						type: "boolean",
+						kind: "AND",
+						value: tokens[current-1].char + " AND " + tokens[current+1].char,
+						params: [tokens[current-1].char, tokens[current+1].char]
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					ParseStack.pop()
+					return
+				case 33:
+					// OR
+					body.push({
+						type: "boolean",
+						kind: "OR",
+						value: tokens[current-1].char + " OR " + tokens[current+1].char,
+						params: [tokens[current-1].char, tokens[current+1].char]
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					ParseStack.pop()
+					return
+				case 34:
+					// NOT
+					body.push({
+						type: "boolean",
+						kind: "NOT",
+						value: "NOT " + tokens[current+1].char,
+						params: [tokens[current+1].char]
+					})
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 2
+					ParseStack.pop()
+					return
+			}
+		}
 		switch(element.ident) {
-			case 22:
-				tokens[current].read = true
-			current += 1
-				body.push({
-					type: "boolean",
-					value: "true"
-				})
-				break;
-			case 23:
-				tokens[current].read = true
-				current += 1
-				body.push({
-					type: "boolean",
-					value: "false"
-				})
-				break;
 			case 21:
 				tokens[current].read = true
 				current += 1
@@ -159,6 +190,7 @@ export function Parse(tokens, func, verbose=false) {
 				return;
 			}
 			if (tokens[current+1].char == '(') {
+				ParseStack.push("Function Call " + element.char, line)
 				current += 1
 				tokens[current].read = true
 				let options = []
@@ -174,7 +206,6 @@ export function Parse(tokens, func, verbose=false) {
 				}
 				tokens[current.read] = true
 				current += 1
-				ParseStack.push("Function Call " + element.char, line)
 				body.push({
 					type: "functioncall",
 					params: options,
@@ -295,8 +326,8 @@ export function Parse(tokens, func, verbose=false) {
 			return;
 		}
 		
-		if (element.ident == 30) {
-			ParseStack.push("char declaration", line)
+		if (element.ident == 30 || element.ident == 35) {
+			ParseStack.push(element.char + " declaration", line)
 			tokens[current].read = true
 			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
 			tokens[current + 1].read = true
@@ -304,9 +335,11 @@ export function Parse(tokens, func, verbose=false) {
 			let value = null;
 			if (tokens[current + 2].ident == 13) {
 				tokens[current + 2].read = true
-				if (tokens[current + 3].ident != 18) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				if (tokens[current + 3].ident != 18 && element.ident != 35) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
 				tokens[current + 3].read = true
 				value = tokens[current + 3].char
+				if (value === "true" && element.ident === 35) value = 1
+				else if (element.ident === 35) value = 0
 				current += 4
 			} else { current += 2 }
 			

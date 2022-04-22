@@ -10,7 +10,6 @@ export default function outputfunc(args, line, trace, compiled) {
 		let concat = false
 		args[1].split(/(\\n)|({)|(})/gi).forEach(l => {
 			if (!l) return
-			console.log(l)
 			counter++
 			if (l === '\\n') {
 				ret.push({commands: `db 10,0`, type: "label", label: args[0]+counter, os: ['mac', 'linux', 'win']})
