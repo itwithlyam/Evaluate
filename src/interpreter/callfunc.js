@@ -1,7 +1,7 @@
 import {RuntimeError, ParseTrace} from '../util.js'
 import {Interpret} from '../interpreter.js'
 
-const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic"]
+const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic", "malloc"]
 
 // Standard Library
 import simplify from "./standard/simplify.js"
@@ -9,6 +9,7 @@ import output from "./standard/output.js"
 import evaluate from "./standard/equate.js"
 import panic from "./standard/panic.js"
 import logic from "./standard/logic.js"
+import malloc from './standard/malloc.js'
 
 export default {
 	name: "callfunc",
@@ -34,6 +35,9 @@ export default {
 					break;
 				case "logic":
 					res = logic(args, line, trace, compiled)
+					break;
+				case "malloc":
+					res = malloc(args)
 					break;
 			}
 		}

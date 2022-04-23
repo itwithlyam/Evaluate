@@ -13,12 +13,12 @@ export function Parse(tokens, func, verbose=false) {
 	let sbracket = false
 
 	tokens.forEach((element) => {
-		//console.log(tokens)
+		//console.log(element)
 		let status = ParseStack.status()
 		// console.log(status)
 		if (element.read) return;
 		//if (element.ident == 11) return current++;
-		if (element.ident == 0) return current++;
+		//if (element.ident == 0) return current++;
 		if (element.ident == 6) {
 			if (bar && status == "Equation") throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
 			bar = true
@@ -175,14 +175,6 @@ export function Parse(tokens, func, verbose=false) {
 					value: element.char
 				})
 		}
-		if (element.ident == 0) {
-			tokens[current].read = true
-			current += 1
-			return body.push({
-				type: "number",
-				value: parseFloat(element.char)
-			})
-		}
 		if (element.ident == 11) {
 			if (element.char == '') {
 				tokens[current].read = true
@@ -201,6 +193,7 @@ export function Parse(tokens, func, verbose=false) {
 						continue;
 					}
 					options.push(tokens[current].char)
+					tokens[current].read = true
 					tokens[current+1].read = true
 					current += 1
 				}

@@ -3,4 +3,8 @@ printf("printf", "Hello, {name}!\n")
 equate("equate", "12*7+(12+5)")
 simplify("simplify", "12x - 12x + 12x / 8 * 9y + 9 - 4 / 12 + 7(8x /9^2)")
 logic("logic", "12 == 12")
+malloc("reserve", 13)
+printf("p", "Hello, {name}!\n")
+
 panic()
+
