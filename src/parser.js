@@ -78,7 +78,18 @@ export function Parse(tokens, func, verbose=false) {
 		// 	}
 		// } 
 		if (status == "Equation") return;
-		if (element.classify === 9) {
+		if (element.classify === 3) {
+			/*
+				Needs to put code inside the block into some sort of variable how I will do this I'm not sure
+			*/
+		}
+		if (element.classify === 10) {
+			// Loops
+			if (element.ident === 36) {
+				
+			}
+		}
+		else if (element.classify === 9) {
 			ParseStack.push("logic gate", line)
 			switch(element.ident) {
 				case 32:

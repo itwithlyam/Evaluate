@@ -1,2 +1,4 @@
-String name = "Noah"
-printf("nameprint", "Hello there, {name}!\n")
+loop {
+	printf("yes", "Hello, Loop!\n")
+	break equal
+}
