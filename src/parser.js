@@ -29,7 +29,6 @@ export function Parse(tokens, func, verbose=false) {
 		// console.log(status)
 		if (element.read) return;
 		//if (element.ident == 11) return current++;
-		if (element.ident == 0) return current++;
 			if (element.char === "{") {
 				current++
 				return push({
@@ -208,14 +207,6 @@ export function Parse(tokens, func, verbose=false) {
 					value: element.char
 				})
 		}
-		if (element.ident == 0) {
-			tokens[current].read = true
-			current += 1
-			return push({
-				type: "number",
-				value: parseFloat(element.char)
-			})
-		}
 		if (element.ident == 11) {
 			if (element.char == '') {
 				tokens[current].read = true
@@ -234,6 +225,7 @@ export function Parse(tokens, func, verbose=false) {
 						continue;
 					}
 					options.push(tokens[current].char)
+					tokens[current].read = true
 					tokens[current+1].read = true
 					current += 1
 				}

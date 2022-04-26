@@ -41,7 +41,6 @@ export function Interpret(AST, unit, verbose, compiled) {
 	let current = 0
 	let line = 0
 	let ans = []
-	// console.log(AST)
 	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'startblock':
