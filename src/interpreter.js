@@ -34,6 +34,7 @@ function pushdata(id, value, type) {
 }
 
 export function Interpret(AST, unit, verbose, compiled) {
+	console.log(AST)
 	const RuntimeStack = new StackTrace(verbose, "Interpreter Stack")
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body
@@ -43,6 +44,8 @@ export function Interpret(AST, unit, verbose, compiled) {
 	// console.log(AST)
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'startblock':
+			case 'endblock':
 			case 'pass':
 				current += 1
 				break;
@@ -149,12 +152,6 @@ export function Interpret(AST, unit, verbose, compiled) {
 						})
 					} else ans.push(code)
 				}
-				break;
-			case 'block':
-				RuntimeStack.push("Equation", line)
-				ans.push(equation.execute(element.body))
-				current += 1
-				RuntimeStack.pop()
 				break;
 			case "boolean":
 				let code = []

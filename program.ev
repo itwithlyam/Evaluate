@@ -1,4 +1,4 @@
-printf("id", "yes\n")
+{ printf("id", "yes\n") }
 
 loop 12 {
 	printf("yes", "Hello, Loop!\n")

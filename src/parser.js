@@ -18,22 +18,31 @@ export function Parse(tokens, func, verbose=false) {
 	}
 
 	tokens.forEach((element) => {
+		if (verbose) {
+			console.log("Token ID: "+current)
+			console.log("Using element:",element)
+			console.log("Using tokens:",tokens[current])
+		}
+		if (tokens[current] !== element) return
 		//console.log(tokens)
 		let status = ParseStack.status()
 		// console.log(status)
 		if (element.read) return;
 		//if (element.ident == 11) return current++;
 		if (element.ident == 0) return current++;
-		if (element.classify === 3) {
 			if (element.char === "{") {
-				return block = true
-			} else if (element.char === "}") {
-				body.push({
-					// TODO return block
+				current++
+				return push({
+					type: "startblock",
+					value: "{"
 				})
-				return block = false
+			} else if (element.char === "}") {
+				current++
+				return push({
+					type: "endblock",
+					value: "}"
+				})
 			}
-		}
 		if (element.ident == 6) {
 			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Block Close", line, ParseTrace(ParseStack))
 			bar = true
@@ -146,6 +155,9 @@ export function Parse(tokens, func, verbose=false) {
 			}
 		}
 		switch(element.ident) {
+			case 36:
+				current++
+				break;
 			case 21:
 				tokens[current].read = true
 				current += 1
