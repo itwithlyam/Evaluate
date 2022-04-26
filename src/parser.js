@@ -12,6 +12,11 @@ export function Parse(tokens, func, verbose=false) {
 	let bracket = false
 	let sbracket = false
 
+	function push(data) {
+		if (block) presentblock.push(data)
+		else body.push(data)
+	}
+
 	tokens.forEach((element) => {
 		//console.log(tokens)
 		let status = ParseStack.status()
@@ -19,10 +24,20 @@ export function Parse(tokens, func, verbose=false) {
 		if (element.read) return;
 		//if (element.ident == 11) return current++;
 		if (element.ident == 0) return current++;
+		if (element.classify === 3) {
+			if (element.char === "{") {
+				return block = true
+			} else if (element.char === "}") {
+				body.push({
+					// TODO return block
+				})
+				return block = false
+			}
+		}
 		if (element.ident == 6) {
-			if (bar && status == "Equation") throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
+			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Block Close", line, ParseTrace(ParseStack))
 			bar = true
-			body.push({
+			push({
 				type: "EOF",
 				value: element.char
 			})
@@ -38,7 +53,7 @@ export function Parse(tokens, func, verbose=false) {
 		// 	tokens[current].read = true
 		// 	current += 1
 		// 	if (element.char == '}') {
-		// 		body.push({
+		// 		push({
 		// 			type: "block",
 		// 			body: presentblock
 		// 		})
@@ -78,11 +93,6 @@ export function Parse(tokens, func, verbose=false) {
 		// 	}
 		// } 
 		if (status == "Equation") return;
-		if (element.classify === 3) {
-			/*
-				Needs to put code inside the block into some sort of variable how I will do this I'm not sure
-			*/
-		}
 		if (element.classify === 10) {
 			// Loops
 			if (element.ident === 36) {
@@ -94,7 +104,7 @@ export function Parse(tokens, func, verbose=false) {
 			switch(element.ident) {
 				case 32:
 					// AND
-					body.push({
+					push({
 						type: "boolean",
 						kind: "AND",
 						value: tokens[current-1].char + " AND " + tokens[current+1].char,
@@ -108,7 +118,7 @@ export function Parse(tokens, func, verbose=false) {
 					return
 				case 33:
 					// OR
-					body.push({
+					push({
 						type: "boolean",
 						kind: "OR",
 						value: tokens[current-1].char + " OR " + tokens[current+1].char,
@@ -122,7 +132,7 @@ export function Parse(tokens, func, verbose=false) {
 					return
 				case 34:
 					// NOT
-					body.push({
+					push({
 						type: "boolean",
 						kind: "NOT",
 						value: "NOT " + tokens[current+1].char,
@@ -141,14 +151,14 @@ export function Parse(tokens, func, verbose=false) {
 				current += 1
 				ParseStack.push("Pass", line)
 				current += 1
-				body.push({
+				push({
 					type: "pass",
 					value: "pass"
 				})
 				ParseStack.pop()
 				break;
 			case 1:
-				body.push({
+				push({
 					type: "newline",
 					value: element.char
 				})
@@ -160,7 +170,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line, ParseTrace(ParseStack))
-				body.push({
+				push({
 					type: "sopen",
 					value: element.char
 				})
@@ -169,7 +179,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				if (!sbracket) throw new CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line, ParseTrace(ParseStack))
-				body.push({
+				push({
 					type: "sclose",
 					value: element.char
 				})
@@ -181,7 +191,7 @@ export function Parse(tokens, func, verbose=false) {
 			case 5:
 				tokens[current].read = true
 				current += 1
-				return body.push({
+				return push({
 					type: "operation",
 					value: element.char
 				})
@@ -189,7 +199,7 @@ export function Parse(tokens, func, verbose=false) {
 		if (element.ident == 0) {
 			tokens[current].read = true
 			current += 1
-			return body.push({
+			return push({
 				type: "number",
 				value: parseFloat(element.char)
 			})
@@ -217,7 +227,7 @@ export function Parse(tokens, func, verbose=false) {
 				}
 				tokens[current.read] = true
 				current += 1
-				body.push({
+				push({
 					type: "functioncall",
 					params: options,
 					value: element.char
@@ -252,7 +262,7 @@ export function Parse(tokens, func, verbose=false) {
 					current += 1
 				}
 				current += 1
-				body.push({
+				push({
 					type: "function",
 					kind: "init",
 					declarations: {
@@ -269,7 +279,7 @@ export function Parse(tokens, func, verbose=false) {
 				return;
 			}
 			ParseStack.push("var", line)
-			body.push({
+			push({
 				type: "memory",
 				kind: "var",
 				value: element.char,
@@ -287,7 +297,7 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current + 1].read = true
 			tokens[current].read = true
 			tokens[current + 2].read = true
-			body.push({
+			push({
 				type: "memory",
 				kind: "mset",
 				declarations: {
@@ -319,7 +329,7 @@ export function Parse(tokens, func, verbose=false) {
 				current += 4
 			} else { current += 2 }
 			
-			body.push({
+			push({
 				type: "memory",
 				kind: "set",
 				declarations: {
@@ -354,7 +364,7 @@ export function Parse(tokens, func, verbose=false) {
 				current += 4
 			} else { current += 2 }
 			
-			body.push({
+			push({
 				type: "memory",
 				kind: "set",
 				declarations: {

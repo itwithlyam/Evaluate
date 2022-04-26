@@ -1,4 +1,5 @@
-loop {
+printf("id", "yes\n")
+
+loop 12 {
 	printf("yes", "Hello, Loop!\n")
-	break equal
 }
