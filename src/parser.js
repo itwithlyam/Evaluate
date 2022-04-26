@@ -155,7 +155,25 @@ export function Parse(tokens, func, verbose=false) {
 		}
 		switch(element.ident) {
 			case 36:
+				// Loop
+				ParseStack.push("loop", line)
 				current++
+
+				let amount = tokens[current].char
+				tokens[current].read = true
+				current++
+
+				if (tokens[current].char != "{") throw new CompilationError("ExpectedBlock", "Expected a Block", line, ParseTrace(ParseStack))
+				tokens[current].read = true
+				current++
+
+				push({
+					type: "loop",
+					times: amount,
+					value: "loop " + amount
+				})
+
+				ParseStack.pop()
 				break;
 			case 21:
 				tokens[current].read = true
