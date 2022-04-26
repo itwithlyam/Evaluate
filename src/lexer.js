@@ -56,6 +56,12 @@ export function Lexer(script) {
 					break;
 
 				// Everything else
+				case 'break':
+					idents.push({char: char, ident: Ident.BREAK, classify: Classify.LOOP})
+					break;
+				case 'loop':
+					idents.push({char: char, ident: Ident.LOOP, classfy: Classify.LOOP})
+					break;
 				case 'AND':
 					idents.push({char: char, ident: Ident.AND, classify: Classify.BOOLEAN})
 					break;

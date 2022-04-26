@@ -186,7 +186,9 @@ export const Ident = {
 	AND: 32,
 	OR: 33,
 	NOT: 34,
-	MBOOL: 35
+	MBOOL: 35,
+	LOOP: 36,
+	BREAK: 37,
 }
 
 export const Classify = {
@@ -199,7 +201,8 @@ export const Classify = {
 	BRACKET: 6,
 	SBRACKET: 7,
 	FUNCTION: 8,
-	BOOLEAN: 9
+	BOOLEAN: 9,
+	LOOP: 10,
 }
 
 export const negatives = /(\s)|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)|(\#)|(\")|(\=>)|(\=)/gi
