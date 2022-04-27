@@ -5,23 +5,47 @@ export function Parse(tokens, func, verbose=false) {
 	ParseStack.push("Program Start", 0)
 	let body = []
 	let presentblock = []
-	let current = 0;
+	let current = 0; // Tokens pointer
 	let block = false
 	let line = 0
 	let bar = false
 	let bracket = false
 	let sbracket = false
 
+	function push(data) {
+		if (block) presentblock.push(data)
+		else body.push(data)
+	}
+
 	tokens.forEach((element) => {
-		// console.log(element)
+		if (verbose) {
+			console.log("Token ID: "+current)
+			console.log("Using element:",element)
+			console.log("Using tokens:",tokens[current])
+		}
+		if (tokens[current] !== element) return
+		//console.log(tokens)
 		let status = ParseStack.status()
 		// console.log(status)
-
 		if (element.read) return;
+		//if (element.ident == 11) return current++;
+			if (element.char === "{") {
+				current++
+				return push({
+					type: "startblock",
+					value: "{"
+				})
+			} else if (element.char === "}") {
+				current++
+				return push({
+					type: "endblock",
+					value: "}"
+				})
+			}
 		if (element.ident == 6) {
-			if (bar && status == "Equation") throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
+			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Block Close", line, ParseTrace(ParseStack))
 			bar = true
-			body.push({
+			push({
 				type: "EOF",
 				value: element.char
 			})
@@ -37,7 +61,7 @@ export function Parse(tokens, func, verbose=false) {
 		// 	tokens[current].read = true
 		// 	current += 1
 		// 	if (element.char == '}') {
-		// 		body.push({
+		// 		push({
 		// 			type: "block",
 		// 			body: presentblock
 		// 		})
@@ -77,36 +101,93 @@ export function Parse(tokens, func, verbose=false) {
 		// 	}
 		// } 
 		if (status == "Equation") return;
+		if (element.classify === 10) {
+			// Loops
+			if (element.ident === 36) {
+				
+			}
+		}
+		else if (element.classify === 9) {
+			ParseStack.push("logic gate", line)
+			switch(element.ident) {
+				case 32:
+					// AND
+					push({
+						type: "boolean",
+						kind: "AND",
+						value: tokens[current-1].char + " AND " + tokens[current+1].char,
+						params: [tokens[current-1].char, tokens[current+1].char]
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					ParseStack.pop()
+					return
+				case 33:
+					// OR
+					push({
+						type: "boolean",
+						kind: "OR",
+						value: tokens[current-1].char + " OR " + tokens[current+1].char,
+						params: [tokens[current-1].char, tokens[current+1].char]
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					ParseStack.pop()
+					return
+				case 34:
+					// NOT
+					push({
+						type: "boolean",
+						kind: "NOT",
+						value: "NOT " + tokens[current+1].char,
+						params: [tokens[current+1].char]
+					})
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 2
+					ParseStack.pop()
+					return
+			}
+		}
 		switch(element.ident) {
-			case 22:
+			case 36:
+				// Loop
+				ParseStack.push("loop", line)
+				current++
+
+				let amount = tokens[current].char
 				tokens[current].read = true
-			current += 1
-				body.push({
-					type: "boolean",
-					value: "true"
-				})
-				break;
-			case 23:
+				current++
+
+				if (tokens[current-3].char != "}") throw new CompilationError("ExpectedBlock", "Expected a Block", line, ParseTrace(ParseStack))
 				tokens[current].read = true
-				current += 1
-				body.push({
-					type: "boolean",
-					value: "false"
+				current++
+
+				push({
+					type: "loop",
+					times: amount,
+					value: "loop " + amount
 				})
+
+				ParseStack.pop()
 				break;
 			case 21:
 				tokens[current].read = true
 				current += 1
 				ParseStack.push("Pass", line)
 				current += 1
-				body.push({
+				push({
 					type: "pass",
 					value: "pass"
 				})
 				ParseStack.pop()
 				break;
 			case 1:
-				body.push({
+				push({
 					type: "newline",
 					value: element.char
 				})
@@ -118,7 +199,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line, ParseTrace(ParseStack))
-				body.push({
+				push({
 					type: "sopen",
 					value: element.char
 				})
@@ -127,7 +208,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				if (!sbracket) throw new CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line, ParseTrace(ParseStack))
-				body.push({
+				push({
 					type: "sclose",
 					value: element.char
 				})
@@ -139,18 +220,10 @@ export function Parse(tokens, func, verbose=false) {
 			case 5:
 				tokens[current].read = true
 				current += 1
-				return body.push({
+				return push({
 					type: "operation",
 					value: element.char
 				})
-		}
-		if (element.ident == 0) {
-			tokens[current].read = true
-			current += 1
-			return body.push({
-				type: "number",
-				value: parseFloat(element.char)
-			})
 		}
 		if (element.ident == 11) {
 			if (element.char == '') {
@@ -159,6 +232,7 @@ export function Parse(tokens, func, verbose=false) {
 				return;
 			}
 			if (tokens[current+1].char == '(') {
+				ParseStack.push("Function Call " + element.char, line)
 				current += 1
 				tokens[current].read = true
 				let options = []
@@ -169,13 +243,13 @@ export function Parse(tokens, func, verbose=false) {
 						continue;
 					}
 					options.push(tokens[current].char)
+					tokens[current].read = true
 					tokens[current+1].read = true
 					current += 1
 				}
 				tokens[current.read] = true
 				current += 1
-				ParseStack.push("Function Call " + element.char, line)
-				body.push({
+				push({
 					type: "functioncall",
 					params: options,
 					value: element.char
@@ -210,7 +284,7 @@ export function Parse(tokens, func, verbose=false) {
 					current += 1
 				}
 				current += 1
-				body.push({
+				push({
 					type: "function",
 					kind: "init",
 					declarations: {
@@ -227,7 +301,7 @@ export function Parse(tokens, func, verbose=false) {
 				return;
 			}
 			ParseStack.push("var", line)
-			body.push({
+			push({
 				type: "memory",
 				kind: "var",
 				value: element.char,
@@ -245,7 +319,7 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current + 1].read = true
 			tokens[current].read = true
 			tokens[current + 2].read = true
-			body.push({
+			push({
 				type: "memory",
 				kind: "mset",
 				declarations: {
@@ -277,7 +351,7 @@ export function Parse(tokens, func, verbose=false) {
 				current += 4
 			} else { current += 2 }
 			
-			body.push({
+			push({
 				type: "memory",
 				kind: "set",
 				declarations: {
@@ -295,8 +369,8 @@ export function Parse(tokens, func, verbose=false) {
 			return;
 		}
 		
-		if (element.ident == 30) {
-			ParseStack.push("char declaration", line)
+		if (element.ident == 30 || element.ident == 35) {
+			ParseStack.push(element.char + " declaration", line)
 			tokens[current].read = true
 			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
 			tokens[current + 1].read = true
@@ -304,13 +378,15 @@ export function Parse(tokens, func, verbose=false) {
 			let value = null;
 			if (tokens[current + 2].ident == 13) {
 				tokens[current + 2].read = true
-				if (tokens[current + 3].ident != 18) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				if (tokens[current + 3].ident != 18 && element.ident != 35) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
 				tokens[current + 3].read = true
 				value = tokens[current + 3].char
+				if (value === "true" && element.ident === 35) value = 1
+				else if (element.ident === 35) value = 0
 				current += 4
 			} else { current += 2 }
 			
-			body.push({
+			push({
 				type: "memory",
 				kind: "set",
 				declarations: {
@@ -320,7 +396,7 @@ export function Parse(tokens, func, verbose=false) {
 					init: {
 						value: value
 					},
-					annotation: "Char"
+					annotation: element.char
 				}
 			})
 

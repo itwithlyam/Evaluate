@@ -6,14 +6,20 @@ import chalk from "chalk"
 import fifo from 'fifo'
 import Generator from './generator.js'
 
-// Expressors
-import equation from './interpreter/equate.js'
-import variable from './interpreter/var.js'
-import mset from './interpreter/mset.js'
-import callfunc from './interpreter/callfunc.js'
-import initfunc from './interpreter/initfunc.js'
-import declare from './interpreter/declare.js'
-import { e } from 'mathjs'
+// Instructions
+import loop from './compiler/loop.js'
+import equation from './compiler/equate.js'
+import variable from './compiler/var.js'
+import mset from './compiler/mset.js'
+import callfunc from './compiler/callfunc.js'
+import initfunc from './compiler/initfunc.js'
+import declare from './compiler/declare.js'
+
+
+// Logic gates
+import andgate from './compiler/logic/and.js'
+import orgate from './compiler/logic/or.js'
+import notgate from './compiler/logic/not.js'
 
 // Memory 
 let VarMemory = {}
@@ -29,21 +35,51 @@ function pushdata(id, value, type) {
 	}
 }
 
-export function Interpret(AST, unit, verbose, compiled) {
-	const RuntimeStack = new StackTrace(verbose, "Interpreter Stack")
+export function Compile(AST, unit, verbose, compiled) {
+	if (verbose) console.log(AST)
+	const RuntimeStack = new StackTrace(verbose, "Compiler Stack")
 	RuntimeStack.push("Program Start", 0)
-	let tokens = AST.body
-	let current = 0
-	let line = 0
+	let tokens = AST.body // Items
+	let current = 0 // Item pointer
+	let line = 0 // Line pointer
+	let leni = 0 // Len init
+	let lenn = 0 // Len now
+	let block = false
+	let blockbody = []
 	let ans = []
+	let res = []
+	
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'startblock':
+				leni = ans.length
+				block = true
+				current++
+				break;
+			case 'endblock':
+				block = false
+				lenn = ans.length
+				for (let i = lenn; i > leni; i--) {
+					blockbody.unshift(ans.pop())
+				}
+				current++
+				break;
+			case 'loop':
+				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
+				res = loop.execute(element.times, blockbody, current)
+				if (Array.isArray(res)) {
+					res.forEach(e => {
+						ans.push(e)
+					})
+				} else ans.push(res)
+				current += 1
+				break;
 			case 'pass':
 				current += 1
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
+				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
@@ -102,6 +138,13 @@ export function Interpret(AST, unit, verbose, compiled) {
 							current += 1
 							RuntimeStack.pop()
 							break;
+						
+						case 'Bool':
+							RuntimeStack.push("declare boolean", line)
+							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
 
 						case 'Int_16':
 							RuntimeStack.push("declare 16 bit integer", line)
@@ -123,6 +166,13 @@ export function Interpret(AST, unit, verbose, compiled) {
 							current += 1
 							RuntimeStack.pop()
 							break;
+
+						case 'String':
+							RuntimeStack.push("declare string", line)
+							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
+							current += 1
+							RuntimeStack.pop()
+							break;
 					}
 					if (Array.isArray(code)) {
 						code.forEach(e => {
@@ -131,16 +181,28 @@ export function Interpret(AST, unit, verbose, compiled) {
 					} else ans.push(code)
 				}
 				break;
-			case 'block':
-				RuntimeStack.push("Equation", line)
-				ans.push(equation.execute(element.body))
-				current += 1
-				RuntimeStack.pop()
+			case "boolean":
+				let code = []
+				switch (element.kind) {
+					case 'AND':
+						code = andgate.execute(element.params)
+						break;
+					case 'OR':
+						code = orgate.execute(element.params)
+						break;
+					case 'NOT':
+						code = notgate.execute(element.params)
+						break;
+				}
+				if (Array.isArray(code)) {
+					code.forEach(e => {
+						ans.push(e)
+					})
+				} else ans.push(code)
 				break;
 			case 'EOF':
 				break;
 			default:
-				console.log(chalk.yellow("Warning: Expressor '" + element.value + "' is still a work in progress: Line " + line))
 				current += 1
 				break
 		}

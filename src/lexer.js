@@ -36,14 +36,40 @@ export function Lexer(script) {
 					comment = true
 					break;
 				// NOTE: Put all tokens below here. Comments + Strings have priority.
+
+				// Declarations
+				// Text-based
 				case 'Char':
+				case 'String':
 					idents.push({char: char, ident: Ident.MSTRING, classify: Classify.MEMORY})
 					break;
+				// Number-based
 				case 'Int_8':
 				case 'Int_16':
 				case 'Int_32':
 				case 'Int_64':
 					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
+					break;
+				// Binary-based
+				case 'Bool':
+					idents.push({char: char, ident: Ident.MBOOL, classify: Classify.MEMORY})
+					break;
+
+				// Everything else
+				case 'break':
+					idents.push({char: char, ident: Ident.BREAK, classify: Classify.LOOP})
+					break;
+				case 'loop':
+					idents.push({char: char, ident: Ident.LOOP, classfy: Classify.LOOP})
+					break;
+				case 'AND':
+					idents.push({char: char, ident: Ident.AND, classify: Classify.BOOLEAN})
+					break;
+				case 'OR':
+					idents.push({char: char, ident: Ident.OR, classify: Classify.BOOLEAN})
+					break;
+				case 'NOT':
+					idents.push({char: char, ident: Ident.NOT, classify: Classify.BOOLEAN})
 					break;
 				case '=':
 					idents.push({char: char, ident: Ident.EQUALS, classify: Classify.MEMORY})

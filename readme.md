@@ -54,7 +54,7 @@ Linux (highly supported): nasm -f elf <file>.asm
 Windows (supported): nasm -f win32 <file>.asm
 MacOS (not supported): nasm -f macho64 <file>.asm
 ```
-3. Link the object file (using GCC).
+3. Link the object file (GCC can also be used).
 ```
 Linux: ld -m elf_i386 -s -o <file>.out <file>.o
 Windows: ld -o <file>.exe <file>.o
