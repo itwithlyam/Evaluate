@@ -163,7 +163,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current++
 
-				if (tokens[current].char != "{") throw new CompilationError("ExpectedBlock", "Expected a Block", line, ParseTrace(ParseStack))
+				if (tokens[current-3].char != "}") throw new CompilationError("ExpectedBlock", "Expected a Block", line, ParseTrace(ParseStack))
 				tokens[current].read = true
 				current++
 

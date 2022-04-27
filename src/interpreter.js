@@ -37,14 +37,34 @@ export function Interpret(AST, unit, verbose, compiled) {
 	console.log(AST)
 	const RuntimeStack = new StackTrace(verbose, "Interpreter Stack")
 	RuntimeStack.push("Program Start", 0)
-	let tokens = AST.body
-	let current = 0
-	let line = 0
+	let tokens = AST.body // Items
+	let current = 0 // Item pointer
+	let line = 0 // Line pointer
+	let leni = 0 // Len init
+	let lenn = 0 // Len now
+	let block = false
+	let blockbody = []
 	let ans = []
+	
 	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'startblock':
+				leni = ans.length
+				block = true
+				current++
+				break;
 			case 'endblock':
+				block = false
+				lenn = ans.length
+				for (let i = lenn; i > leni; i--) {
+					blockbody.unshift(ans.pop())
+				}
+				current++
+				break;
+			case 'loop':
+				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
+				// TODO switch to file
+				break;
 			case 'pass':
 				current += 1
 				break;
