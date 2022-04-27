@@ -6,13 +6,15 @@ import chalk from "chalk"
 import fifo from 'fifo'
 import Generator from './generator.js'
 
-// Expressors
+// Instructions
+import loop from './interpreter/loop.js'
 import equation from './interpreter/equate.js'
 import variable from './interpreter/var.js'
 import mset from './interpreter/mset.js'
 import callfunc from './interpreter/callfunc.js'
 import initfunc from './interpreter/initfunc.js'
 import declare from './interpreter/declare.js'
+
 
 // Logic gates
 import andgate from './interpreter/logic/and.js'
@@ -45,6 +47,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 	let block = false
 	let blockbody = []
 	let ans = []
+	let res = []
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
@@ -63,14 +66,20 @@ export function Interpret(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				// TODO switch to file
+				res = loop.execute(element.times, blockbody)
+				if (Array.isArray(res)) {
+					res.forEach(e => {
+						ans.push(e)
+					})
+				} else ans.push(res)
+				current += 1
 				break;
 			case 'pass':
 				current += 1
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				let res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
+				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)

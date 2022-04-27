@@ -3,5 +3,5 @@ printf("id", "yes\n")
 
 {
 	printf("yes", "Hello, Loop!\n")
-} loop 12
+} loop 5
 
