@@ -15,7 +15,7 @@ const argdef = [
 import stopwatch from 'statman-stopwatch'
 import args from 'command-line-args'
 import chalk from 'chalk'
-import {Interpret} from './src/interpreter.js'
+import {Compile} from './src/compiler.js'
 import {Lexer} from './src/lexer.js'
 import {Parse} from './src/parser.js'
 import * as fs from 'fs'
@@ -43,7 +43,7 @@ export default function runner() {
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens, false, verbose)
-		Interpret(script, false, verbose, options.output || "output")
+		Compile(script, false, verbose, options.output || "output")
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log(err)
