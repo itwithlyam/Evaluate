@@ -36,7 +36,7 @@ function pushdata(id, value, type) {
 }
 
 export function Interpret(AST, unit, verbose, compiled) {
-	console.log(AST)
+	if (verbose) console.log(AST)
 	const RuntimeStack = new StackTrace(verbose, "Interpreter Stack")
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body // Items
@@ -66,7 +66,7 @@ export function Interpret(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = loop.execute(element.times, blockbody)
+				res = loop.execute(element.times, blockbody, current)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
