@@ -7,19 +7,19 @@ import fifo from 'fifo'
 import Generator from './generator.js'
 
 // Instructions
-import loop from './interpreter/loop.js'
-import equation from './interpreter/equate.js'
-import variable from './interpreter/var.js'
-import mset from './interpreter/mset.js'
-import callfunc from './interpreter/callfunc.js'
-import initfunc from './interpreter/initfunc.js'
-import declare from './interpreter/declare.js'
+import loop from './compiler/loop.js'
+import equation from './compiler/equate.js'
+import variable from './compiler/var.js'
+import mset from './compiler/mset.js'
+import callfunc from './compiler/callfunc.js'
+import initfunc from './compiler/initfunc.js'
+import declare from './compiler/declare.js'
 
 
 // Logic gates
-import andgate from './interpreter/logic/and.js'
-import orgate from './interpreter/logic/or.js'
-import notgate from './interpreter/logic/not.js'
+import andgate from './compiler/logic/and.js'
+import orgate from './compiler/logic/or.js'
+import notgate from './compiler/logic/not.js'
 
 // Memory 
 let VarMemory = {}
@@ -35,9 +35,9 @@ function pushdata(id, value, type) {
 	}
 }
 
-export function Interpret(AST, unit, verbose, compiled) {
+export function Compile(AST, unit, verbose, compiled) {
 	if (verbose) console.log(AST)
-	const RuntimeStack = new StackTrace(verbose, "Interpreter Stack")
+	const RuntimeStack = new StackTrace(verbose, "Compiler Stack")
 	RuntimeStack.push("Program Start", 0)
 	let tokens = AST.body // Items
 	let current = 0 // Item pointer

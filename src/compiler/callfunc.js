@@ -1,5 +1,5 @@
 import {RuntimeError, ParseTrace} from '../util.js'
-import {Interpret} from '../interpreter.js'
+import {Compile} from '../compiler.js'
 
 const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic", "malloc", "raw"]
 
