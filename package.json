@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
 		"build": "nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o",
-    "start": "node index.js program.ev --force --disable-warnings"
+    "start": "node index.js program.ev --force --disable-warnings",
+		"test": "node index.js test/suite.ev --force --disable-warnings && nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o && ./output"
   },
   "author": "",
   "license": "MIT",

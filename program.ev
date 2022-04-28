@@ -1,4 +1,0 @@
-{
-	printf("yes", "Hello, Loop!\n")
-	printf("yes1", "Hello, Loop, Again!\n")
-} loop 10
