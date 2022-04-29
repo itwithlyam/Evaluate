@@ -1,6 +1,14 @@
+# Declarations
+Int_8 T7Int8 = 255
+Int_16 T8Int16 = 65535
+Int_32 T9Int32 = 2147483647
+Int_64 T10Int64 = 9223372036854775807
+Char T11Char = "A"
+String T12String = "T12String"
+
 # Blocks
 {
-	printf("T13", "T13Loop\n")
+	printf("T13", "\nT13Loop\n\n")
 	# Standard Library
 	equate("T1Equate", "1+1-321+15324*6532452/43241234%7546/7547¬")
 	logic("T2Logic", "1542==43")
@@ -9,14 +17,6 @@
 	raw("mov ax,0") # T5Raw
 	simplify("T6Simplify", "12a + 7y - 9978765 + y / x * a / b * a^3")
 	
-	# Declarations
-	Int_8 T7Int8 = 255
-	Int_16 T8Int16 = 65535
-	Int_32 T9Int32 = 2147483647
-	Int_64 T10Int64 = 9223372036854775807
-	Char T11Char = "A"
-	String T12String = "T12String"
-	
 	printf("T11", "T11Char: {T11Char}\n")
 	printf("T12", "T12String: {T12String}\n")
-} loop 1
+} loop 1000
