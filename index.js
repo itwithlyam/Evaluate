@@ -27,7 +27,13 @@ export default function runner() {
 	if (args(argdef).help) {
 		const flags = [
 			['Flag', 'Alias', 'Description'],
-			['--help', '-h', 'Shows this menu.']
+			['--help', '-h', 'Shows this menu.'],
+			['--input <file>', '-i <file>', 'Input file. Default parameter.'],
+			['--verbose', '-v', 'Outputs all stack operations and produced data.'],
+			['--version', 'None', 'Outputs this version of Evaluate'],
+			['--force', '-f', 'Make sure the program runs'],
+			['--output <filename>', '-o <filename>', 'Output filename.'],
+			['--disable-warnings', 'None', 'Disables warnings thrown by Evaluate.']
 		]
 		const config = {
 			header: {
