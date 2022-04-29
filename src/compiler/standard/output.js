@@ -23,7 +23,7 @@ export default function outputfunc(args, line, trace, compiled) {
 			} else {
 				if (concat) {
 					ret.push({commands: `mov eax,4\nmov ebx,1\nmov ecx,${l}\nmov edx,${l}len\nint 0x80\n`, type: "text", os: ['win', 'linux']})
-					ret.push({commands: `mov eax,0x20000004\nmov ebx,0x20000001\nmov ecx,${l}\nmov edx,${l}}len\nint 0x80\n`, type: "text", os: ['mac']})
+					ret.push({commands: `mov eax,0x20000004\nmov ebx,0x20000001\nmov ecx,${l}\nmov edx,${l}len\nint 0x80\n`, type: "text", os: ['mac']})
 				} else {
 					ret.push({commands: `db "${l}",0`, type: "label", label: args[0]+counter, os: ['mac', 'linux', 'win']})
 					ret.push({label: args[0]+"len"+counter, commands: `equ $-${args[0]}${counter}`, type: "label", os: ['mac', 'linux', 'win']})
