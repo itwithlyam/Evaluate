@@ -30,6 +30,7 @@
     "pkg": "^5.5.1",
     "rpn": "^2.0.0",
     "stack-lifo": "^0.1.6",
-    "statman-stopwatch": "^2.13.0"
+    "statman-stopwatch": "^2.13.0",
+    "table": "^6.8.0"
   }
 }
