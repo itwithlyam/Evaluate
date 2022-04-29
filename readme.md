@@ -46,6 +46,7 @@ CLI Flags:
 --force -f - Forces the program to run
 --disable-warnings - Do not show warnings
 --output <output> -o <output> - defaults to "output" - The name of the outputted *.asm file.
+--help -h - Outputs the args help menu
 ```
 
 2. Use NASM to compile the generated asm file. The OS-specific commands are:
