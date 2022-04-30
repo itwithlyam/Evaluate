@@ -3,10 +3,11 @@
     "publisher": "ITwithLyam",
     "displayName": "Evaluate",
     "description": "The official extention for the Evaluate Programming Language",
-    "version": "2.0.0-1",
+    "version": "1.0.1",
     "engines": {
         "vscode": "^1.66.0"
     },
+    "icon": "images/EV.png",
     "categories": [
         "Programming Languages"
     ],
