@@ -1,5 +1,6 @@
 {
     "name": "evaluate",
+    "publisher": "ITwithLyam",
     "displayName": "Evaluate",
     "description": "The official extention for the Evaluate Programming Language",
     "version": "0.0.1",
