@@ -1,3 +1,0 @@
-{
-	printf("Hello", "HelloWorld!\n")
-} loop 5
