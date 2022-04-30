@@ -19,4 +19,4 @@ String T12String = "T12String"
 	
 	printf("T11", "T11Char: {T11Char}\n")
 	printf("T12", "T12String: {T12String}\n")
-} loop 1000
+} loop 10
