@@ -1,0 +1,32 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Evaluate",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.evaluate",
+				"match": "\\b(Int_8|Int_16|Int_32|Int_64|String|Char|loop))\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.evaluate",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.evaluate",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.ev"
+}

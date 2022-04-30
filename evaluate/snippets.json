@@ -1,0 +1,18 @@
+{
+	"Print to console": {
+		"prefix": "helloworld",
+		"body": [
+			"printf(\"helloworld\", \"Hello, World!\")"
+		],
+		"description": "A quick hello world program."
+	},
+    "Loop": {
+        "prefix": "loop",
+        "body": [
+            "{",
+            "   printf(\"loop\", \"Hello from the Loop!\")",
+            "} loop 10"
+        ],
+        "description": "Loops a printf statement 10 times."
+    }
+}
