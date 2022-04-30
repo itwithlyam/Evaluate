@@ -7,13 +7,22 @@
 		},
 		{
 			"include": "#strings"
+		},
+		{
+			"include": "#comment"
 		}
 	],
 	"repository": {
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.evaluate",
-				"match": "\\b(Int_8|Int_16|Int_32|Int_64|String|Char|loop))\\b"
+				"match": "\\b(Int_8|Int_16|Int_32|Int_64|String|Char|loop)\\b"
+			}]
+		},
+		"comment": {
+			"patterns": [{
+				"name": "comment.line.number-sign.evaluate",
+				"match": "(//|#)\\s*.*$"
 			}]
 		},
 		"strings": {
