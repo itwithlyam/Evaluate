@@ -55,8 +55,8 @@ export class StackTrace {
 	}
 	pop() {
 		this.Stack.pop()
-		this.trueStack.pop()
-		if (this.verbose) console.info(chalk.blue("Exit state"))
+		let pop = this.trueStack.pop()
+		if (this.verbose) console.info(chalk.blue("Exit state " + pop))
 	}
 	clear() {
 		this.Stack.clear()
