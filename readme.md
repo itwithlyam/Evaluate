@@ -1,30 +1,37 @@
 # Evaluate
-_A hybrid programming language. It can both compile and interpret._
+*A homemade professional compiled programming language.*
+
+*It compiles to NASM and can cross-compile, though it's cross-compilation capabilities haven't been verified.*
 
 ## Example program
 Input 
 ```
 Int_64 number = 123456751
+printf("num", "{number}\n")
 ``` 
+Result: `123456751`
+
 Input: 
 ```
-equate("240*4")
+equate("myEquation", "240*4")
 ```
 Result: `840`
 
-**Syntax guide: https://itwithlyam.gitbook.io/evaluate**
+**Syntax guide has moved to GitHub discussions.**
 
 ## Installation
 
 1. Install NASM (The Netwide Assembler) and GNU Binutils on your desired computer. These are Evaluate's external dependencies.
-2. **If it exists, download the Evaluate binary for your OS. If not, then build from source:**
+2. If you're using Visual Studio Code, the Evaluate Language Support extension is recommended.
+3. **If it exists, download the Evaluate binary for your OS. If not, then build from source:**
 
 ### Build from source
 
 1. Install [GNU Make](https://www.gnu.org/software/make/). Make sure to add to PATH or envrionment variables.
 2. Install [Node.js and npm](https://www.nodejs.org). Make sure to select npm when given the option by the node installer. Make sure to add to PATH or environment variables.
 3. Install the latest release of [NASM (the Netwide Assembler)](https://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D) for your OS. Make sure to add to PATH or environment variables.
-4. Run `make install` in the source code directory to install required libraries.
+4. If you're using Visual Studio Code, the Evaluate Language Support extension is recommended.
+5. Follow the instructions below for your OS.
 
 #### Windows
 Run `make win`, the output will be a .exe file
@@ -46,6 +53,7 @@ CLI Flags:
 --force -f - Forces the program to run
 --disable-warnings - Do not show warnings
 --output <output> -o <output> - defaults to "output" - The name of the outputted *.asm file.
+--help -h - Outputs the args help menu
 ```
 
 2. Use NASM to compile the generated asm file. The OS-specific commands are:
@@ -56,9 +64,8 @@ MacOS (not supported): nasm -f macho64 <file>.asm
 ```
 3. Link the object file (GCC can also be used).
 ```
-Linux: ld -m elf_i386 -s -o <file>.out <file>.o
+Linux and MacOS: ld -o <file> <file>.o
 Windows: ld -o <file>.exe <file>.o
-MacOS: ld -o <file> <file>.o
 ```
 
 

@@ -15,3 +15,4 @@ output.cpp
 *.out
 output
 debug
+*.vsix

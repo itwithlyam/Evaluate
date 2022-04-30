@@ -30,6 +30,7 @@ export function Parse(tokens, func, verbose=false) {
 		if (element.read) return;
 		//if (element.ident == 11) return current++;
 			if (element.char === "{") {
+				ParseStack.push("Block Start", line)
 				current++
 				return push({
 					type: "startblock",
@@ -37,6 +38,7 @@ export function Parse(tokens, func, verbose=false) {
 				})
 			} else if (element.char === "}") {
 				current++
+				ParseStack.pop()
 				return push({
 					type: "endblock",
 					value: "}"

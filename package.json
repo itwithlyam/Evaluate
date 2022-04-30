@@ -4,8 +4,9 @@
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
-		"build": "nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o",
-    "start": "node index.js program.ev --force --disable-warnings"
+    "build": "nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o",
+    "start": "node index.js program.ev --force --disable-warnings",
+    "test": "node index.js test/suite.ev -v --force --disable-warnings && nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o && ./output"
   },
   "author": "",
   "license": "MIT",
@@ -29,6 +30,7 @@
     "pkg": "^5.5.1",
     "rpn": "^2.0.0",
     "stack-lifo": "^0.1.6",
-    "statman-stopwatch": "^2.13.0"
+    "statman-stopwatch": "^2.13.0",
+    "table": "^6.8.0"
   }
 }

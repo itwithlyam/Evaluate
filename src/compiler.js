@@ -22,18 +22,8 @@ import orgate from './compiler/logic/or.js'
 import notgate from './compiler/logic/not.js'
 
 // Memory 
-let VarMemory = {}
+let VarMemory = []
 let FunctionMemory = {}
-
-function pushdata(id, value, type) {
-	if (type === "function") return FunctionMemory[id] = value
-	if (type === "variable") {
-		if (parseInt(value)) { VarMemory[id] = parseInt(value) }
-		else {
-			VarMemory[id] = value
-		}
-	}
-}
 
 export function Compile(AST, unit, verbose, compiled) {
 	if (verbose) console.log(AST)
@@ -52,6 +42,7 @@ export function Compile(AST, unit, verbose, compiled) {
 	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'startblock':
+				RuntimeStack.push("Block Start", line)
 				leni = ans.length
 				block = true
 				current++
@@ -63,6 +54,7 @@ export function Compile(AST, unit, verbose, compiled) {
 					blockbody.unshift(ans.pop())
 				}
 				current++
+				RuntimeStack.pop()
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
@@ -88,11 +80,6 @@ export function Compile(AST, unit, verbose, compiled) {
 				current += 1
 				RuntimeStack.pop()
 				break;
-			case 'function':
-				RuntimeStack.push("Function " + element.declarations.id.name, line)
-				FunctionMemory = initfunc.execute(FunctionMemory, element)
-				current += 1
-				return RuntimeStack.pop()
 			case 'newline':
 				current += 1
 				line += 1
@@ -123,55 +110,44 @@ export function Compile(AST, unit, verbose, compiled) {
 					RuntimeStack.pop()
 				}
 				if (element.kind === 'set') {
+					RuntimeStack.push("declare " + element.declarations.annotation, line)
 					let code;
+					if (VarMemory.includes(element.declarations.id.name)) throw new RuntimeError("AlreadyDefined", "A variable with the same name has already been defined.", line, ParseTrace(RuntimeStack))
+					VarMemory.push(element.declarations.id.name)
 					switch(element.declarations.annotation) {
 						case 'Char':
-							RuntimeStack.push("declare char", line)
 							code = declare.execute("char", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 
 						case 'Int_8':
-							RuntimeStack.push("declare 8 bit integer", line)
 							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 						
 						case 'Bool':
-							RuntimeStack.push("declare boolean", line)
 							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 
 						case 'Int_16':
-							RuntimeStack.push("declare 16 bit integer", line)
 							code = declare.execute("int16", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 
 						case 'Int_32':
-							RuntimeStack.push("declare 32 bit integer", line)
 							code = declare.execute("int32", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 
 						case 'Int_64':
-							RuntimeStack.push("declare 64 bit integer", line)
 							code = declare.execute("int64", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 
 						case 'String':
-							RuntimeStack.push("declare string", line)
 							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
 							current += 1
-							RuntimeStack.pop()
 							break;
 					}
 					if (Array.isArray(code)) {
@@ -179,6 +155,7 @@ export function Compile(AST, unit, verbose, compiled) {
 							ans.push(e)
 						})
 					} else ans.push(code)
+					RuntimeStack.pop()
 				}
 				break;
 			case "boolean":
