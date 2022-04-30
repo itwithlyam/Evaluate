@@ -10,13 +10,31 @@
 		},
 		{
 			"include": "#comment"
+		},
+		{
+			"include": "#constant"
+		},
+		{
+			"include": "#standard"
+		},
+		{
+			"include": "#invalid"
 		}
 	],
 	"repository": {
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.evaluate",
-				"match": "\\b(Int_8|Int_16|Int_32|Int_64|String|Char|loop)\\b"
+				"match": "\\b(loop)\\b"
+			},
+			{
+				"name": "meta.block.evaluate",
+				"begin": "{",
+				"end": "}"
+			},
+			{
+				"name": "storage.type.evaluate",
+				"match": "\\b(Int_8|Int_16|Int_32|Int_64|String|Char|Bool)\\b"
 			}]
 		},
 		"comment": {
@@ -35,6 +53,24 @@
 					"match": "\\\\."
 				}
 			]
+		},
+		"constant": {
+			"patterns": [{
+				"name": "constant.language.evaluate",
+				"match": "\\b(true|false|null)\\b"
+			}]
+		},
+		"standard": {
+			"patterns": [{
+				"name": "support.function.evaluate",
+				"match": "\\b(equate|logic|malloc|printf|panic|simplify)\\b"
+			}]
+		},
+		"invalid": {
+			"patterns": [{
+				"name": "invalid.deprecated.evaluate",
+				"match": "\\b(AND|OR|NOT|raw)\\b"
+			}]
 		}
 	},
 	"scopeName": "source.ev"
