@@ -1,5 +1,5 @@
 # Declarations
-Int_8 T7Int8 = 255
+Int_8 T7Int8 = 0
 Int_16 T8Int16 = 65535
 Int_32 T9Int32 = 2147483647
 Int_64 T10Int64 = 9223372036854775807
