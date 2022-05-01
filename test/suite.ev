@@ -6,6 +6,8 @@ Int_64 T10Int64 = 9223372036854775807
 Char T11Char = "A"
 String T12String = "T12String"
 Bool T14Bool = true
+Int_32 T15Inc = 0
+Int_32 T16Dec = 0
 
 # Blocks
 {
@@ -20,4 +22,8 @@ Bool T14Bool = true
 	
 	printf("T11", "T11Char: {T11Char}\n")
 	printf("T12", "T12String: {T12String}\n")
+
+	# Maths
+	T15Inc += 1
+	T16Dec -= 1
 } loop 2
