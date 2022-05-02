@@ -1,3 +1,4 @@
+import { insideSnapshot } from 'pkg/lib-es5/common'
 import {Ident, Classify, negatives} from './util.js'
 
 export function Lexer(script) {
@@ -56,6 +57,21 @@ export function Lexer(script) {
 					break;
 
 				// Everything else
+				case 'bz':
+					idents.push({char: char, ident: Ident.BREAKZERO, classify: Classify.BRANCHING})
+					break;
+				case 'bnz':
+					idents.push({char: char, ident: Ident.BREAKNOTZERO, classify: Classify.BRANCHING})
+					break;
+				case 'be':
+					idents.push({char: char, ident: Ident.BREAKEQUAL, classify: Classify.BRANCHING})
+					break;
+				case 'bne':
+					idents.push({char: char, ident: Ident.BREAKNOTEQUAL, classify: Classify.BRANCHING})
+					break;
+				case 'continue':
+					idents.push({char: char, ident: Ident.CONTINUE, classify: Classify.BRANCHING})
+					break;
 				case '++':
 					idents.push({char: char, ident: Ident.INC, classify: Classify.OPERATION})
 					break;

@@ -28,6 +28,8 @@ Int_32 T16Dec = 5
 	T16Dec--
 
 	bz T16Dec 
-	be T16Dec T15Inc
+	#be T16Dec T15Inc
 	#bnz T16Dec
+	#bne T16Dec T15Inc
+	#continue
 } loop 10
