@@ -14,7 +14,7 @@ import mset from './compiler/mset.js'
 import callfunc from './compiler/callfunc.js'
 import initfunc from './compiler/initfunc.js'
 import declare from './compiler/declare.js'
-
+import incdec from './compiler/incdec.js'
 
 // Logic gates
 import andgate from './compiler/logic/and.js'
@@ -41,6 +41,12 @@ export function Compile(AST, unit, verbose, compiled) {
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'increment':
+				incdec.execute(element.declarations.id.name, true).forEach(e => ans.push(e))
+				break;
+			case 'decrement':
+				incdec.execute(element.declarations.id.name, false).forEach(e => ans.push(e))
+				break;
 			case 'startblock':
 				RuntimeStack.push("Block Start", line)
 				leni = ans.length

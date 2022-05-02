@@ -24,6 +24,6 @@ Int_32 T16Dec = 0
 	printf("T12", "T12String: {T12String}\n")
 
 	# Maths
-	T15Inc += 1
-	T16Dec -= 1
+	T15Inc++
+	T16Dec--
 } loop 2
