@@ -26,4 +26,6 @@ Int_32 T16Dec = 0
 	# Maths
 	T15Inc++
 	T16Dec--
-} loop 2
+
+	#break zero
+} loop 10
