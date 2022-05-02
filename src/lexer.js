@@ -1,4 +1,3 @@
-import { insideSnapshot } from 'pkg/lib-es5/common'
 import {Ident, Classify, negatives} from './util.js'
 
 export function Lexer(script) {

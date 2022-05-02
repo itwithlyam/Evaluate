@@ -109,6 +109,63 @@ export function Parse(tokens, func, verbose=false) {
 				
 			}
 		}
+		else if (element.classify === 11) {
+			// Branching
+			switch(element.ident) {
+				case '37':
+					push({
+						type: "branching",
+						kind: "break"
+					})
+					current++
+					break;
+				case '40':
+					push({
+						type: "branching",
+						kind: "breakzero",
+						params: [tokens[current+1].char]
+					})
+					tokens[current+1].read = true
+					current += 2
+					break;
+				case '41':
+					push({
+						type: "branching",
+						kind: "breakequal",
+						params: [tokens[current+1].char, tokens[current+2].char]
+					})
+					tokens[current+1].read = true
+					tokens[current+2].read = true
+					current += 3
+					break;
+				case '42':
+					push({
+						type: "branching",
+						kind: "breaknotzero",
+						params: [tokens[current+1].char]
+					})
+					tokens[current+1].read = true
+					current += 2
+					break;
+				case '43':
+					push({
+						type: "branching",
+						kind: "breaknotequal",
+						params: [tokens[current+1].char, tokens[current+2].char]
+					})
+					tokens[current+1].read = true
+					tokens[current+2].read = true
+					current += 3
+					break;
+				case '44':
+					push({
+						type: "branching",
+						kind: "continue"
+					})
+					current++
+					break;
+			}
+		}
 		else if (element.classify === 9) {
 			ParseStack.push("logic gate", line)
 			switch(element.ident) {
