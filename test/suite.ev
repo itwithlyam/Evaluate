@@ -7,7 +7,7 @@ Char T11Char = "A"
 String T12String = "T12String"
 Bool T14Bool = true
 Int_32 T15Inc = 0
-Int_32 T16Dec = 5
+Int_32 T16Dec = 
 
 # Blocks
 {

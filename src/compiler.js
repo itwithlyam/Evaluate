@@ -58,16 +58,16 @@ export function Compile(AST, unit, verbose, compiled) {
 						nbreak.execute().forEach(e => ans.push(e))
 						break;
 					case 'breakequal':
-						breakequal.execute(element.args).forEach(e => ans.push(e))
+						breakequal.execute(element.params).forEach(e => ans.push(e))
 						break;
 					case 'breaknotequal':
-						breaknotequal.execute(element.args).forEach(e => ans.push(e))
+						breaknotequal.execute(element.params).forEach(e => ans.push(e))
 						break;
 					case 'breakzero':
-						breakzero.execute(element.args).forEach(e => ans.push(e))
+						breakzero.execute(element.params).forEach(e => ans.push(e))
 						break;
 					case 'breaknotzero':
-						breaknotzero.execute(element.args).forEach(e => ans.push(e))
+						breaknotzero.execute(element.params).forEach(e => ans.push(e))
 						break;
 					case 'continue':
 						ncontinue.execute().forEach(e => ans.push(e))
