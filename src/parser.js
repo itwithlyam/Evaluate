@@ -112,14 +112,14 @@ export function Parse(tokens, func, verbose=false) {
 		else if (element.classify === 11) {
 			// Branching
 			switch(element.ident) {
-				case '37':
+				case 37:
 					push({
 						type: "branching",
 						kind: "break"
 					})
 					current++
 					break;
-				case '40':
+				case 40:
 					push({
 						type: "branching",
 						kind: "breakzero",
@@ -128,7 +128,7 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current+1].read = true
 					current += 2
 					break;
-				case '41':
+				case 41:
 					push({
 						type: "branching",
 						kind: "breakequal",
@@ -138,7 +138,7 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current+2].read = true
 					current += 3
 					break;
-				case '42':
+				case 42:
 					push({
 						type: "branching",
 						kind: "breaknotzero",
@@ -147,7 +147,7 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current+1].read = true
 					current += 2
 					break;
-				case '43':
+				case 43:
 					push({
 						type: "branching",
 						kind: "breaknotequal",
@@ -157,7 +157,7 @@ export function Parse(tokens, func, verbose=false) {
 					tokens[current+2].read = true
 					current += 3
 					break;
-				case '44':
+				case 44:
 					push({
 						type: "branching",
 						kind: "continue"

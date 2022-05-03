@@ -7,7 +7,6 @@ import fifo from 'fifo'
 import Generator from './generator.js'
 
 // Instructions
-import loop from './compiler/loop.js'
 import equation from './compiler/equate.js'
 import variable from './compiler/var.js'
 import mset from './compiler/mset.js'
@@ -15,6 +14,17 @@ import callfunc from './compiler/callfunc.js'
 import initfunc from './compiler/initfunc.js'
 import declare from './compiler/declare.js'
 import incdec from './compiler/incdec.js'
+
+// Blocks
+// Modifiers
+import loop from './compiler/blocks/modifiers/loop.js'
+// Control/Branching
+import nbreak from './compiler/blocks/control/break.js'
+import breakequal from './compiler/blocks/control/breakequal.js'
+import breakzero from './compiler/blocks/control/breakzero.js'
+import breaknotequal from './compiler/blocks/control/breaknotequal.js'
+import breaknotzero from './compiler/blocks/control/breaknotzero.js'
+import ncontinue from './compiler/blocks/control/continue.js'
 
 // Logic gates
 import andgate from './compiler/logic/and.js'
@@ -41,6 +51,32 @@ export function Compile(AST, unit, verbose, compiled) {
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'branching':
+			// Branching
+				switch(element.kind) {
+					case 'break':
+						nbreak.execute().forEach(e => ans.push(e))
+						break;
+					case 'breakequal':
+						breakequal.execute(element.args).forEach(e => ans.push(e))
+						break;
+					case 'breaknotequal':
+						breaknotequal.execute(element.args).forEach(e => ans.push(e))
+						break;
+					case 'breakzero':
+						breakzero.execute(element.args).forEach(e => ans.push(e))
+						break;
+					case 'breaknotzero':
+						breaknotzero.execute(element.args).forEach(e => ans.push(e))
+						break;
+					case 'continue':
+						ncontinue.execute().forEach(e => ans.push(e))
+						break;
+				}
+				current++
+				break;
+
+			// Everything else
 			case 'increment':
 				incdec.execute(element.declarations.id.name, true).forEach(e => ans.push(e))
 				break;
