@@ -7,7 +7,7 @@ Char T11Char = "A"
 String T12String = "T12String"
 Bool T14Bool = true
 Int_32 T15Inc = 0
-Int_32 T16Dec = 0
+Int_32 T16Dec = 48
 
 # Blocks
 {
@@ -27,9 +27,11 @@ Int_32 T16Dec = 0
 	T15Inc++
 	T16Dec--
 
+	printf("T16DecPrint", "{T16Dec}\n")
+
 	bz T16Dec 
 	#be T16Dec T15Inc
 	#bnz T16Dec
 	#bne T16Dec T15Inc
 	#continue
-} loop 10
+} loop 2

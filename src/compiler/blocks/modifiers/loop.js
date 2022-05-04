@@ -19,14 +19,15 @@ export default {
 			{
 				os: ['linux', 'win', 'mac'],
 				type: "text",
-				commands: `call .loop${current}`
+				commands: `call loop${current}`
 			}
 		)
 		ans.push(
 			{ 
 				os: ['linux', 'win', 'mac'],
-				type: "text",
-				commands: `.loop${current}:\n` + anss.join('\n')
+				type: "label",
+				label: "loop" + current,
+				commands: anss.join('\n')
 			}
 		)
 		return ans
