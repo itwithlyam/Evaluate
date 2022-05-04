@@ -5,3 +5,14 @@ package-lock.json
 build/
 build/evaluate.exe
 Evaluate-*
+a.out
+output.c
+program.ev
+output.cpp
+*.s
+*.asm
+*.o
+*.out
+output
+debug
+*.vsix

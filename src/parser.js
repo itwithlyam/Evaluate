@@ -5,129 +5,191 @@ export function Parse(tokens, func, verbose=false) {
 	ParseStack.push("Program Start", 0)
 	let body = []
 	let presentblock = []
-	let current = 0;
+	let current = 0; // Tokens pointer
 	let block = false
 	let line = 0
 	let bar = false
 	let bracket = false
 	let sbracket = false
 
+	function push(data) {
+		if (block) presentblock.push(data)
+		else body.push(data)
+	}
+
 	tokens.forEach((element) => {
-		// console.log(element)
+		if (verbose) {
+			console.log("Token ID: "+current)
+			console.log("Using element:",element)
+			console.log("Using tokens:",tokens[current])
+		}
+		if (tokens[current] !== element) return
+		//console.log(tokens)
 		let status = ParseStack.status()
 		// console.log(status)
-
 		if (element.read) return;
+		//if (element.ident == 11) return current++;
+			if (element.char === "{") {
+				ParseStack.push("Block Start", line)
+				current++
+				return push({
+					type: "startblock",
+					value: "{"
+				})
+			} else if (element.char === "}") {
+				current++
+				ParseStack.pop()
+				return push({
+					type: "endblock",
+					value: "}"
+				})
+			}
 		if (element.ident == 6) {
-			if (bar && status == "Equation") throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Equation Close", line, ParseTrace(ParseStack))
+			if (bar && block) throw new CompilationError("UnnexpectedEOF", "An EOF was given instead of an Block Close", line, ParseTrace(ParseStack))
 			bar = true
-			body.push({
+			push({
 				type: "EOF",
 				value: element.char
 			})
 			current += 1
 		}
-		if (element.ident === 7) {
-			ParseStack.push("Equation", line)
-			tokens[current].read = true
-			current += 1
-		}
-		if (status == "Equation") {
-			tokens[current].read = true
-			current += 1
-			// console.log(presentblock)
-			if (element.char == '}') {
-				body.push({
-					type: "block",
-					body: presentblock
-				})
-				// console.log(presentblock)
-				presentblock = []
-				ParseStack.pop()
-				return
-			}
-			if (parseFloat(element.char) || element.char == 0) {
-				return presentblock.push({
-					type: "blockelement",
-					value: element.char
-				})
-			}
-			switch(element.char) {
-				case '(':
-				case ')':
-				case '+':
-				case '-':
-				case '*':
-				case '/':
-				case '%':
-				case '¬':
-				case '^':
-				case '>>':
-				case '<<':
-					presentblock.push({
-						type: "blockelement",
-						value: element.char
-					})
-					return;
-			}
-			if (element.char == '~') {
-				return presentblock.push({
-					type: "roundblock",
-					value: element.char
-				})
-			}
-		} 
+		// Equations are deprecated
+		// if (element.ident === 7) {
+		// 	ParseStack.push("Equation", line)
+		// 	tokens[current].read = true
+		// 	current += 1
+		// }
+		// if (status == "Equation") {
+		// 	tokens[current].read = true
+		// 	current += 1
+		// 	if (element.char == '}') {
+		// 		push({
+		// 			type: "block",
+		// 			body: presentblock
+		// 		})
+		// 		presentblock = []
+		// 		ParseStack.pop()
+		// 		return
+		// 	}
+		// 	if (parseFloat(element.char) || element.char == 0) {
+		// 		return presentblock.push({
+		// 			type: "blockelement",
+		// 			value: element.char
+		// 		})
+		// 	}
+		// 	switch(element.char) {
+		// 		case '(':
+		// 		case ')':
+		// 		case '+':
+		// 		case '-':
+		// 		case '*':
+		// 		case '/':
+		// 		case '%':
+		// 		case '¬':
+		// 		case '^':
+		// 		case '>>':
+		// 		case '<<':
+		// 			presentblock.push({
+		// 				type: "blockelement",
+		// 				value: element.char
+		// 			})
+		// 			return;
+		// 	}
+		// 	if (element.char == '~') {
+		// 		return presentblock.push({
+		// 			type: "roundblock",
+		// 			value: element.char
+		// 		})
+		// 	}
+		// } 
 		if (status == "Equation") return;
+		if (element.classify === 10) {
+			// Loops
+			if (element.ident === 36) {
+				
+			}
+		}
+		else if (element.classify === 9) {
+			ParseStack.push("logic gate", line)
+			switch(element.ident) {
+				case 32:
+					// AND
+					push({
+						type: "boolean",
+						kind: "AND",
+						value: tokens[current-1].char + " AND " + tokens[current+1].char,
+						params: [tokens[current-1].char, tokens[current+1].char]
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					ParseStack.pop()
+					return
+				case 33:
+					// OR
+					push({
+						type: "boolean",
+						kind: "OR",
+						value: tokens[current-1].char + " OR " + tokens[current+1].char,
+						params: [tokens[current-1].char, tokens[current+1].char]
+					})
+					tokens[current-1].read = true
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 3
+					ParseStack.pop()
+					return
+				case 34:
+					// NOT
+					push({
+						type: "boolean",
+						kind: "NOT",
+						value: "NOT " + tokens[current+1].char,
+						params: [tokens[current+1].char]
+					})
+					tokens[current].read = true
+					tokens[current+1].read = true
+					current += 2
+					ParseStack.pop()
+					return
+			}
+		}
 		switch(element.ident) {
-			case 22:
+			case 36:
+				// Loop
+				ParseStack.push("loop", line)
+				current++
+
+				let amount = tokens[current].char
 				tokens[current].read = true
-			current += 1
-				body.push({
-					type: "boolean",
-					value: "true"
-				})
-				break;
-			case 23:
+				current++
+
+				if (tokens[current-3].char != "}") throw new CompilationError("ExpectedBlock", "Expected a Block", line, ParseTrace(ParseStack))
 				tokens[current].read = true
-				current += 1
-				body.push({
-					type: "boolean",
-					value: "false"
+				current++
+
+				push({
+					type: "loop",
+					times: amount,
+					value: "loop " + amount
 				})
+
+				ParseStack.pop()
 				break;
 			case 21:
 				tokens[current].read = true
 				current += 1
 				ParseStack.push("Pass", line)
 				current += 1
-				body.push({
+				push({
 					type: "pass",
 					value: "pass"
 				})
 				ParseStack.pop()
 				break;
-			case 19:
-				tokens[current].read = true
-				tokens[current + 1].read = true
-				tokens[current + 2].read = true
-				ParseStack.push("Function " + tokens[current+1].char, line)
-				body.push({
-					type: "function",
-					declarations: {
-						id: {
-							name: tokens[current + 1].char
-						},
-						init: {
-							body: tokens[current + 2].char
-						}
-					},
-					value: `${tokens[current].char} ${tokens[current + 1].char} ${tokens[current + 2].char}`
-				})
-				current += 3
-				ParseStack.pop()
-				return;
 			case 1:
-				body.push({
+				push({
 					type: "newline",
 					value: element.char
 				})
@@ -139,7 +201,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				if (sbracket) throw new CompilationError("SquareBracketOpen", "Square Brackets within square brackets are not permitted", line, ParseTrace(ParseStack))
-				body.push({
+				push({
 					type: "sopen",
 					value: element.char
 				})
@@ -148,7 +210,7 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				if (!sbracket) throw new CompilationError("SquareBracketClosed", "Square Brackets must be opened before closed", line, ParseTrace(ParseStack))
-				body.push({
+				push({
 					type: "sclose",
 					value: element.char
 				})
@@ -160,31 +222,36 @@ export function Parse(tokens, func, verbose=false) {
 			case 5:
 				tokens[current].read = true
 				current += 1
-				return body.push({
+				return push({
 					type: "operation",
 					value: element.char
 				})
 		}
-		if (element.ident == 0) {
-			tokens[current].read = true
-			current += 1
-			return body.push({
-				type: "number",
-				value: parseFloat(element.char)
-			})
-		}
 		if (element.ident == 11) {
-			if (tokens[current+1].char == '(') {
-				tokens[current+1].read = true
+			if (element.char == '') {
+				tokens[current].read = true
 				current += 1
+				return;
+			}
+			if (tokens[current+1].char == '(') {
+				ParseStack.push("Function Call " + element.char, line)
+				current += 1
+				tokens[current].read = true
 				let options = []
-				while (tokens[current+1].char != ')') {
-					options.push(tokens[current+1].char)
+				while (tokens[current].char != ')') {
+					if (tokens[current].char == "," || tokens[current].char == "(" || tokens[current].char == ")") {
+						tokens[current].read = true
+						current += 1
+						continue;
+					}
+					options.push(tokens[current].char)
+					tokens[current].read = true
 					tokens[current+1].read = true
 					current += 1
 				}
-				ParseStack.push("Function Call " + tokens[current+1].char, line)
-				body.push({
+				tokens[current.read] = true
+				current += 1
+				push({
 					type: "functioncall",
 					params: options,
 					value: element.char
@@ -192,9 +259,51 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
-			ParseStack.push("var", line)
 			tokens[current].read = true
-			body.push({
+
+			if (tokens[current + 1].ident == 19) {
+				// the inevitable cause of lag
+				let id = tokens[current].char
+				tokens[current].read = true
+				ParseStack.push("Function " + tokens[current].char, line)
+				let paras = []
+				tokens[current + 1].read = true
+				current += 2
+				if (tokens[current].char == "(") {
+					tokens[current].read = true
+					current += 1
+					while (tokens[current + 1].char != ")") {
+						paras.push(tokens[current + 1].char)
+						tokens[current+1] = true
+						current += 1
+					}
+				}
+				let funcbody = []
+				current += 1
+				while (tokens[current].char != "}") {
+					funcbody.push(tokens[current].char)
+					tokens[current].read = true
+					current += 1
+				}
+				current += 1
+				push({
+					type: "function",
+					kind: "init",
+					declarations: {
+						id: {
+							name: id
+						},
+						init: {
+							parameters: paras,
+							value: funcbody
+						}
+					}
+				})
+				ParseStack.pop()
+				return;
+			}
+			ParseStack.push("var", line)
+			push({
 				type: "memory",
 				kind: "var",
 				value: element.char,
@@ -212,7 +321,7 @@ export function Parse(tokens, func, verbose=false) {
 			tokens[current + 1].read = true
 			tokens[current].read = true
 			tokens[current + 2].read = true
-			body.push({
+			push({
 				type: "memory",
 				kind: "mset",
 				declarations: {
@@ -227,6 +336,74 @@ export function Parse(tokens, func, verbose=false) {
 			})
 			ParseStack.pop()
 			return current += 3
+		}
+		if (element.ident == 31) {
+			let mode = element.char
+			ParseStack.push(mode + " declaration", line)
+			tokens[current].read = true
+			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
+			tokens[current + 1].read = true
+			let id = tokens[current + 1].char
+			let value = null;
+			if (tokens[current + 2].ident == 13) {
+				tokens[current + 2].read = true
+				if (!parseInt(tokens[current + 3].char) && tokens[current + 3].char != 0) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				tokens[current + 3].read = true
+				value = tokens[current + 3].char
+				current += 4
+			} else { current += 2 }
+			
+			push({
+				type: "memory",
+				kind: "set",
+				declarations: {
+					id: {
+						name: id
+					},
+					init: {
+						value: value
+					},
+					annotation: mode
+				}
+			})
+
+			ParseStack.pop()
+			return;
+		}
+		
+		if (element.ident == 30 || element.ident == 35) {
+			ParseStack.push(element.char + " declaration", line)
+			tokens[current].read = true
+			if (tokens[current + 1].ident != 11) throw new CompilationError("InvalidIdentifier", "An identifier was invalid or was not supplied.", line, ParseTrace(ParseStack))
+			tokens[current + 1].read = true
+			let id = tokens[current + 1].char
+			let value = null;
+			if (tokens[current + 2].ident == 13) {
+				tokens[current + 2].read = true
+				if (tokens[current + 3].ident != 18 && element.ident != 35) throw new CompilationError("InsufficientValue", "The given value did not meet the annotation's requirements.", line, ParseTrace(ParseStack))
+				tokens[current + 3].read = true
+				value = tokens[current + 3].char
+				if (value === "true" && element.ident === 35) value = 1
+				else if (element.ident === 35) value = 0
+				current += 4
+			} else { current += 2 }
+			
+			push({
+				type: "memory",
+				kind: "set",
+				declarations: {
+					id: {
+						name: id
+					},
+					init: {
+						value: value
+					},
+					annotation: element.char
+				}
+			})
+
+			ParseStack.pop()
+			return;
 		}
 	})
 	let AST = {

@@ -1,6 +1,19 @@
 {
     "configurations": [
 
+    {
+        "args": [
+            "--extensionDevelopmentPath=${workspaceFolder}/evaluate"
+        ],
+        "name": "Launch Extension",
+        "outFiles": [
+            "${workspaceFolder}/out/**/*.js"
+        ],
+        "preLaunchTask": "npm",
+        "request": "launch",
+        "type": "extensionHost"
+    },
+
         {
             "type": "node",
             "name": "vscode-jest-tests.v2",

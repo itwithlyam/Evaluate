@@ -1,0 +1,33 @@
+{
+    "name": "evaluate",
+    "publisher": "ITwithLyam",
+    "displayName": "Evaluate",
+    "description": "The official extention for the Evaluate Programming Language",
+    "version": "1.0.1",
+    "engines": {
+        "vscode": "^1.66.0"
+    },
+    "icon": "images/EV.png",
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "evaluate",
+            "aliases": ["Evaluate", "evaluate"],
+            "extensions": [".ev",".eval"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "evaluate",
+            "scopeName": "source.ev",
+            "path": "./syntaxes/evaluate.tmLanguage.json"
+        }],
+        "snippets": [
+            {
+              "language": "evaluate",
+              "path": "./snippets.json"
+            }
+        ]
+    }
+}

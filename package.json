@@ -1,12 +1,12 @@
 {
   "name": "evaluate",
-  "version": "1.1.2-dev.2",
+  "version": "2.0.0",
   "description": "A programming language built around a calculator",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
+    "build": "nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o",
     "start": "node index.js program.ev --force --disable-warnings",
-    "testw": "mocha"
+    "test": "node index.js test/suite.ev -v --force --disable-warnings && nasm -f elf64 -g -F dwarf -o output.o output.asm && ld -o output output.o && ./output"
   },
   "author": "",
   "license": "MIT",
@@ -22,6 +22,7 @@
     "caxa": "^2.1.0",
     "chalk": "^4.1.2",
     "command-line-args": "^5.2.0",
+    "consola": "^2.15.3",
     "fifo": "^2.4.1",
     "math.js": "^1.1.46",
     "mathjs": "^10.0.2",
@@ -29,6 +30,7 @@
     "pkg": "^5.5.1",
     "rpn": "^2.0.0",
     "stack-lifo": "^0.1.6",
-    "statman-stopwatch": "^2.13.0"
+    "statman-stopwatch": "^2.13.0",
+    "table": "^6.8.0"
   }
 }

@@ -13,7 +13,11 @@ export function Lexer(script) {
     	let chars = line.split(negatives)
 			let comment = false
 			chars.forEach((char) => {
-			if (str && char && char != '"') return cstr += " " + char
+			if (str && char != '"') {
+				if (char === undefined) return
+				cstr += char
+				return
+			}
 			if (comment) return
 			if (parseFloat(char) || Math.abs(parseFloat(char)) || char === 0 && char != "") {
 				const payload = {'char': char, 'ident': Ident.NUMBER, 'classify': Classify.CHAR}
@@ -30,6 +34,48 @@ export function Lexer(script) {
 					break;
 				case '#':
 					comment = true
+					break;
+				// NOTE: Put all tokens below here. Comments + Strings have priority.
+
+				// Declarations
+				// Text-based
+				case 'Char':
+				case 'String':
+					idents.push({char: char, ident: Ident.MSTRING, classify: Classify.MEMORY})
+					break;
+				// Number-based
+				case 'Int_8':
+				case 'Int_16':
+				case 'Int_32':
+				case 'Int_64':
+					idents.push({char: char, ident: Ident.MINT, classify: Classify.MEMORY})
+					break;
+				// Binary-based
+				case 'Bool':
+					idents.push({char: char, ident: Ident.MBOOL, classify: Classify.MEMORY})
+					break;
+
+				// Everything else
+				case 'break':
+					idents.push({char: char, ident: Ident.BREAK, classify: Classify.LOOP})
+					break;
+				case 'loop':
+					idents.push({char: char, ident: Ident.LOOP, classfy: Classify.LOOP})
+					break;
+				case 'AND':
+					idents.push({char: char, ident: Ident.AND, classify: Classify.BOOLEAN})
+					break;
+				case 'OR':
+					idents.push({char: char, ident: Ident.OR, classify: Classify.BOOLEAN})
+					break;
+				case 'NOT':
+					idents.push({char: char, ident: Ident.NOT, classify: Classify.BOOLEAN})
+					break;
+				case '=':
+					idents.push({char: char, ident: Ident.EQUALS, classify: Classify.MEMORY})
+					break;
+				case '=>':
+					idents.push({char: char, ident: Ident.INITFUNC, classify: Classify.FUNCTION})
 					break;
 				case '~':
 					idents.push({char: char, ident: Ident.ROUND, classify: Classify.OPERATION})
@@ -108,6 +154,7 @@ export function Lexer(script) {
 					return idents.push(payload10)
 					break;
 				default:
+					if (char == ' ') return;
 					const readmem = {'char': char, 'ident': Ident.TERM, 'classify': Classify.CHAR}
 					return idents.push(readmem)
 					break;
