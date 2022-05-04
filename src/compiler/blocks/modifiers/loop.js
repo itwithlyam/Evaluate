@@ -19,7 +19,7 @@ export default {
 			{
 				os: ['linux', 'win', 'mac'],
 				type: "text",
-				commands: `mov ecx,${amount}\nloop .loop${current}`
+				commands: `call .loop${current}`
 			}
 		)
 		ans.push(
