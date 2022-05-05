@@ -155,6 +155,18 @@ export default function Generator(code, output) {
 
             global _start
 
+						ConvertToNum: 
+							mov eax,[ToConvert+ecx]
+
+							cmp eax,0
+							je StrEnd
+
+							add eax,48
+							mov [Result+ecx],eax
+
+							inc ecx
+							jmp ConvertToNum
+
             ${llabels.join("\n")}
 
             StrEnd: ret
@@ -178,6 +190,19 @@ mov ebx,0
         BITS 64
 
         section .text
+
+						ConvertToNum: 
+							mov eax,[ToConvert+ecx]
+
+							cmp eax,0
+							je StrEnd
+
+							add eax,48
+							mov [Result+ecx],eax
+
+							inc ecx
+							jmp ConvertToNum
+
             ${mlabels.join("\n")}
 
             StrEnd: ret
@@ -202,6 +227,18 @@ mov ebx,0
 
         section .text
             global _WinMain@16
+
+						ConvertToNum: 
+							mov eax,[ToConvert+ecx]
+
+							cmp eax,0
+							je StrEnd
+
+							add eax,48
+							mov [Result+ecx],eax
+
+							inc ecx
+							jmp ConvertToNum
 
             ${wlabels.join("\n")}
 

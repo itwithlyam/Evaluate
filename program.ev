@@ -1,3 +1,2 @@
-{
-simplify("eq", "1x+135345324x5/431x2")
-} loop 1000000
+String strr = "Hello"
+printf("strprintf", "{strr}\n")
