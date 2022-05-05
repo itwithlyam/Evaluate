@@ -25,7 +25,7 @@ Int_32 T16Dec = 48
 
 	# Maths
 	T15Inc++
-	T16Dec--
+	#T16Dec--
 
 	printf("T16DecPrint", "{T16Dec}\n")
 
@@ -34,4 +34,4 @@ Int_32 T16Dec = 48
 	#bnz T16Dec
 	#bne T16Dec T15Inc
 	#continue
-} loop 2
+} loop 10
