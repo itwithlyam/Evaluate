@@ -6,13 +6,13 @@
             global _start
 
 						ConvertToNum: 
-							mov eax,[ToConvert+ecx]
+							mov rax,[ToConvert+ecx]
 
-							cmp eax,0
+							cmp rax,0
 							je StrEnd
 
-							add eax,48
-							mov [Result+ecx],eax
+							add rax,48
+							mov [Result+ecx],rax
 
 							inc ecx
 							jmp ConvertToNum
@@ -20,7 +20,6 @@
             strrlabel: 
                 db "Hello",0
 
-ToConvert: db 120
 strrlen: equ 5
 strrloop: 
                 mov al, [ebx]
@@ -47,11 +46,14 @@ strrloop:
               
 strprintf4: db 10,0
 strprintflen4: equ $-strprintf4
+ToConvert: db "123 4567890"
+len: equ 1000
 
             StrEnd: ret
 
             _start:
-
+								mov rbx,"123"
+								mov ecx,0
 								call ConvertToNum
 
                 mov ebx, strrlabel
@@ -75,6 +77,18 @@ mov ecx,strprintf4
 mov edx,strprintflen4
 int 0x80
 
+mov eax,4
+mov ebx,1
+mov ecx,Result
+mov ebx,len
+int 0x80
+
+mov eax,4
+mov ebx,1
+mov ecx,strprintf4
+mov edx,strprintflen4
+int 0x80
+
 
 
                 jmp end
@@ -88,5 +102,5 @@ mov ebx,0
 
         section .bss
 strr resb 5
-Result resb 5
+Result resb 1000
     
