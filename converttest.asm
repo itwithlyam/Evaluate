@@ -6,15 +6,19 @@
             global _start
 
 						ConvertToNum: 
-							mov rax,[ToConvert+ecx]
+							mov al,[rbx]
 
-							cmp rax,0
+							cmp al,0
 							je StrEnd
 
-							add rax,48
-							mov [Result+ecx],rax
+                            or al,al
+                            jz StrEnd
+
+							sub al,48
+							mov [Result+ecx],al
 
 							inc ecx
+                            inc rbx
 							jmp ConvertToNum
 
             strrlabel: 
@@ -46,13 +50,13 @@ strrloop:
               
 strprintf4: db 10,0
 strprintflen4: equ $-strprintf4
-ToConvert: db "123 4567890"
+ToConvert: db "123 4567890",0
 len: equ 1000
 
             StrEnd: ret
 
             _start:
-								mov rbx,"123"
+								mov rbx, ToConvert
 								mov ecx,0
 								call ConvertToNum
 
