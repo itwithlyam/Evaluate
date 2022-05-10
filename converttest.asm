@@ -11,10 +11,10 @@
 							cmp al,0
 							je StrEnd
 
-                            or al,al
-                            jz StrEnd
+              or al,al
+              jz StrEnd
 
-							sub al,48
+							add al,48
 							mov [Result+ecx],al
 
 							inc ecx
