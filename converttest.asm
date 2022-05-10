@@ -4,6 +4,14 @@
         section .text
 
             global _start
+                        ConversionCheck:
+                            cmp al,0
+                            jng StrError
+
+                            cmp al,57
+                            jg StrError
+
+                            ret
 
 						ConvertToNum: 
 							mov al,[rbx]
@@ -11,17 +19,46 @@
 							cmp al,0
 							je StrEnd
 
-              or al,al
-              jz StrEnd
+                            or al,al
+                            jz StrEnd
 
-							add al,48
+							sub al,48
+                            call ConversionCheck
 							mov [Result+ecx],al
 
 							inc ecx
                             inc rbx
 							jmp ConvertToNum
 
-            strrlabel: 
+                        ConvertFromNum: 
+							mov al,[rbx]
+
+                            cmp al,0
+							je StrEnd
+
+                            or al,al
+                            jz StrEnd
+
+							add al,48
+                            call ConversionCheck
+							mov [ResultB+ecx],al
+
+							inc ecx
+                            inc rbx
+							jmp ConvertFromNum
+
+                        StrErrorStr: db "Fatal error (evaluate): An error occured while performing ASCII operations.",10,0
+                        StrErrorLen: equ $-StrErrorStr
+                        StrError: 
+                            mov eax,4
+                            mov ebx,1
+                            mov ecx,StrErrorStr
+                            mov edx,StrErrorLen
+                            int 0x80
+
+                            jmp end
+
+            strrlabel:
                 db "Hello",0
 
 strrlen: equ 5
@@ -50,7 +87,7 @@ strrloop:
               
 strprintf4: db 10,0
 strprintflen4: equ $-strprintf4
-ToConvert: db "123 4567890",0
+ToConvert: db "1234567890",0
 len: equ 1000
 
             StrEnd: ret
@@ -59,6 +96,7 @@ len: equ 1000
 								mov rbx, ToConvert
 								mov ecx,0
 								call ConvertToNum
+                                mov byte [Result+ecx],0
 
                 mov ebx, strrlabel
 
@@ -81,9 +119,14 @@ mov ecx,strprintf4
 mov edx,strprintflen4
 int 0x80
 
+mov rbx, Result
+mov ecx,0
+call ConvertFromNum
+
+
 mov eax,4
 mov ebx,1
-mov ecx,Result
+mov ecx,ResultB
 mov ebx,len
 int 0x80
 
@@ -107,4 +150,4 @@ mov ebx,0
         section .bss
 strr resb 5
 Result resb 1000
-    
+ResultB resb 1000
