@@ -141,6 +141,7 @@ export default function Generator(code, output) {
         //})
     })
 
+		// Check if program needs any special features
 		let imp = ""
 	
 		if (requires.includes("ascii")) {

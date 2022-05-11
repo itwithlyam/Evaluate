@@ -52,27 +52,26 @@ export function Compile(AST, unit, verbose, compiled) {
 	AST.body.forEach(element => {
 		switch(element.type) {
 			case 'branching':
-			// Branching
 				switch(element.kind) {
-					case 'break':
-						nbreak.execute().forEach(e => ans.push(e))
-						break;
-					case 'breakequal':
-						breakequal.execute(element.params).forEach(e => ans.push(e))
-						break;
-					case 'breaknotequal':
-						breaknotequal.execute(element.params).forEach(e => ans.push(e))
-						break;
-					case 'breakzero':
-						breakzero.execute(element.params).forEach(e => ans.push(e))
-						break;
-					case 'breaknotzero':
-						breaknotzero.execute(element.params).forEach(e => ans.push(e))
-						break;
-					case 'continue':
-						ncontinue.execute().forEach(e => ans.push(e))
-						break;
-				}
+					 case 'break':
+							 nbreak.execute().forEach(e => ans.push(e))
+							 break;
+					 case 'breakequal':
+							 breakequal.execute(element.params).forEach(e => ans.push(e))
+							 break;
+					 case 'breaknotequal':
+							 breaknotequal.execute(element.params).forEach(e => ans.push(e))
+							 break;
+					 case 'breakzero':
+							 breakzero.execute(element.params).forEach(e => ans.push(e))
+							 break;
+					 case 'breaknotzero':
+							 breaknotzero.execute(element.params).forEach(e => ans.push(e))
+							 break;
+					 case 'continue':
+							 ncontinue.execute().forEach(e => ans.push(e))
+							 break;
+			 }
 				current++
 				break;
 
