@@ -1,11 +1,11 @@
-import {writeFileSync} from 'fs';
+import {writeFileSync, readFileSync} from 'fs';
 import os from 'os'
 
 export default function Generator(code, output) {
 
     // stext = section .text (code)
     // sdata = section .data (variables)
-    // sbss = section .bss (undefined variables)
+    // sbss = section .bss (reserves)
     // labels = values within stext (i.e. varname: db "varcontent",10,0)
 
     // l- = linux
@@ -13,6 +13,7 @@ export default function Generator(code, output) {
     // w- = windows
 
     // Preprocessor
+		let requires = ['ascii']
 
     let lstext = []
     let lsdata = []
@@ -31,6 +32,7 @@ export default function Generator(code, output) {
 			//console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
+						if (section.requires) requires.push(section.requires)
             if (section.os.includes('mac')) {
                 if (section.type === "text") {
                     mstext.push(section.commands + "\n")
@@ -139,6 +141,19 @@ export default function Generator(code, output) {
         //})
     })
 
+		let imp = ""
+	
+		if (requires.includes("ascii")) {
+			imp = readFileSync('src/preprocessor/ascii/bss.asm')
+			lsbss.unshift(imp)
+			wsbss.unshift(imp)
+			msbss.unshift(imp)
+			imp = readFileSync('src/preprocessor/ascii/labels.asm')
+			llabels.unshift(imp)
+			wlabels.unshift(imp)
+			mlabels.unshift(imp)
+		}
+
     if (lsdata[0]) lsdata.unshift("section .data")
     if (lsbss[0]) lsbss.unshift("section .bss")
     if (wsdata[0]) wsdata.unshift("section .data")
@@ -155,17 +170,6 @@ export default function Generator(code, output) {
 
             global _start
 
-						ConvertToNum: 
-							mov eax,[ToConvert+ecx]
-
-							cmp eax,0
-							je StrEnd
-
-							add eax,48
-							mov [Result+ecx],eax
-
-							inc ecx
-							jmp ConvertToNum
 
             ${llabels.join("\n")}
 
@@ -191,18 +195,6 @@ mov ebx,0
 
         section .text
 
-						ConvertToNum: 
-							mov eax,[ToConvert+ecx]
-
-							cmp eax,0
-							je StrEnd
-
-							add eax,48
-							mov [Result+ecx],eax
-
-							inc ecx
-							jmp ConvertToNum
-
             ${mlabels.join("\n")}
 
             StrEnd: ret
@@ -227,18 +219,6 @@ mov ebx,0
 
         section .text
             global _WinMain@16
-
-						ConvertToNum: 
-							mov eax,[ToConvert+ecx]
-
-							cmp eax,0
-							je StrEnd
-
-							add eax,48
-							mov [Result+ecx],eax
-
-							inc ecx
-							jmp ConvertToNum
 
             ${wlabels.join("\n")}
 
