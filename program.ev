@@ -1,7 +1,8 @@
-Int_64 first = 2
-Int_64 second = 0
+Int_64 first = 0
+Int_64 second = 1
 {
-    printf("strs", "Hello loop\n")
-    first--
+    printf("h", "h\n")
     be first second
+    first++
+    second++
 } loop 10
