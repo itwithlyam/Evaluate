@@ -1,11 +1,11 @@
-import {writeFileSync} from 'fs';
+import {writeFileSync, readFileSync} from 'fs';
 import os from 'os'
 
 export default function Generator(code, output) {
 
     // stext = section .text (code)
     // sdata = section .data (variables)
-    // sbss = section .bss (undefined variables)
+    // sbss = section .bss (reserves)
     // labels = values within stext (i.e. varname: db "varcontent",10,0)
 
     // l- = linux
@@ -13,6 +13,7 @@ export default function Generator(code, output) {
     // w- = windows
 
     // Preprocessor
+		let requires = []
 
     let lstext = []
     let lsdata = []
@@ -31,6 +32,7 @@ export default function Generator(code, output) {
 			//console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
+			if (section.requires) requires.push(section.requires)
             if (section.os.includes('mac')) {
                 if (section.type === "text") {
                     mstext.push(section.commands + "\n")
@@ -139,6 +141,20 @@ export default function Generator(code, output) {
         //})
     })
 
+		// Check if program needs any special features
+		let imp = ""
+	
+		if (requires.includes("ascii")) {
+			imp = readFileSync('src/preprocessor/ascii/bss.asm')
+			lsbss.unshift(imp)
+			wsbss.unshift(imp)
+			msbss.unshift(imp)
+			imp = readFileSync('src/preprocessor/ascii/labels.asm')
+			llabels.unshift(imp)
+			wlabels.unshift(imp)
+			mlabels.unshift(imp)
+		}
+
     if (lsdata[0]) lsdata.unshift("section .data")
     if (lsbss[0]) lsbss.unshift("section .bss")
     if (wsdata[0]) wsdata.unshift("section .data")
@@ -154,6 +170,7 @@ export default function Generator(code, output) {
         section .text
 
             global _start
+
 
             ${llabels.join("\n")}
 
@@ -178,6 +195,7 @@ mov ebx,0
         BITS 64
 
         section .text
+
             ${mlabels.join("\n")}
 
             StrEnd: ret

@@ -22,6 +22,7 @@ export default {
             type: "text",
             commands: `mov edx, "${value}"\nmov [${id}], edx`,
             os: ["mac", "win", "linux"],
+            requires: "ascii"
           },
         ];
       case "int8":
@@ -37,7 +38,8 @@ export default {
             type: "label",
             label: id+"len",
             commands: "equ " + (""+value).length,
-            os: ['mac','win','linux']
+            os: ['mac','win','linux'],
+            requires: "ascii"
           },
           {
             type: "text",
@@ -58,7 +60,8 @@ export default {
             type: "label",
             label: id+"len",
             commands: "equ " + value.length,
-            os: ['mac','win','linux']
+            os: ['mac','win','linux'],
+            requires: "ascii"
           },
           {
             type: "text",
@@ -79,7 +82,8 @@ export default {
             type: "label",
             label: id+"len",
             commands: "equ " + value.length,
-            os: ['mac','win','linux']
+            os: ['mac','win','linux'],
+            requires: "ascii"
           },
           {
             type: "text",
@@ -100,7 +104,8 @@ export default {
             type: "label",
             label: id+"len",
             commands: "equ " + value.length,
-            os: ['mac','win','linux']
+            os: ['mac','win','linux'],
+            requires: "ascii"
           },
           {
             type: "text",
@@ -130,7 +135,8 @@ export default {
             type: "label",
             label: id+"len",
             commands: "equ " + value.length,
-            os: ['mac','win','linux']
+            os: ['mac','win','linux'],
+            requires: "ascii"
           },
           {
               type: "text",

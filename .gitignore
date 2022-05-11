@@ -10,7 +10,7 @@ output.c
 program.ev
 output.cpp
 *.s
-*.asm
+output.asm
 *.o
 *.out
 output
