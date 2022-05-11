@@ -6,7 +6,7 @@
             global _start
                         ConversionCheck:
                             cmp al,0
-                            jng StrError
+                            jng StrEnd
 
                             cmp al,57
                             jg StrError
@@ -149,5 +149,6 @@ mov ebx,0
 
         section .bss
 strr resb 5
+printing resb 10
 Result resb 1000
 ResultB resb 1000
