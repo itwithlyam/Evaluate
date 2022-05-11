@@ -15,7 +15,7 @@ import raw from './standard/raw.js'
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory, compiled) {
+	execute(func, args, line, trace, memory, compiled, id) {
 		let res = null
 		if (memory.hasOwnProperty(func)) {
 			res = Interpret(memory[func].ast, true, false) 
@@ -26,7 +26,7 @@ export default {
 					res = simplify(args, line, trace, compiled)
 					break;
 				case 'printf':
-					res = output(args, line, trace, compiled)
+					res = output(args, line, trace, compiled, id)
 					break;
 				case "equate":
 					res = evaluate(args, line, trace, compiled)
