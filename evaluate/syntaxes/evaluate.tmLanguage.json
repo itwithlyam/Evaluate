@@ -27,7 +27,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.evaluate",
-				"match": "\\b(loop)\\b"
+				"match": "\\b(loop|break|be|bne|bz|bnz)\\b"
 			},
 			{
 				"name": "storage.type.evaluate",
@@ -35,7 +35,7 @@
 			},
 			{
 				"name": "keyword.operator.evaluate",
-				"match": "\\b(\\=|\\,)\\b"
+				"match": "\\b(\\=|\\,|\\++|\\--)\\b"
 			}]
 		},
 		"comment": {

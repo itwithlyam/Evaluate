@@ -6,8 +6,8 @@ Int_64 T10Int64 = 9223372036854775807
 Char T11Char = "A"
 String T12String = "T12String"
 Bool T14Bool = true
-Int_32 T15Inc = 0
-Int_32 T16Dec = 48
+Int_64 T15Inc = 0
+Int_64 T16Dec = 10
 
 # Blocks
 {
@@ -23,15 +23,8 @@ Int_32 T16Dec = 48
 	printf("T11", "T11Char: {T11Char}\n")
 	printf("T12", "T12String: {T12String}\n")
 
-	# Maths
-	T15Inc++
-	#T16Dec--
+	T15Inc++ # Increment
+	T16Dec-- # Decrement
 
-	printf("T16DecPrint", "{T16Dec}\n")
-
-	bz T16Dec 
-	#be T16Dec T15Inc
-	#bnz T16Dec
-	#bne T16Dec T15Inc
-	#continue
+	be T15Inc T16Dec # Break if equal
 } loop 10
