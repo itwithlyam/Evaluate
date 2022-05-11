@@ -10,3 +10,4 @@ Reset ECX
 Call ConvertToNum or ConvertFromNum
 Find the output in NumRes or AsciiRes for ConvertToNum and ConvertFromNum respectively (these are 8 byte reserves as the largest integer type is 64 bits)
 
+ 
