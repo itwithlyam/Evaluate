@@ -1,2 +1,7 @@
-String strr = "Hello"
-printf("strprintf", "{strr}\n")
+Int_64 first = 2
+Int_64 second = 0
+{
+    printf("strs", "Hello loop\n")
+    first--
+    be first second
+} loop 10

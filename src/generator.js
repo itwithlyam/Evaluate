@@ -13,7 +13,7 @@ export default function Generator(code, output) {
     // w- = windows
 
     // Preprocessor
-		let requires = ['ascii']
+		let requires = []
 
     let lstext = []
     let lsdata = []
@@ -32,7 +32,7 @@ export default function Generator(code, output) {
 			//console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
-						if (section.requires) requires.push(section.requires)
+			if (section.requires) requires.push(section.requires)
             if (section.os.includes('mac')) {
                 if (section.type === "text") {
                     mstext.push(section.commands + "\n")
