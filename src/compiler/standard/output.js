@@ -8,7 +8,7 @@ export default function outputfunc(args, line, trace, compiled, id) {
 		/* {label: args[0], commands: `db "${args[0]}: ${args[1]}",0`, type: "label", os: ['mac', 'linux', 'win']}, */
 		let counter = 0
 		let concat = false
-		args[1].split(/(\\n)|({)|(})/gi).forEach(l => {
+		args[0].split(/(\\n)|({)|(})/gi).forEach(l => {
 			if (!l) return
 			counter++
 			if (l === '\\n') {
@@ -34,6 +34,7 @@ export default function outputfunc(args, line, trace, compiled, id) {
 		})
 		return ret
 	} catch(err) {
+		//console.log(err)
 		throw new RuntimeError("StandardLibraryOutput", "An error occured during output", line, ParseTrace(trace))
 	} 
 } 
