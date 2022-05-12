@@ -35,7 +35,7 @@ export default {
 					res = panic(line, trace, compiled)
 					break;
 				case "logic":
-					res = logic(args, line, trace, compiled)
+					res = logic(args, line, trace, compiled, id)
 					break;
 				case "malloc":
 					res = malloc(args)
