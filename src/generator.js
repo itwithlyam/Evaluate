@@ -240,7 +240,6 @@ mov ebx,0
         ${wsbss.join('\n')}
     `
     // Output
-console.log(os.type())
     switch(os.type()) {
         case "Windows_NT":
             writeFileSync(output + ".asm", wnasm)

@@ -6,8 +6,8 @@ Int_64 T10Int64 = 9223372036854775807
 Char T11Char = "A"
 String T12String = "T12String"
 Bool T14Bool = true
-Int_64 T15Inc = 0
-Int_64 T16Dec = 10
+Int_64 T15Inc = 1
+Int_64 T16Dec = 5
 
 # Blocks
 {
