@@ -23,7 +23,7 @@ export default {
 			if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
-					res = simplify(args, line, trace, compiled)
+					res = simplify(args, line, trace, compiled, id)
 					break;
 				case 'printf':
 					res = output(args, line, trace, compiled, id)
