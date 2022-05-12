@@ -6,22 +6,22 @@ Int_64 T10Int64 = 9223372036854775807
 Char T11Char = "A"
 String T12String = "T12String"
 Bool T14Bool = true
-Int_64 T15Inc = 0
-Int_64 T16Dec = 10
+Int_64 T15Inc = 1
+Int_64 T16Dec = 5
 
 # Blocks
 {
-	printf("T13", "\nT13Loop\n\n")
+	printf("\nT13Loop\n\n")
 	# Standard Library
-	equate("T1Equate", "1+1-321+15324*6532452/43241234%7546/7547¬")
-	logic("T2Logic", "1542==43")
+	equate("1+1-321+15324*6532452/43241234%7546/7547¬")
+	logic("1542==43")
 	malloc("T3Malloc", 1)
-	printf("T4Printf", "T4Printf\n")
+	printf("T4Printf\n")
 	raw("mov ax,0") # T5Raw
-	simplify("T6Simplify", "12a + 7y - 9978765 + y / x * a / b * a^3")
+	simplify("12a + 7y - 9978765 + y / x * a / b * a^3")
 	
-	printf("T11", "T11Char: {T11Char}\n")
-	printf("T12", "T12String: {T12String}\n")
+	printf("T11Char: {T11Char}\n")
+	printf("T12String: {T12String}\n")
 
 	T15Inc++ # Increment
 	T16Dec-- # Decrement
