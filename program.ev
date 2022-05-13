@@ -1,7 +1,8 @@
 Int_64 first = 0
 Int_64 second = 1
 {
-    printf("h\n")
+    printf("\th\v\f\b\a\r\n")
+    printf("\b\b\b")
     be first second
     first++
     second++

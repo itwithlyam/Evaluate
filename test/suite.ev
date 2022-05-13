@@ -16,7 +16,7 @@ Int_64 T16Dec = 5
 	equate("1+1-321+15324*6532452/43241234%7546/7547¬")
 	logic("1542==43")
 	malloc("T3Malloc", 1)
-	printf("T4Printf\n")
+	printf("\tT4Printf\v\f\b\a\r\n")
 	raw("mov ax,0") # T5Raw
 	simplify("12a + 7y - 9978765 + y / x * a / b * a^3")
 	
