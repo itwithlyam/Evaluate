@@ -109,6 +109,63 @@ export function Parse(tokens, func, verbose=false) {
 				
 			}
 		}
+		else if (element.classify === 11) {
+			// Branching
+			switch(element.ident) {
+				case 37:
+					push({
+						type: "branching",
+						kind: "break"
+					})
+					current++
+					break;
+				case 40:
+					push({
+						type: "branching",
+						kind: "breakzero",
+						params: [tokens[current+1].char]
+					})
+					tokens[current+1].read = true
+					current += 2
+					break;
+				case 41:
+					push({
+						type: "branching",
+						kind: "breakequal",
+						params: [tokens[current+1].char, tokens[current+2].char]
+					})
+					tokens[current+1].read = true
+					tokens[current+2].read = true
+					current += 3
+					break;
+				case 42:
+					push({
+						type: "branching",
+						kind: "breaknotzero",
+						params: [tokens[current+1].char]
+					})
+					tokens[current+1].read = true
+					current += 2
+					break;
+				case 43:
+					push({
+						type: "branching",
+						kind: "breaknotequal",
+						params: [tokens[current+1].char, tokens[current+2].char]
+					})
+					tokens[current+1].read = true
+					tokens[current+2].read = true
+					current += 3
+					break;
+				case 44:
+					push({
+						type: "branching",
+						kind: "continue"
+					})
+					current++
+					break;
+			}
+		}
 		else if (element.classify === 9) {
 			ParseStack.push("logic gate", line)
 			switch(element.ident) {
@@ -196,6 +253,30 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current += 1
 				return line += 1
+			case 38:
+				if (!tokens[current-1].ident == 11) throw new CompilationError("ExpectedVariable", "A variable was expected", line, ParseTrace(ParseStack))
+				push({
+					type: "increment",
+					value: tokens[current-1].char + "++",
+					declarations: {
+						id: {
+							name: tokens[current-1].char
+						}
+					}
+				})
+				return current += 2;
+			case 39:
+				if (!tokens[current-1].ident == 11) throw new CompilationError("ExpectedVariable", "A variable was expected", line, ParseTrace(ParseStack))
+				push({
+					type: "decrement",
+					value: tokens[current-1].char + "--",
+					declarations: {
+						id: {
+							name: tokens[current-1].char
+						}
+					}
+				})
+				return current += 2;
 			case 16:
 				ParseStack.push("SquareBracket", line)
 				tokens[current].read = true
@@ -405,6 +486,8 @@ export function Parse(tokens, func, verbose=false) {
 			ParseStack.pop()
 			return;
 		}
+
+		//throw new CompilationError("UnnexpectedToken", "An unnexpected token was identified.", line, ParseTrace(ParseStack))
 	})
 	let AST = {
 		type: "Program",

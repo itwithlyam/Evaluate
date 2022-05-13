@@ -1,4 +1,4 @@
-import {rpn, Yard} from '../util.js'
+ import {rpn, Yard} from '../util.js'
 
 export default {
 	name: "equation",

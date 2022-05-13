@@ -15,7 +15,7 @@ import raw from './standard/raw.js'
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory, compiled) {
+	execute(func, args, line, trace, memory, compiled, id) {
 		let res = null
 		if (memory.hasOwnProperty(func)) {
 			res = Interpret(memory[func].ast, true, false) 
@@ -23,10 +23,10 @@ export default {
 			if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
-					res = simplify(args, line, trace, compiled)
+					res = simplify(args, line, trace, compiled, id)
 					break;
 				case 'printf':
-					res = output(args, line, trace, compiled)
+					res = output(args, line, trace, compiled, id)
 					break;
 				case "equate":
 					res = evaluate(args, line, trace, compiled)
@@ -35,7 +35,7 @@ export default {
 					res = panic(line, trace, compiled)
 					break;
 				case "logic":
-					res = logic(args, line, trace, compiled)
+					res = logic(args, line, trace, compiled, id)
 					break;
 				case "malloc":
 					res = malloc(args)
