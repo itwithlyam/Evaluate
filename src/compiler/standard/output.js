@@ -41,7 +41,7 @@ export default function outputfunc(args, line, trace, compiled, id) {
 				ret.push({commands: `mov eax,4\nmov ebx,1\nmov ecx,printf${id}${counter}\nmov edx,printf${id}len${counter}\nint 0x80\n`, type: "text", os: ['win', 'linux']})
 				ret.push({commands: `mov eax,0x20000004\nmov ebx,0x20000001\nmov ecx,printf${id}${counter}\nmov edx,printf${id}len${counter}\nint 0x80\n`, type: "text", os: ['mac']})
 			} else if (l === '\\f') {
-				ret.push({commands: `db 11,0`, type: "label", label: "printf"+id+counter, os: ['mac', 'linux', 'win']})
+				ret.push({commands: `db 12,0`, type: "label", label: "printf"+id+counter, os: ['mac', 'linux', 'win']})
 				ret.push({label: "printf"+id+"len"+counter, commands: `equ $-printf${id}${counter}`, type: "label", os: ['mac', 'linux', 'win']})
 				ret.push({commands: `mov eax,4\nmov ebx,1\nmov ecx,printf${id}${counter}\nmov edx,printf${id}len${counter}\nint 0x80\n`, type: "text", os: ['win', 'linux']})
 				ret.push({commands: `mov eax,0x20000004\nmov ebx,0x20000001\nmov ecx,printf${id}${counter}\nmov edx,printf${id}len${counter}\nint 0x80\n`, type: "text", os: ['mac']})
