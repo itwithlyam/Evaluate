@@ -1,6 +1,7 @@
 {
-    printf("\a\b\f\r\t\vHello, world!\n")
+    printf("Hello, world!\n")
     printf("Function yay\n")
 } function thing
 
+thing()
 thing()

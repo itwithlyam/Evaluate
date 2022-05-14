@@ -17,10 +17,7 @@ export default {
 	description: "run function",
 	execute(func, args, line, trace, memory, compiled, id) {
 		let res = null
-		if (memory.hasOwnProperty(func)) {
-			res = Interpret(memory[func].ast, true, false) 
-		} else {
-			if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
+		if (StandardLibrary.includes(func)) {
 			switch(func) {
 				case 'simplify':
 					res = simplify(args, line, trace, compiled, id)
@@ -44,6 +41,8 @@ export default {
 					res = raw(args)
 					break;
 			}
+		} else {
+			res = [{type: "text", commands: `call ${func}`, os: ['mac','linux','win']}]
 		}
 		return res
 	}
