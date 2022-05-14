@@ -1,8 +1,6 @@
-Int_32 i = 5
-
 {
     printf("\a\b\f\r\t\vHello, world!\n")
+    printf("Function yay\n")
+} function thing
 
-    i--
-    bz i
-} loop 10
+thing()

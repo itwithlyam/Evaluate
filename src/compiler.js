@@ -18,6 +18,7 @@ import incdec from './compiler/incdec.js'
 // Blocks
 // Modifiers
 import loop from './compiler/blocks/modifiers/loop.js'
+import func from './compiler/blocks/modifiers/function.js'
 // Control/Branching
 import nbreak from './compiler/blocks/control/break.js'
 import breakequal from './compiler/blocks/control/breakequal.js'
@@ -51,6 +52,14 @@ export function Compile(AST, unit, verbose, compiled) {
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'functiondec':
+				RuntimeStack.push("Function Declaration", line)
+				let name = element.declarations.id.name
+				func.execute(blockbody, name).forEach(e => ans.push(e))
+				RuntimeStack.pop()
+				current++
+				break;
+
 			case 'branching':
 				switch(element.kind) {
 					 case 'break':
@@ -75,7 +84,6 @@ export function Compile(AST, unit, verbose, compiled) {
 				current++
 				break;
 
-			// Everything else
 			case 'increment':
 				incdec.execute(element.declarations.id.name, true).forEach(e => ans.push(e))
 				break;
