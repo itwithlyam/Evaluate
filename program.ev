@@ -1,9 +1,8 @@
-Int_64 first = 0
-Int_64 second = 1
+Int_32 i = 5
+
 {
-    printf("\th\v\f\b\a\r\n")
-    printf("\b\b\b")
-    be first second
-    first++
-    second++
+    printf("\a\b\f\r\t\vHello, world!\n")
+
+    i--
+    bz i
 } loop 10
