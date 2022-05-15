@@ -15,9 +15,10 @@ import raw from './standard/raw.js'
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory, compiled, id) {
+	execute(func, args, line, trace, memory, compiled, id, standard) {
 		let res = null
 		if (StandardLibrary.includes(func)) {
+			if (!standard) throw new RuntimeError("Import", "Standard library not imported", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
 					res = simplify(args, line, trace, compiled, id)

@@ -37,7 +37,7 @@ import { notStrictEqual } from 'assert'
 let VarMemory = []
 let FunctionMemory = {}
 
-let modules = ['ascii']
+let modules = ['ascii', 'standard']
 
 export function Compile(AST, unit, verbose, compiled) {
 	if (verbose) console.log(AST)
@@ -52,6 +52,7 @@ export function Compile(AST, unit, verbose, compiled) {
 	let blockbody = []
 	let ans = []
 	let res = []
+	let standard = false
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
@@ -66,7 +67,8 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'import':
 				RuntimeStack.push("Import", line)
 				if (!modules.includes(element.value)) throw new RuntimeError("Import", "Module not found", line, ParseTrace(RuntimeStack))
-				ans.push({os: ['win', 'linux', 'mac'], requires: element.value})
+				if (element.value === "standard") standard = true
+				else ans.push({os: ['win', 'linux', 'mac'], requires: element.value})
 				current++
 				RuntimeStack.pop()
 				break;
@@ -131,7 +133,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current)
+				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)

@@ -1,4 +1,4 @@
-import ascii
+import standard
 
 {
     printf("Hello, world!\n")
