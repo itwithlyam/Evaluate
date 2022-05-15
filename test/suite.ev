@@ -13,10 +13,14 @@ Bool T14Bool = true
 Int_64 T15Inc = 1
 Int_64 T16Dec = 5
 
+{
+	printf("Yes\n")
+} loop 10
+
 # Blocks
 {
 	printf("\nT13Loop\n\n")
-	
+
 	# Standard Library
 	equate("1+1-321+15324*6532452/43241234%7546/7547¬")
 	logic("1542==43")

@@ -27,7 +27,7 @@ export default {
 					res = output(args, line, trace, compiled, id)
 					break;
 				case "equate":
-					res = evaluate(args, line, trace, compiled)
+					res = evaluate(args, line, trace, compiled, id)
 					break;
 				case "panic":
 					res = panic(line, trace, compiled)
