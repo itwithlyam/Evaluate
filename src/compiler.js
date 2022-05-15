@@ -31,6 +31,7 @@ import ncontinue from './compiler/blocks/control/continue.js'
 import andgate from './compiler/logic/and.js'
 import orgate from './compiler/logic/or.js'
 import notgate from './compiler/logic/not.js'
+import { notStrictEqual } from 'assert'
 
 // Memory 
 let VarMemory = []
@@ -58,6 +59,12 @@ export function Compile(AST, unit, verbose, compiled) {
 				func.execute(blockbody, name).forEach(e => ans.push(e))
 				RuntimeStack.pop()
 				current++
+				break;
+
+			case 'import':
+				RuntimeStack.push("Import", line)
+				ans.push({os: ['win', 'linux', 'mac'], requires: element.value})
+				RuntimeStack.pop()
 				break;
 
 			case 'branching':

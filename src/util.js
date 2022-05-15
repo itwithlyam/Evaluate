@@ -188,7 +188,8 @@ export const Ident = {
 	BREAKEQUAL: 41,
 	BREAKNOTZERO: 42,
 	BREAKNOTEQUAL: 43,
-	CONTINUE: 44
+	CONTINUE: 44,
+	IMPORT: 45
 }
 
 export const Classify = {
@@ -203,7 +204,8 @@ export const Classify = {
 	FUNCTION: 8,
 	BOOLEAN: 9,
 	LOOP: 10,
-	BRANCHING: 11
+	BRANCHING: 11,
+	MODULES: 12
 }
 
 export const negatives = /(\s)|(\{)|(\})|(\+\+)|(\-\-)|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)|(\#)|(\")|(\=>)|(\=)/gi

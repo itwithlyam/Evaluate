@@ -1,3 +1,5 @@
+import ascii
+
 {
     printf("Hello, world!\n")
     printf("Function yay\n")

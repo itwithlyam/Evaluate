@@ -213,6 +213,18 @@ export function Parse(tokens, func, verbose=false) {
 			}
 		}
 		switch(element.ident) {
+			case 45:
+				// Imports
+				ParseStack.push("import", line)
+				current++
+				tokens[current].read = true
+				push({
+					type: "import",
+					value: tokens[current].char
+				})
+				current++
+				ParseStack.pop()
+				break;
 			case 19:
 				// Function
 				ParseStack.push("function", line)
