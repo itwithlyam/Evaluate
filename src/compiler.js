@@ -37,6 +37,8 @@ import { notStrictEqual } from 'assert'
 let VarMemory = []
 let FunctionMemory = {}
 
+let modules = ['ascii']
+
 export function Compile(AST, unit, verbose, compiled) {
 	if (verbose) console.log(AST)
 	const RuntimeStack = new StackTrace(verbose, "Compiler Stack")
@@ -63,7 +65,9 @@ export function Compile(AST, unit, verbose, compiled) {
 
 			case 'import':
 				RuntimeStack.push("Import", line)
+				if (!modules.includes(element.value)) throw new RuntimeError("Import", "Module not found", line, ParseTrace(RuntimeStack))
 				ans.push({os: ['win', 'linux', 'mac'], requires: element.value})
+				current++
 				RuntimeStack.pop()
 				break;
 
