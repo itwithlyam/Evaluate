@@ -15,6 +15,7 @@ export default {
 			}
 			else anss.push(e.commands)
 		})
+		anss.push("\n\tret\n")
 		ans.push(
 			{
 				os: ['linux', 'win', 'mac'],

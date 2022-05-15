@@ -1,8 +1,18 @@
-Int_32 i = 5
+import standard
 
 {
-    printf("\a\b\f\r\t\vHello, world!\n")
+    printf("Hello, world!\n")
+    printf("Function yay\n")
+} function thing
 
-    i--
-    bz i
-} loop 10
+{
+    printf("No thanks\n")
+} function alsothing
+
+thing()
+thing()
+alsothing()
+thing()
+alsothing()
+alsothing()
+ 

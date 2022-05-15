@@ -15,12 +15,10 @@ import raw from './standard/raw.js'
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory, compiled, id) {
+	execute(func, args, line, trace, memory, compiled, id, standard) {
 		let res = null
-		if (memory.hasOwnProperty(func)) {
-			res = Interpret(memory[func].ast, true, false) 
-		} else {
-			if (!StandardLibrary.includes(func)) throw new RuntimeError("StandardLibrary", "Function does not exist", line, ParseTrace(trace))
+		if (StandardLibrary.includes(func)) {
+			if (!standard) throw new RuntimeError("Import", "Standard library not imported", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
 					res = simplify(args, line, trace, compiled, id)
@@ -29,7 +27,7 @@ export default {
 					res = output(args, line, trace, compiled, id)
 					break;
 				case "equate":
-					res = evaluate(args, line, trace, compiled)
+					res = evaluate(args, line, trace, compiled, id)
 					break;
 				case "panic":
 					res = panic(line, trace, compiled)
@@ -44,6 +42,8 @@ export default {
 					res = raw(args)
 					break;
 			}
+		} else {
+			res = [{type: "text", commands: `call ${func}`, os: ['mac','linux','win']}]
 		}
 		return res
 	}

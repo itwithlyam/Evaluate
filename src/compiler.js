@@ -18,6 +18,7 @@ import incdec from './compiler/incdec.js'
 // Blocks
 // Modifiers
 import loop from './compiler/blocks/modifiers/loop.js'
+import func from './compiler/blocks/modifiers/function.js'
 // Control/Branching
 import nbreak from './compiler/blocks/control/break.js'
 import breakequal from './compiler/blocks/control/breakequal.js'
@@ -30,10 +31,13 @@ import ncontinue from './compiler/blocks/control/continue.js'
 import andgate from './compiler/logic/and.js'
 import orgate from './compiler/logic/or.js'
 import notgate from './compiler/logic/not.js'
+import { notStrictEqual } from 'assert'
 
 // Memory 
 let VarMemory = []
 let FunctionMemory = {}
+
+let modules = ['ascii', 'standard']
 
 export function Compile(AST, unit, verbose, compiled) {
 	if (verbose) console.log(AST)
@@ -48,9 +52,27 @@ export function Compile(AST, unit, verbose, compiled) {
 	let blockbody = []
 	let ans = []
 	let res = []
+	let standard = false
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'functiondec':
+				RuntimeStack.push("Function Declaration", line)
+				let name = element.declarations.id.name
+				func.execute(blockbody, name).forEach(e => ans.push(e))
+				RuntimeStack.pop()
+				current++
+				break;
+
+			case 'import':
+				RuntimeStack.push("Import", line)
+				if (!modules.includes(element.value)) throw new RuntimeError("Import", "Module not found", line, ParseTrace(RuntimeStack))
+				if (element.value === "standard") standard = true
+				else ans.push({os: ['win', 'linux', 'mac'], requires: element.value})
+				current++
+				RuntimeStack.pop()
+				break;
+
 			case 'branching':
 				switch(element.kind) {
 					 case 'break':
@@ -75,7 +97,6 @@ export function Compile(AST, unit, verbose, compiled) {
 				current++
 				break;
 
-			// Everything else
 			case 'increment':
 				incdec.execute(element.declarations.id.name, true).forEach(e => ans.push(e))
 				break;
@@ -85,6 +106,7 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'startblock':
 				RuntimeStack.push("Block Start", line)
 				leni = ans.length
+				blockbody = []
 				block = true
 				current++
 				break;
@@ -112,7 +134,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current)
+				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
