@@ -5,6 +5,14 @@ import standard
     printf("Function yay\n")
 } function thing
 
+{
+    printf("No thanks\n")
+} function alsothing
+
 thing()
 thing()
+alsothing()
+thing()
+alsothing()
+alsothing()
  
