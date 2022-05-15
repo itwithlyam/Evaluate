@@ -106,6 +106,7 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'startblock':
 				RuntimeStack.push("Block Start", line)
 				leni = ans.length
+				blockbody = []
 				block = true
 				current++
 				break;
