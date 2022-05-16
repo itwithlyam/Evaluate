@@ -43,7 +43,7 @@ export default {
 					break;
 			}
 		} else {
-			res = [{type: "text", commands: `call ${func}`, os: ['mac','linux','win']}]
+			res = [{type: "text", commands: `mov ecx,0\ncall ${func}`, os: ['mac','linux','win']}]
 		}
 		return res
 	}
