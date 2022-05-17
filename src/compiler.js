@@ -16,9 +16,8 @@ import declare from './compiler/declare.js'
 import incdec from './compiler/incdec.js'
 
 // Blocks
-// Modifiers
-import loop from './compiler/blocks/modifiers/loop.js'
-import func from './compiler/blocks/modifiers/function.js'
+import parseblock from './compiler/blocks/parseblock.js'
+
 // Control/Branching
 import nbreak from './compiler/blocks/control/break.js'
 import breakequal from './compiler/blocks/control/breakequal.js'
@@ -59,7 +58,7 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'functiondec':
 				RuntimeStack.push("Function Declaration", line)
 				let name = element.declarations.id.name
-				func.execute(blockbody, name).forEach(e => ans.push(e))
+				parseblock.execute(body: blockbody, func: name).forEach(e => ans.push(e))
 				RuntimeStack.pop()
 				current++
 				break;
@@ -121,7 +120,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = loop.execute(element.times, blockbody, current)
+				res = parseblock.execute(times=element.times, body=blockbody, current=current, type="loop")
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
