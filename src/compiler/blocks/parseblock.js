@@ -11,7 +11,7 @@ export default {
 		
 		switch(type) {
 			case "loop":
-				for (let i = 0; i < amount; i++) block.forEach(e => {
+				for (let i = 0; i < amount; i++) body.forEach(e => {
 					if (e.type !== "text") {
 						if (!declared.includes(e)) {
 							ans.push(e)
@@ -28,6 +28,19 @@ export default {
 				break;
 				
 			case "function":
+				body.forEach(e => {
+					if (e.type !== "text") {
+						if (!declared.includes(e)) {
+							ans.push(e)
+						}
+						declared.push(e)
+						return;
+								}
+					else anss.push(e.commands)
+				})
+				
+        anss.push("\n\tret\n")
+				return funcdec.execute(func,anss,ans)
 		}
 	}
 }

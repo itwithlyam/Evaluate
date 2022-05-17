@@ -58,7 +58,7 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'functiondec':
 				RuntimeStack.push("Function Declaration", line)
 				let name = element.declarations.id.name
-				parseblock.execute(body: blockbody, func: name).forEach(e => ans.push(e))
+				parseblock.execute(blockbody, null, name, null, "function").forEach(e => ans.push(e))
 				RuntimeStack.pop()
 				current++
 				break;
@@ -120,7 +120,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = parseblock.execute(times=element.times, body=blockbody, current=current, type="loop")
+				res = parseblock.execute(blockbody, current, null, times, "loop")
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
