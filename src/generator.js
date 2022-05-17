@@ -8,6 +8,8 @@ export default function Generator(code, output) {
     // sbss = section .bss (reserves)
     // labels = values within stext (i.e. varname: db "varcontent",10,0)
 
+		// Declarations ALWAYS go as BSS reserves
+
     // l- = linux
     // m- = macos
     // w- = windows
@@ -29,7 +31,6 @@ export default function Generator(code, output) {
     let wsbss = []
 
     code.forEach(section => {
-			//console.log(section)
         //sector.forEach(section => {
             if (!section.os) return
 			if (section.requires) requires.push(section.requires)

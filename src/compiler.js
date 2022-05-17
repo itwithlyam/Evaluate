@@ -120,7 +120,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = parseblock.execute(blockbody, current, null, times, "loop")
+				res = parseblock.execute(blockbody, current, null, element.times, "loop")
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)

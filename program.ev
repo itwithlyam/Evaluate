@@ -1,5 +1,11 @@
 import standard
 
-printf("Hello, world\n")
+{
+	printf("sure\n")
+} function sure
+
+{
+	printf("\a")
+} loop 1
 
  

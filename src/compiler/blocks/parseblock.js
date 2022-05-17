@@ -4,7 +4,7 @@ import loop from './modifiers/loop.js'
 export default {
 	name: "parseblock",
 	description: "Parses blocks",
-	execute(body, current=null, func=null, times=null, type) {
+	execute(body, current=null, func=null, amount=null, type) {
 		let anss = []
 		let ans = []
 		let declared = []
@@ -23,7 +23,7 @@ export default {
 				})
 				
 				anss.push("\n\tret\n")
-				loop.execute(times,current,anss,ans)
+				return loop.execute(amount,current,anss,ans)
 
 				break;
 				
