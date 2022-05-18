@@ -5,7 +5,14 @@ import standard
 } function sure
 
 {
-	printf("\a")
-} loop 1
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+	printf("\a\a\a\a\a\a\a")
+} loop 100000
 
  
