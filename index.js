@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const version = "2.0.1-dev"
-const devmode = true
+const version = "2.0.1"
+const devmode = false
 
 const argdef = [
 	{name: 'input', alias: 'i', type: String, defaultOption: true},
