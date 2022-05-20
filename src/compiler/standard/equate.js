@@ -1,12 +1,12 @@
 import equate from "../equate.js"
 import {RuntimeError, ParseTrace} from '../../util.js'
 
-export default function eqfunc(args, line, trace, compiled) {
+export default function eqfunc(args, line, trace, compiled, id) {
 	try {
-		let statement = args[1].split(/(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))/gi)
+		let statement = args[0].split(/(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))/gi)
 		let a = equate.execute(statement, line)
 		if (!compiled) return a
-		return [{commands: `mov eax,4\nmov ebx,1\nmov ecx,${args[0]}\nmov edx,${args[0]}len\nint 0x80`, type: "text", os: ['win', 'linux']}, {commands: `mov eax,0x20000004\nmov ebx,1\nmov ecx,${args[0]}\nmov edx,${args[0]}len\nint 0x80`, type: "text", os: ['mac']}, {label: args[0], commands: `db "${args[0]}: ${a}",10,0`, type: "label", os: ['mac', 'win', 'linux']}, {label: args[0]+"len", commands: `equ $-${args[0]}`, type: "label", os: ['mac', 'win', 'linux']}]
+		return [{commands: `mov eax,4\nmov ebx,1\nmov ecx,eq${id}\nmov edx,eqlen${id}\nint 0x80`, type: "text", os: ['win', 'linux']}, {commands: `mov eax,0x20000004\nmov ebx,1\nmov ecx,eq${id}\nmov edx,eqlen${id}\nint 0x80`, type: "text", os: ['mac']}, {label: "eq"+id, commands: `db "${a}",10,"Warning: Standard.equate() is deprecated and will be removed soon",10,0`, type: "label", os: ['mac', 'win', 'linux']}, {label: `eqlen${id}`, commands: `equ $-eq${id}`, type: "label", os: ['mac', 'win', 'linux']}]
 
 	} catch(err) {
 		console.log(err)

@@ -7,13 +7,13 @@
 Input 
 ```
 Int_64 number = 123456751
-printf("num", "{number}\n")
+printf("{number}\n")
 ``` 
 Result: `123456751`
 
 Input: 
 ```
-equate("myEquation", "240*4")
+equate("240*4")
 ```
 Result: `840`
 

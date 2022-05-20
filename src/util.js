@@ -182,6 +182,14 @@ export const Ident = {
 	MBOOL: 35,
 	LOOP: 36,
 	BREAK: 37,
+	INC: 38,
+	DEC: 39,
+	BREAKZERO: 40,
+	BREAKEQUAL: 41,
+	BREAKNOTZERO: 42,
+	BREAKNOTEQUAL: 43,
+	CONTINUE: 44,
+	IMPORT: 45
 }
 
 export const Classify = {
@@ -196,6 +204,8 @@ export const Classify = {
 	FUNCTION: 8,
 	BOOLEAN: 9,
 	LOOP: 10,
+	BRANCHING: 11,
+	MODULES: 12
 }
 
-export const negatives = /(\s)|(\{)|(\})|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)|(\#)|(\")|(\=>)|(\=)/gi
+export const negatives = /(\s)|(\{)|(\})|(\+\+)|(\-\-)|(\+)|(\-)|(\/)|(\*)|(\^)|(\<\<)|(\>\>)|(\%)|(\¬)|(\()|(\))|(\[)|(\])|(\~)|(\#)|(\")|(\=>)|(\=)/gi
