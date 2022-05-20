@@ -14,26 +14,20 @@ import callfunc from './compiler/callfunc.js'
 import initfunc from './compiler/initfunc.js'
 import declare from './compiler/declare.js'
 import incdec from './compiler/incdec.js'
-
-// Blocks
-// Modifiers
-import loop from './compiler/blocks/modifiers/loop.js'
-// Control/Branching
+import parseblock from './compiler/blocks/parseblock.js'
 import nbreak from './compiler/blocks/control/break.js'
 import breakequal from './compiler/blocks/control/breakequal.js'
 import breakzero from './compiler/blocks/control/breakzero.js'
 import breaknotequal from './compiler/blocks/control/breaknotequal.js'
 import breaknotzero from './compiler/blocks/control/breaknotzero.js'
 import ncontinue from './compiler/blocks/control/continue.js'
-
-// Logic gates
 import andgate from './compiler/logic/and.js'
 import orgate from './compiler/logic/or.js'
 import notgate from './compiler/logic/not.js'
 
-// Memory 
 let VarMemory = []
 let FunctionMemory = {}
+let modules = ['ascii', 'standard']
 
 export function Compile(AST, unit, verbose, compiled) {
 	if (verbose) console.log(AST)
@@ -48,9 +42,27 @@ export function Compile(AST, unit, verbose, compiled) {
 	let blockbody = []
 	let ans = []
 	let res = []
+	let standard = false
 	
 	AST.body.forEach(element => {
 		switch(element.type) {
+			case 'functiondec':
+				RuntimeStack.push("Function Declaration", line)
+				let name = element.declarations.id.name
+				parseblock.execute(blockbody, {func: name, type:"function"}).forEach(e => ans.push(e))
+				RuntimeStack.pop()
+				current++
+				break;
+
+			case 'import':
+				RuntimeStack.push("Import", line)
+				if (!modules.includes(element.value)) throw new RuntimeError("Import", "Module not found", line, ParseTrace(RuntimeStack))
+				if (element.value === "standard") standard = true
+				else ans.push({os: ['win', 'linux', 'mac'], requires: element.value})
+				current++
+				RuntimeStack.pop()
+				break;
+
 			case 'branching':
 				switch(element.kind) {
 					 case 'break':
@@ -75,7 +87,6 @@ export function Compile(AST, unit, verbose, compiled) {
 				current++
 				break;
 
-			// Everything else
 			case 'increment':
 				incdec.execute(element.declarations.id.name, true).forEach(e => ans.push(e))
 				break;
@@ -85,6 +96,7 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'startblock':
 				RuntimeStack.push("Block Start", line)
 				leni = ans.length
+				blockbody = []
 				block = true
 				current++
 				break;
@@ -99,7 +111,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = loop.execute(element.times, blockbody, current)
+				res = parseblock.execute(blockbody, {current:current, amount:element.times, type:"loop"})
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
@@ -112,7 +124,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current)
+				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)

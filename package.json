@@ -32,5 +32,10 @@
     "stack-lifo": "^0.1.6",
     "statman-stopwatch": "^2.13.0",
     "table": "^6.8.0"
+  },
+  "pkg": {
+    "options": [
+      "experimental-modules"
+    ]
   }
 }

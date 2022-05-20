@@ -56,6 +56,9 @@ export function Lexer(script) {
 					break;
 
 				// Everything else
+				case "import":
+					idents.push({char: char, ident: Ident.IMPORT, classify: Classify.MODULES})
+					break;
 				case 'bz':
 					idents.push({char: char, ident: Ident.BREAKZERO, classify: Classify.BRANCHING})
 					break;

@@ -1,9 +1,10 @@
-Int_64 first = 0
-Int_64 second = 1
-{
-    printf("\th\v\f\b\a\r\n")
-    printf("\b\b\b")
-    be first second
-    first++
-    second++
-} loop 10
+import standard
+
+Int_16 i2 = 1
+Int_16 i1 = 4
+{	
+	i2++
+	be i1 i2
+
+	printf("Break if Equal: Looping 3 times\n")
+} loop 5

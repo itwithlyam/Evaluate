@@ -213,6 +213,42 @@ export function Parse(tokens, func, verbose=false) {
 			}
 		}
 		switch(element.ident) {
+			case 45:
+				// Imports
+				ParseStack.push("import", line)
+				current++
+				tokens[current].read = true
+				push({
+					type: "import",
+					value: tokens[current].char
+				})
+				current++
+				ParseStack.pop()
+				break;
+			case 19:
+				// Function
+				ParseStack.push("function", line)
+				current++
+
+				let name = tokens[current].char
+				tokens[current].read = true
+				current++
+
+				if (tokens[current-3].char != "}") throw new CompilationError("ExpectedBlock", "Expected a Block", line, ParseTrace(ParseStack))
+				tokens[current].read = true
+				current++
+
+				push({
+					type: "functiondec",
+					declarations: {
+						id: {
+							name: name,	
+						}
+					}
+				})
+
+				ParseStack.pop()
+				break;
 			case 36:
 				// Loop
 				ParseStack.push("loop", line)

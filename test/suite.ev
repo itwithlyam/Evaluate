@@ -1,3 +1,7 @@
+# Imports
+import standard
+import ascii
+
 # Declarations
 Int_8 T7Int8 = 0
 Int_16 T8Int16 = 65535
@@ -9,9 +13,15 @@ Bool T14Bool = true
 Int_64 T15Inc = 1
 Int_64 T16Dec = 5
 
+# Function
+{
+	printf("FunctionTest\n")
+} function FuncTest
+
 # Blocks
 {
 	printf("\nT13Loop\n\n")
+
 	# Standard Library
 	equate("1+1-321+15324*6532452/43241234%7546/7547¬")
 	logic("1542==43")
@@ -23,8 +33,28 @@ Int_64 T16Dec = 5
 	printf("T11Char: {T11Char}\n")
 	printf("T12String: {T12String}\n")
 
+	FuncTest() # Function test
+
 	T15Inc++ # Increment
 	T16Dec-- # Decrement
 
 	be T15Inc T16Dec # Break if equal
 } loop 10
+
+
+# Loops
+Int_16 i1 = 3
+{	
+	printf("Do-While loop: While not zero\n")
+
+	bz i1
+	i1--
+} loop 100
+
+Int_16 i2 = 0
+{	
+	bnz i2
+	i2++
+
+	printf("While loop: While zero\n")
+} loop 100
