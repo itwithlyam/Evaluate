@@ -1,18 +1,23 @@
 import standard
 
+Int_32 i = 5
+
 {
-	printf("sure\n")
+	printf("sur\n")
 } function sure
 
 {
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-	printf("\a\a\a\a\a\a\a")
-} loop 100000
+	printf("sure\n")
+} function yes
 
+{
+	bz i
+	
+	sure()
+	yes()
+
+	printf("{i}")
+
+	i--
+} loop 10
  
