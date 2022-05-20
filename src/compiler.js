@@ -14,28 +14,19 @@ import callfunc from './compiler/callfunc.js'
 import initfunc from './compiler/initfunc.js'
 import declare from './compiler/declare.js'
 import incdec from './compiler/incdec.js'
-
-// Blocks
 import parseblock from './compiler/blocks/parseblock.js'
-
-// Control/Branching
 import nbreak from './compiler/blocks/control/break.js'
 import breakequal from './compiler/blocks/control/breakequal.js'
 import breakzero from './compiler/blocks/control/breakzero.js'
 import breaknotequal from './compiler/blocks/control/breaknotequal.js'
 import breaknotzero from './compiler/blocks/control/breaknotzero.js'
 import ncontinue from './compiler/blocks/control/continue.js'
-
-// Logic gates
 import andgate from './compiler/logic/and.js'
 import orgate from './compiler/logic/or.js'
 import notgate from './compiler/logic/not.js'
-import { notStrictEqual } from 'assert'
 
-// Memory 
 let VarMemory = []
 let FunctionMemory = {}
-
 let modules = ['ascii', 'standard']
 
 export function Compile(AST, unit, verbose, compiled) {
@@ -58,7 +49,7 @@ export function Compile(AST, unit, verbose, compiled) {
 			case 'functiondec':
 				RuntimeStack.push("Function Declaration", line)
 				let name = element.declarations.id.name
-				parseblock.execute(blockbody, null, name, null, "function").forEach(e => ans.push(e))
+				parseblock.execute(blockbody, {func: name, type:"function"}).forEach(e => ans.push(e))
 				RuntimeStack.pop()
 				current++
 				break;
@@ -120,7 +111,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = parseblock.execute(blockbody, current, null, element.times, "loop")
+				res = parseblock.execute(blockbody, {current:current, amount:element.times, type:"loop"})
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
