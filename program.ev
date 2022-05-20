@@ -1,23 +1,10 @@
 import standard
 
-Int_32 i = 5
+Int_16 i2 = 1
+Int_16 i1 = 4
+{	
+	i2++
+	be i1 i2
 
-{
-	printf("sur\n")
-} function sure
-
-{
-	printf("sure\n")
-} function yes
-
-{
-	bz i
-	
-	sure()
-	yes()
-
-	printf("{i}")
-
-	i--
-} loop 10
- 
+	printf("Break if Equal: Looping 3 times\n")
+} loop 5

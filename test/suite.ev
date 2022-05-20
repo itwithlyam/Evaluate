@@ -13,10 +13,7 @@ Bool T14Bool = true
 Int_64 T15Inc = 1
 Int_64 T16Dec = 5
 
-{
-	printf("Yes\n")
-} loop 10
-
+# Function
 {
 	printf("FunctionTest\n")
 } function FuncTest
@@ -44,20 +41,20 @@ Int_64 T16Dec = 5
 	be T15Inc T16Dec # Break if equal
 } loop 10
 
+
+# Loops
 Int_16 i1 = 3
 {	
+	printf("Do-While loop: While not zero\n")
+
 	bz i1
 	i1--
-
-	printf("Break if Zero: Looping 3 times\n")
 } loop 100
 
 Int_16 i2 = 0
-Int_16 i3 = 10
 {	
-	be i2 i3
+	bnz i2
 	i2++
-	i3--
 
-	printf("Break if Equal: Looping 5 times\n")
+	printf("While loop: While zero\n")
 } loop 100
