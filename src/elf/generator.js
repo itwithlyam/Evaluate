@@ -5,12 +5,16 @@ import fs from 'fs'
 
 
 export default function ELFGenerator(code, output) {
-    let fh = new fileheader().build()
-    let ph = new programheader().build()
+    let fheader = new fileheader()
+    let pheader = new programheader()
 
-    let gens = []
+    pheader.filesz = "2C"
+    pheader.memsz = "2C"
 
-    let placeholder = "B801000000BB00000000CD80"
+    let fh = fheader.build()
+    let ph = pheader.build()
+
+    let placeholder = "B8 04 00 00 00 BB 01 00 00 00 B9 76 80 04 08 BA 0A 00 00 00 CD 80 B8 01 00 00 00 BB 00 00 00 00 CD 80 48 45 4C 4F 20 57 52 4C 44 0A"
 
     let program = ""
 
@@ -29,7 +33,7 @@ export default function ELFGenerator(code, output) {
         })
     })
 
-    program += placeholder
+    program += placeholder.replaceAll(' ', '')
 
     console.log(program)
     fs.writeFileSync(output+".out", program, {encoding: 'hex'})
