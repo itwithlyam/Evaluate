@@ -1,4 +1,4 @@
-class ProgramHeader {
+export default class ProgramHeader {
     constructor() {
         this.type = 0x01 // Loadable
         this.offset = 0x00 // Unknown at this point - Offset to start of segment

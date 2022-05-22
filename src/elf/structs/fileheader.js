@@ -1,4 +1,4 @@
-class FileHeader {
+export default class FileHeader {
     constructor() {
         this.ident = new Uint8Array(16);
         this.type = 0x02; // ET_EXEC
