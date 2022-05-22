@@ -14,14 +14,18 @@ export default function ELFGenerator(code, output) {
     let fh = fheader.build()
     let ph = pheader.build()
 
-    let placeholder = "B8 04 00 00 00 BB 01 00 00 00 B9 76 80 04 08 BA 0A 00 00 00 CD 80 B8 01 00 00 00 BB 00 00 00 00 CD 80 48 45 4C 4F 20 57 52 4C 44 0A"
+    code = [{hex: "B8 04 00 00 00 BB 01 00 00 00 B9 76 80 04 08 BA 0A 00 00 00 CD 80"}, {hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"}, {hex: "48 45 4C 4F 20 57 52 4C 44 0A"}]
 
     let program = ""
+
+    let bytes = 0
 
     fh.forEach(element => {
         element.forEach(e => {
             if (e.length == 2) {
                 program += e
+            } else {
+                bytes += e
             }
         })
     })
@@ -29,11 +33,18 @@ export default function ELFGenerator(code, output) {
         element.forEach(e => {
             if (e.length == 2) {
                 program += e
+            } else {
+                bytes += e
             }
         })
     })
 
-    program += placeholder.replaceAll(' ', '')
+    code.forEach(element => {
+        element.hex.split(' ').forEach(e => {
+            program += e
+            bytes++
+        })
+    })
 
     console.log(program)
     fs.writeFileSync(output+".out", program, {encoding: 'hex'})
