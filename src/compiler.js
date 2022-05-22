@@ -248,7 +248,7 @@ export function Compile(AST, unit, verbose, compiled) {
 		})
 		return;
 	} else if (compiled) {
-		return Generator(ans, compiled)
+		return Generator(ans, compiled, true)
 	}
 	return ans
 }
