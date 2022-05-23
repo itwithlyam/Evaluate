@@ -1,1 +1,1 @@
-run="node index.js program.ev --force --disable-warnings -v && npm run build && ./output" 
+run="node index.js program.ev --force --disable-warnings -v && ./output.out" 

@@ -14,7 +14,7 @@ export default function ELFGenerator(code, output) {
     let fh = fheader.build()
     let ph = pheader.build()
 
-    code = [{hex: "B8 04 00 00 00 BB 01 00 00 00 B9 76 80 04 08 BA 0A 00 00 00 CD 80"}, {hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"}, {hex: "48 45 4C 4F 20 57 52 4C 44 0A"}]
+    code = [{hex: "B8 04 00 00 00 BB 01 00 00 00 B9 76 80 04 08 BA 0C 00 00 00 CD 80"}, {hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"}, {hex: "48 45 4C 4C 4F 20 57 4F 52 4C 44 0A", label: "str", address: 0}]
 
     let program = ""
 
@@ -39,11 +39,17 @@ export default function ELFGenerator(code, output) {
         })
     })
 
+		let counter = 0
     code.forEach(element => {
+			
+			if (element.label) code[counter].address = bytes.toString(16)
         element.hex.split(' ').forEach(e => {
             program += e
             bytes++
         })
+			counter++
+
+			console.log(code)
     })
 
     console.log(program)
