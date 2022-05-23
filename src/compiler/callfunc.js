@@ -15,7 +15,7 @@ import raw from './standard/raw.js'
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory, compiled, id, standard) {
+	execute(func, args, line, trace, memory, compiled, id, standard, elf) {
 		let res = null
 		if (StandardLibrary.includes(func)) {
 			if (!standard) throw new RuntimeError("Import", "Standard library not imported", line, ParseTrace(trace))
@@ -27,7 +27,7 @@ export default {
 					res = output(args, line, trace, compiled, id)
 					break;
 				case "equate":
-					res = evaluate(args, line, trace, compiled, id)
+					res = evaluate(args, line, trace, compiled, id, elf)
 					break;
 				case "panic":
 					res = panic(line, trace, compiled)

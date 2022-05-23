@@ -22,7 +22,7 @@ export function ToHex(asciiString) {
         hex = hex + tempHex + ' ';
     });
     hex = hex.trim();
-    console.log(hex);
+	return hex
 }
 
 export class CompilationError {

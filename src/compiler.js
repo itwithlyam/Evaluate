@@ -124,7 +124,7 @@ export function Compile(AST, unit, verbose, compiled) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard)
+				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard, true)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
