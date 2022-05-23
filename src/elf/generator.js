@@ -16,7 +16,7 @@ export default function ELFGenerator(code, output) {
 
 	let labels = []
 
-    code = [{hex: "B8 04 00 00 00 BB 01 00 00 00 B9 __ 80 04 08 BA 0C 00 00 00 CD 80"}, {hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"}, {hex: "48 45 4C 4C 4F 20 57 4F 52 4C 44 0A", address: 0, label: true}]
+    code = [{hex: "B8 04 00 00 00 BB 01 00 00 00 B9 __ 80 04 08 BA 0C 00 00 00 CD 80"}, {hex: "B8 04 00 00 00 BB 01 00 00 00 B9 __ 80 04 08 BA 02 00 00 00 CD 80"}, {hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"}, {hex: "48 45 4C 4C 4F 20 57 4F 52 4C 44 0A", label: true}, {hex: "48 0A", label: true}]
 
     let program = ""
 

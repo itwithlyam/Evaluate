@@ -13,6 +13,18 @@ export function ParseTrace(traceback) {
 	return Trace
 }
 
+export function ToHex(asciiString) {
+    let hex = '';
+    let tempASCII, tempHex;
+    asciiString.split('').map( i => {
+        tempASCII = i.charCodeAt(0)
+        tempHex = tempASCII.toString(16);
+        hex = hex + tempHex + ' ';
+    });
+    hex = hex.trim();
+    console.log(hex);
+}
+
 export class CompilationError {
 	constructor(type, body, location, traceback) {
 		console.error(chalk.red(`Error during Parsing: ${type}: ${body} (Line ${location})`)+`\n\nTRACEBACK` + traceback)
