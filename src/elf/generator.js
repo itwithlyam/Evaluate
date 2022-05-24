@@ -9,36 +9,12 @@ export default function ELFGenerator(code, output) {
 
     code.push({hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"})
 
-    pheader.filesz = "11"
-    pheader.memsz = "11"
-
-    let fh = fheader.build()
-    let ph = pheader.build()
-
 	let labels = []
 
     let program = ""
+		let programn = ""
 
     let bytes = 0
-
-    fh.forEach(element => {
-        element.forEach(e => {
-            if (e.length == 2) {
-                program += e
-            } else {
-                bytes += e
-            }
-        })
-    })
-    ph.forEach(element => {
-        element.forEach(e => {
-            if (e.length == 2) {
-                program += e
-            } else {
-                bytes += e
-            }
-        })
-    })
 
 		let counter = 0
     code.forEach(element => {
@@ -73,7 +49,32 @@ export default function ELFGenerator(code, output) {
 			counter++
 		})
 
-		program = program.join('')
+		pheader.filesz = bytes.toString(16)
+		pheader.memsz = bytes.toString(16)
+
+    let fh = fheader.build()
+    let ph = pheader.build()
+
+		fh.forEach(element => {
+        element.forEach(e => {
+            if (e.length == 2) {
+                programn += e
+            } else {
+                bytes += e
+            }
+        })
+    })
+    ph.forEach(element => {
+        element.forEach(e => {
+            if (e.length == 2) {
+                programn += e
+            } else {
+                bytes += e
+            }
+        })
+    })
+
+		program = programn.split(' ').join('') + program.join('')
 		console.log(program)
     fs.writeFileSync(output+".out", program, {encoding: 'hex'})
 }
