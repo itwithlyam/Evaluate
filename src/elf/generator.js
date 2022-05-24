@@ -41,8 +41,10 @@ export default function ELFGenerator(code, output) {
 		let labelcounter = 0
 		program = program.match(/.{1,2}/g) || []
 		program.forEach(element => {
+			console.log(element)
 			if (element === "__") {
-				program[counter] = labels[labelcounter].address
+				console.log(labels)
+				program[counter] = labels.shift.address
 				labelcounter++
 			}
 
