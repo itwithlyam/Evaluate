@@ -2,6 +2,8 @@ import fileheader from './structs/fileheader.js'
 import programheader from './structs/programheader.js'
 import fs from 'fs'
 
+import {parseMemoryAddress} from '../util.js'
+
 
 export default function ELFGenerator(code, output) {
     let fheader = new fileheader()
@@ -14,7 +16,7 @@ export default function ELFGenerator(code, output) {
     let program = ""
 		let programn = ""
 
-    let bytes = 0
+    let bytes = 84
 
 		let counter = 0
     code.forEach(element => {
@@ -38,18 +40,6 @@ export default function ELFGenerator(code, output) {
         counter++
     })
 		counter = 0
-		let labelcounter = 0
-		program = program.match(/.{1,2}/g) || []
-		program.forEach(element => {
-			console.log(element)
-			if (element === "__") {
-				console.log(labels)
-				program[counter] = labels.shift.address
-				labelcounter++
-			}
-
-			counter++
-		})
 
 		pheader.filesz = bytes.toString(16)
 		pheader.memsz = bytes.toString(16)
@@ -61,8 +51,6 @@ export default function ELFGenerator(code, output) {
         element.forEach(e => {
             if (e.length == 2) {
                 programn += e
-            } else {
-                bytes += e
             }
         })
     })
@@ -70,11 +58,21 @@ export default function ELFGenerator(code, output) {
         element.forEach(e => {
             if (e.length == 2) {
                 programn += e
-            } else {
-                bytes += e
             }
         })
     })
+
+	let labelcounter = 0
+		program = program.match(/.{1,2}/g) || []
+		program.forEach(element => {
+			console.log(element)
+			if (element === "__") {
+				program[counter] = labels[labelcounter].address
+				labelcounter++
+			}
+
+			counter++
+		})
 
 		program = programn.split(' ').join('') + program.join('')
 		console.log(program)

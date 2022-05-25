@@ -13,6 +13,18 @@ export function ParseTrace(traceback) {
 	return Trace
 }
 
+export function parseMemoryAddress(bytes) {
+	bytes = bytes.toString(16)
+	if (bytes.length === 1) bytes += "0000000"
+	if (bytes.length === 2) bytes += "000000"
+	if (bytes.length === 3) bytes += "00000"
+	if (bytes.length === 4) bytes += "0000"
+	if (bytes.length === 5) bytes += "000"
+	if (bytes.length === 6) bytes += "00"
+	if (bytes.length === 7) bytes += "0"
+	return bytes
+}
+
 export function ToHex(asciiString) {
     let hex = '';
     let tempASCII, tempHex;
