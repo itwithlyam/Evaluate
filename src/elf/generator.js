@@ -16,7 +16,7 @@ export default function ELFGenerator(code, output) {
     let program = ""
 		let programn = ""
 
-    let bytes = 84
+    let bytes = 87
 
 		let counter = 0
     code.forEach(element => {
@@ -31,6 +31,8 @@ export default function ELFGenerator(code, output) {
     })
 
     counter = 0
+    program += "00004c424c0000"
+    bytes += 7
     labels.forEach(element => {
         labels[counter].address = bytes.toString(16)
         element.label.split(' ').forEach(e => {
