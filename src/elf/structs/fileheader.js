@@ -13,7 +13,7 @@ export default class FileHeader {
         this.phnum = "01"; // Amount of PHs 
         this.shentsize = "28"; // 32 bit headers
         this.shnum = "00"; // Amount of SHs
-        this.shstrndx = "00"; // We have no SHs yet
+        this.shstrndx = "00"; // String table index
 
         this.ident[0] = "7f" // Magic number
         this.ident[1] = "45" // E

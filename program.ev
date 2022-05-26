@@ -1,4 +1,3 @@
 import standard
 
 equate("1+1")
-equate("1+2")

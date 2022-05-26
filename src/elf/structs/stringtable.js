@@ -1,8 +1,8 @@
 export default class StringTable {
     constructor() {
-        this.table = [{str: "00 2e 73 68 73 74 72 74 61 62 00", name: "shstrtab"}]
+        this.table = [{str: "00 2e 73 68 73 74 72 74 61 62 00", name: "shstrtab", offset: 0}]
         this.offset = 0
-        this.bytes = 0
+        this.bytes = 11
     }
     add(string, name) {
         this.bytes += string.split(' ').join('').length / 2
