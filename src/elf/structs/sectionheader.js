@@ -8,7 +8,7 @@ export default class SectionHeader {
         this.size = "00" // Size of section
         this.link = "00" // Link to another section
         this.info = "00" // Info
-        this.addralign = "00" // Alignment
+        this.addralign = "10" // Alignment
         this.entsize = "00" // Entry size
         this.stringTable = "00 2e 73 68 73 74 72 74 61 62 00"
     }

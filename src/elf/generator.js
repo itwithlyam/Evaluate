@@ -16,6 +16,10 @@ export default function ELFGenerator(code, output) {
     let sbss = new sectionheader()
     let stable = new stringtable()
 
+		fheader.entry = "7A"
+
+		fheader.shnum = "01"
+
     code.push({hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"})
 
 	let labels = []
@@ -23,7 +27,7 @@ export default function ELFGenerator(code, output) {
     let program = ""
 		let programn = ""
 
-    let bytes = 84
+    let bytes = 124
 
 		let counter = 0
     code.forEach(element => {
@@ -63,12 +67,18 @@ export default function ELFGenerator(code, output) {
         bytes += strh.length / 2
 
         fheader.shstrndx = startoftable.toString(16)
-        console.log(startoftable.toString(16))
 
     let fh = fheader.build()
     let ph = pheader.build()
 
+	
         stext.name = startoftable + stable.find("text").offset
+	stext.type = "01"// PROGBITS
+	stext.flags = "04"
+	stext.offset = "54"
+	
+	stext.size = (bytes-124).toString(16)
+	let ts = stext.build()
 
 		fh.forEach(element => {
         element.forEach(e => {
@@ -78,6 +88,13 @@ export default function ELFGenerator(code, output) {
         })
     })
     ph.forEach(element => {
+        element.forEach(e => {
+            if (e.length == 2) {
+                programn += e
+            }
+        })
+    })
+	ts.forEach(element => {
         element.forEach(e => {
             if (e.length == 2) {
                 programn += e
