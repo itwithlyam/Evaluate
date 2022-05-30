@@ -16,34 +16,31 @@ export default function ELFGenerator(code, output) {
     let sbss = new sectionheader()
     let stable = new stringtable()
 
-		fheader.entry = "7A"
-
-		fheader.shnum = "01"
+    fheader.setField("entry", "7A", 0)
+    fheader.setField("shnum", "01", 1)
 
     code.push({hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"})
 
 	let labels = []
 
     let program = ""
-		let programn = ""
+    let programn = ""
 
     let bytes = 124 - 40
 
-		let counter = 0
+    let counter = 0
     code.forEach(element => {
-            console.log(element)
-			
-			if (element.label) return labels.push({label: element.hex})
-			element.hex.split(' ').forEach(e => {
-				program += e
-				bytes++
-				counter++
-			})
+        console.log(element)
+        
+        if (element.label) return labels.push({label: element.hex})
+        element.hex.split(' ').forEach(e => {
+            program += e
+            bytes++
+            counter++
+        })
     })
 
     counter = 0
-    program += "00004c424c0000"
-    bytes += 7
     labels.forEach(element => {
         labels[counter].address = bytes.toString(16)
         element.label.split(' ').forEach(e => {
@@ -52,35 +49,32 @@ export default function ELFGenerator(code, output) {
         })
         counter++
     })
-		counter = 0
+    counter = 0
 
-		pheader.filesz = bytes.toString(16)
-		pheader.memsz = bytes.toString(16)
-        program += "00000000000000000000000000000000"
-        bytes += 16
-        stable.offset = bytes
+    pheader.filesz = bytes.toString(16)
+    pheader.memsz = bytes.toString(16)
+    stable.offset = bytes
 
-        let startoftable = bytes
+    let startoftable = bytes
 
-        stable.add("2e7465787400", "text")
-        stable.link = "01000000"
-        let strh = stable.buildstr().split(' ').join('')
-        bytes += strh.length / 2
+    stable.add("2e7465787400", "text")
+    stable.setField("link", "01", 0)
+    stable.setField("flags", "22", 0)
+    let strh = stable.buildstr().split(' ').join('')
+    bytes += strh.length / 2
 
-        fheader.shstrndx = parseMemoryAddress(startoftable, 1)
+    fheader.setField("shstrndx", parseMemoryAddress(startoftable, 1))
 
     let fh = fheader.build()
     let ph = pheader.build()
 
 	
-        stext.name = parseMemoryAddress(startoftable + stable.find("text").offset, 1)
-        console.log(stext.name)
-	stext.type = "01"// PROGBITS
-	stext.flags = "04"
-	stext.offset = "54"
-    stext.link = "02000000"
-	
-	stext.size = (bytes-124).toString(16)
+    stext.setField("name", parseMemoryAddress(startoftable + stable.find("text").offset, 0))
+    stext.setField("type", "01", 0)
+    stext.setField("flags", "04", 0)
+    stext.setField("offset", "54", 0)
+    stext.setField("link", "02", 0)
+	stext.setField("size", (bytes-124).toString(16), 0)
 	let ts = stext.build()
 
 		fh.forEach(element => {
@@ -106,19 +100,19 @@ export default function ELFGenerator(code, output) {
     })
 
 	let labelcounter = 0
-		program = program.match(/.{1,2}/g) || []
-		program.forEach(element => {
-			if (element === "__") {
-				program[counter] = labels[labelcounter].address
-				labelcounter++
-			}
+    program = program.match(/.{1,2}/g) || []
+    program.forEach(element => {
+        if (element === "__") {
+            program[counter] = labels[labelcounter].address
+            labelcounter++
+        }
 
-			counter++
-		})
+        counter++
+    })
 
-        program.push(strh)
+    program.push(strh)
 
-		program = programn.split(' ').join('') + program.join('')
-		console.log(program)
+    program = programn.split(' ').join('') + program.join('')
+    console.log(program)
     fs.writeFileSync(output+".out", program, {encoding: 'hex'})
 }

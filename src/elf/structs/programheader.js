@@ -1,5 +1,8 @@
-export default class ProgramHeader {
+import Header from './header.js'
+
+export default class ProgramHeader extends Header {
     constructor() {
+        super()
         this.type = "01" // Loadable
         this.offset = "54" // Unknown at this point - Offset to start of segment
         this.vaddr = "54" // Unknown at this point - Virtual address of segment

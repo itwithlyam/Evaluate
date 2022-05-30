@@ -1,5 +1,8 @@
-export default class FileHeader {
+import Header from './header.js'
+
+export default class FileHeader extends Header {
     constructor() {
+        super()
         this.ident = [];
         this.type = "02"; // ET_EXEC
         this.machine = "03"; // x86
@@ -46,19 +49,19 @@ export default class FileHeader {
             [this.ident[8], 1],
             [this.ident[9], this.ident[10], this.ident[11], 3],
             [this.ident[12], this.ident[13], this.ident[14], this.ident[15], 4],
-            [this.type, "00", 2],
-            [this.machine, "00", 2],
-            [this.version, "00", "00", "00", 4],
-            [this.entry, "80", "04", "08", 4],
-            [this.phoff, "00", "00", "00", 4],
-            [this.shoff, "00", "00", "00", 4],
-            [this.flags, "00", "00", "00", 4],
-            [this.ehsize, "00", 2],
-            [this.phentsize, "00", 2],
-            [this.phnum, "00", 2],
-            [this.shentsize, "00", 2],
-            [this.shnum, "00", 2],
-            [this.shstrndx, "00", 2]
+            [this.type, 2],
+            [this.machine, 2],
+            [this.version, 4],
+            [this.entry, 4],
+            [this.phoff, 4],
+            [this.shoff, 4],
+            [this.flags, 4],
+            [this.ehsize, 2],
+            [this.phentsize, 2],
+            [this.phnum, 2],
+            [this.shentsize, 2],
+            [this.shnum, 2],
+            [this.shstrndx, 2]
         ]
     }
 }
