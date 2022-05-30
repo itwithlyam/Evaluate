@@ -7,7 +7,7 @@ export default class StringTable extends sect {
 				this.type = "03"
         this.table = [{str: "00 2e 73 68 73 74 72 74 61 62 00", name: "shstrtab", offset: 0}]
         this.offset = 0
-        this.bytes = 11
+        this.bytes = 40
     }
     add(string, name) {
         this.bytes += string.split(' ').join('').length / 2
@@ -23,8 +23,16 @@ export default class StringTable extends sect {
         })
         return str
     }
-    build() {
+    buildstr() {
         let table = ""
+        let sec = this.build() 
+        sec.forEach(element => {
+            element.forEach(e => {
+                if (e.length == 2) {
+                    table += e
+                }
+            })
+        })
         this.table.forEach(element => {
             table += element.str
         })

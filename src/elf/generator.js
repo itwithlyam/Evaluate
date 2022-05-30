@@ -27,7 +27,7 @@ export default function ELFGenerator(code, output) {
     let program = ""
 		let programn = ""
 
-    let bytes = 124
+    let bytes = 124 - 40
 
 		let counter = 0
     code.forEach(element => {
@@ -63,19 +63,22 @@ export default function ELFGenerator(code, output) {
         let startoftable = bytes
 
         stable.add("2e7465787400", "text")
-        let strh = stable.build().split(' ').join('')
+        stable.link = "01000000"
+        let strh = stable.buildstr().split(' ').join('')
         bytes += strh.length / 2
 
-        fheader.shstrndx = startoftable.toString(16)
+        fheader.shstrndx = parseMemoryAddress(startoftable, 1)
 
     let fh = fheader.build()
     let ph = pheader.build()
 
 	
-        stext.name = startoftable + stable.find("text").offset
+        stext.name = parseMemoryAddress(startoftable + stable.find("text").offset, 1)
+        console.log(stext.name)
 	stext.type = "01"// PROGBITS
 	stext.flags = "04"
 	stext.offset = "54"
+    stext.link = "02000000"
 	
 	stext.size = (bytes-124).toString(16)
 	let ts = stext.build()

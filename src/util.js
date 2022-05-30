@@ -13,16 +13,23 @@ export function ParseTrace(traceback) {
 	return Trace
 }
 
-export function parseMemoryAddress(bytes) {
+export function parseMemoryAddress(bytes, mode=0) {
 	bytes = bytes.toString(16)
-	if (bytes.length === 1) bytes += "0000000"
-	if (bytes.length === 2) bytes += "000000"
-	if (bytes.length === 3) bytes += "00000"
-	if (bytes.length === 4) bytes += "0000"
-	if (bytes.length === 5) bytes += "000"
-	if (bytes.length === 6) bytes += "00"
-	if (bytes.length === 7) bytes += "0"
-	return bytes
+	if (mode === 0) {
+		if (bytes.length === 1) bytes += "0000000"
+		if (bytes.length === 2) bytes += "000000"
+		if (bytes.length === 3) bytes += "00000"
+		if (bytes.length === 4) bytes += "0000"
+		if (bytes.length === 5) bytes += "000"
+		if (bytes.length === 6) bytes += "00"
+		if (bytes.length === 7) bytes += "0"
+		return bytes
+	} else if (mode === 1) {
+		if (bytes.length === 1) bytes += "000"
+		if (bytes.length === 2) bytes += "00"
+		if (bytes.length === 3) bytes += "0"
+		return bytes
+	}
 }
 
 export function ToHex(asciiString) {
