@@ -1,118 +1,54 @@
-import fileheader from './structs/fileheader.js'
-import programheader from './structs/programheader.js'
-import sectionheader from './structs/sectionheader.js'
-import stringtable from './structs/stringtable.js'
+import ProgramHeader from './structs/programheader.js'
+import SectionHeader from './structs/sectionheader.js'
+import StringTable from './structs/stringtable.js'
+import FileHeader from './structs/fileheader.js'
 import fs from 'fs'
 
-import {parseMemoryAddress} from '../util.js'
-import { string } from 'mathjs'
-
-
-export default function ELFGenerator(code, output) {
-    let fheader = new fileheader()
-    let pheader = new programheader()
-    let stext = new sectionheader()
-    let sdata = new sectionheader()
-    let sbss = new sectionheader()
-    let stable = new stringtable()
-
-    fheader.setField("entry", "7A", 0)
-    fheader.setField("shnum", "01", 1)
-
-    code.push({hex: "B8 01 00 00 00 BB 00 00 00 00 CD 80"})
-
-	let labels = []
+export default function ELFGenerator(mc, output) {
+    // ELF Structures
+    const ph = new ProgramHeader() // Program Header (aka segment header)
+    const strtab = new StringTable() // String table
+    const strshtab = new StringTable() // String section header table
+    const fh = new FileHeader() // File header
+    const th = new SectionHeader() // .text section header
 
     let program = ""
-    let programn = ""
 
-    let bytes = 124 - 40
+    mc.forEach(element => {
+        if (element.label) return strtab.add(element.hex, element.label)
+        program += element.hex
+    })
+
+    program += "B801000000BB00000000CD80"
+
+    let parr = program.match(/.{1,2}/g) || []
 
     let counter = 0
-    code.forEach(element => {
-        console.log(element)
-        
-        if (element.label) return labels.push({label: element.hex})
-        element.hex.split(' ').forEach(e => {
-            program += e
-            bytes++
-            counter++
-        })
-    })
+    let stentry = 84 + parr.length // String table entry
+    let shstoffset = stentry + strtab._offset
+    let shtentry; // Unknown
+    let shentry; // Unknown
+    let phentry = 52
+    let entry = 84
 
-    counter = 0
-    labels.forEach(element => {
-        labels[counter].address = bytes.toString(16)
-        element.label.split(' ').forEach(e => {
-            program += e
-            bytes++
-        })
-        counter++
-    })
-    counter = 0
-
-    pheader.filesz = bytes.toString(16)
-    pheader.memsz = bytes.toString(16)
-    stable.offset = bytes
-
-    let startoftable = bytes
-
-    stable.add("2e7465787400", "text")
-    stable.setField("link", "01", 0)
-    stable.setField("flags", "22", 0)
-    let strh = stable.buildstr().split(' ').join('')
-    bytes += strh.length / 2
-
-    fheader.setField("shstrndx", parseMemoryAddress(startoftable, 1))
-
-    let fh = fheader.build()
-    let ph = pheader.build()
-
-	
-    stext.setField("name", parseMemoryAddress(startoftable + stable.find("text").offset, 0))
-    stext.setField("type", "01", 0)
-    stext.setField("flags", "04", 0)
-    stext.setField("offset", "54", 0)
-    stext.setField("link", "02", 0)
-	stext.setField("size", (bytes-124).toString(16), 0)
-	let ts = stext.build()
-
-		fh.forEach(element => {
-        element.forEach(e => {
-            if (e.length == 2) {
-                programn += e
-            }
-        })
-    })
-    ph.forEach(element => {
-        element.forEach(e => {
-            if (e.length == 2) {
-                programn += e
-            }
-        })
-    })
-	ts.forEach(element => {
-        element.forEach(e => {
-            if (e.length == 2) {
-                programn += e
-            }
-        })
-    })
-
-	let labelcounter = 0
-    program = program.match(/.{1,2}/g) || []
-    program.forEach(element => {
-        if (element === "__") {
-            program[counter] = labels[labelcounter].address
-            labelcounter++
+    parr.forEach(byte => {
+        if (byte == '__') {
+            parr[counter] = stentry + strtab.next().offset
+            console.log(parr[counter])
         }
-
         counter++
     })
 
-    program.push(strh)
+    program = parr.join('')
 
-    program = programn.split(' ').join('') + program.join('')
+    program = ph.build() + program
+    program = fh.build() + program
+    program += strtab.buildstr()
+    program += strshtab.buildstr()
+    program += th.build()
+    program += strtab.build()
+    program += strshtab.build()
+
     console.log(program)
     fs.writeFileSync(output+".out", program, {encoding: 'hex'})
 }
