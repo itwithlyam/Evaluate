@@ -32,6 +32,16 @@ export function parseMemoryAddress(bytes, mode=0) {
 	}
 }
 
+export function parseVaddr(offset) {
+	let res = (134512640 + parseInt(offset)).toString(16) // Figure 3-25 of the ABI Suppliment 386 on page 48 says that .text is always at 0x08048000
+	return 0 + res
+}
+
+export function convertEndian(bytes) {
+	let res = bytes.match(/.{1,2}/g) || []
+	return res.reverse().join('')
+}
+
 export function ToHex(asciiString) {
     let hex = '';
     let tempASCII, tempHex;

@@ -4,6 +4,8 @@ import StringTable from './structs/stringtable.js'
 import FileHeader from './structs/fileheader.js'
 import fs from 'fs'
 
+import {parseMemoryAddress, convertEndian, parseVaddr} from '../util.js'
+
 export default function ELFGenerator(mc, output) {
     // ELF Structures
     const ph = new ProgramHeader() // Program Header (aka segment header)
@@ -25,29 +27,59 @@ export default function ELFGenerator(mc, output) {
 
     let counter = 0
     let stentry = 84 + parr.length // String table entry
-    let shstoffset = stentry + strtab._offset
-    let shtentry; // Unknown
-    let shentry; // Unknown
     let phentry = 52
-    let entry = 84
+    let entry = convertEndian(parseVaddr("84"))
+
+    strshtab.add("2e737472736874616200", "strshtab")
+    strshtab.add("2e737472746162", "strtab")
+    strshtab.add("2e7465787400", "text")
+
+    fh.setField("entry", entry, 0)
+    fh.setField("phoff", phentry, 0)
+    fh.setField("shnum", "03", 1)
 
     parr.forEach(byte => {
         if (byte == '__') {
-            parr[counter] = stentry + strtab.next().offset
-            console.log(parr[counter])
+            let c = convertEndian(parseVaddr(stentry + strtab.next().offset)).match(/.{1,2}/g)
+            parr.splice(counter, 1, c[0], c[1], c[2], c[3])
         }
         counter++
     })
 
-    program = parr.join('')
 
-    program = ph.build() + program
-    program = fh.build() + program
-    program += strtab.buildstr()
-    program += strshtab.buildstr()
-    program += th.build()
-    program += strtab.build()
-    program += strshtab.build()
+    program = []
+
+    let rb = 0
+    
+    program.push(fh.build())
+    rb += 52
+
+    program.push(ph.build())
+    rb += 32
+
+    program.push(parr.join(''))
+    rb += parr.length
+
+    program.push(strtab.buildstr())
+    rb += strtab.buildstr().length / 2
+
+    program.push(strshtab.buildstr())
+    rb += strshtab.buildstr().length / 2
+
+    program.push(th.build())
+    rb += 40
+
+    program.push(strtab.build())
+    rb += 40
+
+    program.push(strshtab.build())
+    rb += 40
+
+    ph.setField("filesz", (rb - 52).toString(16), 0)
+    ph.setField("memsz", (rb - 52).toString(16), 0)
+    ph[1] = ph.build()
+
+    program = program.join('')
 
     console.log(program)
     fs.writeFileSync(output+".out", program, {encoding: 'hex'})
