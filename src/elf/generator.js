@@ -38,12 +38,14 @@ export default function ELFGenerator(mc, output) {
     fh.setField("phoff", phentry, 0)
 
     parr.forEach(byte => {
-        if (byte == '__') {
-            let c = convertEndian(parseVaddr((stentry + strtab.next().offset).toString(16))).match(/.{1,2}/g)
+        if (parr[counter] == '__') {
+            let c = convertEndian(parseVaddr(stentry + strtab.next() + 9)).match(/.{1,2}/g)
             console.log(c)
             parr.splice(counter, 1, c[0], c[1], c[2], c[3])
+            counter += 2
         }
         counter++
+        console.log(parr[counter])
     })
 
     // strshtab.setField("name", strshtab.find("shstrtab").offset, 0)
@@ -64,8 +66,8 @@ export default function ELFGenerator(mc, output) {
     program.push(strtab.buildstr())
     rb += strtab.buildstr().length / 2
 
-    ph.setField("filesz", (rb - 52).toString(16), 0)
-    ph.setField("memsz", (rb - 52).toString(16), 0)
+    ph.setField("filesz", (rb - 52), 0)
+    ph.setField("memsz", (rb - 52), 0)
     program[1] = ph.build()
 
     // fh.setField("shstrndx", rb.toString(16), 1)

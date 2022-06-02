@@ -15,9 +15,9 @@ export default class StringTable extends sect {
     }
     add(string, name) {
         string += "00"
-        this.#bytes += string.split(' ').join('').length / 2
-        this.#table.push({str: string, name: name, offset: this.#bytes})
         console.log(this.#bytes)
+        this.#table.push({str: string, name: name, offset: this.#bytes})
+        this.#bytes += string.split(' ').join('').length / 2
     }
     find(name) {
         let str = {}
@@ -31,7 +31,7 @@ export default class StringTable extends sect {
     }
     next() {
         this.#current++
-        return this.#table[this.#current-1]
+        return this.#table[this.#current - 1].offset
     }
     buildstr() {
         let table = ""

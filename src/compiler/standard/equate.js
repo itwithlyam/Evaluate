@@ -13,7 +13,7 @@ export default function eqfunc(args, line, trace, compiled, id, elf) {
 
 		if (hexlen.length === 1) hexlen = "0" + hexlen
 		hexlen = parseMemoryAddress(hexlen)
-		return [{hex: `B804000000BB01000000B9__BA${hexlen}CD80`, desc: "print out res"}, {hex: `${hexa}0A00`, label: true, desc: "res"}]
+		return [{hex: `B804000000BB01000000B9__BA${hexlen}CD80`, desc: "print out res"}, {hex: `${hexa}0A`, label: true, desc: "res"}]
 
 	} catch(err) {
 		console.log(err)
