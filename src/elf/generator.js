@@ -30,22 +30,23 @@ export default function ELFGenerator(mc, output) {
     let phentry = 52
     let entry = convertEndian(parseVaddr("84"))
 
-    strshtab.add("2e737472736874616200", "strshtab")
-    strshtab.add("2e737472746162", "strtab")
-    strshtab.add("2e7465787400", "text")
+    // strshtab.add("2e737472736874616200", "shstrtab")
+    // strshtab.add("2e737472746162", "strtab")
+    // strshtab.add("2e7465787400", "text")
 
     fh.setField("entry", entry, 0)
     fh.setField("phoff", phentry, 0)
-    fh.setField("shnum", "03", 1)
 
     parr.forEach(byte => {
         if (byte == '__') {
-            let c = convertEndian(parseVaddr(stentry + strtab.next().offset)).match(/.{1,2}/g)
+            let c = convertEndian(parseVaddr((stentry + strtab.next().offset).toString(16))).match(/.{1,2}/g)
+            console.log(c)
             parr.splice(counter, 1, c[0], c[1], c[2], c[3])
         }
         counter++
     })
 
+    // strshtab.setField("name", strshtab.find("shstrtab").offset, 0)
 
     program = []
 
@@ -63,21 +64,31 @@ export default function ELFGenerator(mc, output) {
     program.push(strtab.buildstr())
     rb += strtab.buildstr().length / 2
 
-    program.push(strshtab.buildstr())
-    rb += strshtab.buildstr().length / 2
-
-    program.push(th.build())
-    rb += 40
-
-    program.push(strtab.build())
-    rb += 40
-
-    program.push(strshtab.build())
-    rb += 40
-
     ph.setField("filesz", (rb - 52).toString(16), 0)
     ph.setField("memsz", (rb - 52).toString(16), 0)
-    ph[1] = ph.build()
+    program[1] = ph.build()
+
+    // fh.setField("shstrndx", rb.toString(16), 1)
+
+    // program.push(strshtab.buildstr())
+    // rb += strshtab.buildstr().length / 2
+
+    // fh.setField("shoff", rb.toString(16), 0)
+
+    // program.push(th.build())
+    // rb += 40
+
+    // program.push(strtab.build())
+    // rb += 40
+
+    // program.push(strshtab.build())
+    // rb += 40
+
+    // ph.setField("filesz", (rb - 52).toString(16), 0)
+    // ph.setField("memsz", (rb - 52).toString(16), 0)
+    // program[1] = ph.build()
+
+    // program[0] = fh.build()
 
     program = program.join('')
 

@@ -37,7 +37,11 @@ export default class FileHeader extends Header {
     }
     build() {
         // OVERLOAD OF Header#build()
-        this.ident = this.ident.join('')
-        return Object.values(this).join('')
+        let ret = ""
+        Object.entries(this).forEach(([key, value]) => {
+            if (key === "ident") return ret += value.join('')
+            ret += value
+        })
+        return ret
     }
 }

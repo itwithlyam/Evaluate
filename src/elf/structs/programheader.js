@@ -5,7 +5,7 @@ export default class ProgramHeader extends Header {
         super()
         this.type = "01000000" // Loadable
         this.offset = "54000000" // Unknown at this point - Offset to start of segment
-        this.vaddr = "54000000" // Unknown at this point - Virtual address of segment
+        this.vaddr = "54800408" // Unknown at this point - Virtual address of segment
         this.paddr = "00000000" // Unused in x86
         this.filesz = "0C000000" // Unknown at this point - Segment size (file image) in bytes
         this.memsz = "0C000000" // Unknown at this point - Segment size (in memory) in bytes

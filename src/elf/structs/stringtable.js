@@ -14,8 +14,10 @@ export default class StringTable extends sect {
         this.#current = 0
     }
     add(string, name) {
+        string += "00"
         this.#bytes += string.split(' ').join('').length / 2
-        this.#table.push({str: string + "00", name: name, offset: this.#bytes})
+        this.#table.push({str: string, name: name, offset: this.#bytes})
+        console.log(this.#bytes)
     }
     find(name) {
         let str = {}
