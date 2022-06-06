@@ -13,10 +13,13 @@ export default class StringTable extends sect {
         this.#bytes = 0
         this.#current = 0
     }
-    add(string, name) {
+		setOffset() {
+			
+		}
+    add(string, name, bytes) {
         string += "00"
-        console.log(this.#bytes)
-        this.#table.push({str: string, name: name, offset: this.#bytes})
+        console.log(this.#bytes + bytes)
+        this.#table.push({str: string, name: name, offset: this.#bytes + bytes})
         this.#bytes += string.split(' ').join('').length / 2
     }
     find(name) {

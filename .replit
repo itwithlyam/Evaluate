@@ -1,1 +1,1 @@
-run="node index.js program.ev --force --disable-warnings -v && ./output.out" 
+run="bash run.sh" 
