@@ -17,11 +17,17 @@ export default function ELFGenerator(mc, output) {
     let program = ""
 
     mc.forEach(element => {
-        if (element.label) return strtab.add(element.hex, element.label)
+        if (element.label) {
+					return strtab.add(element.hex, element.label)
+				}
         program += element.hex
     })
 
     program += "B801000000BB00000000CD80"
+
+		strtab.table.forEach(label => {
+			program += "000000"
+		})
 
     let parr = program.match(/.{1,2}/g) || []
 
@@ -63,6 +69,7 @@ export default function ELFGenerator(mc, output) {
     program.push(parr.join(''))
     rb += parr.length
 
+		strtab.setOffset(rb)
     program.push(strtab.buildstr())
     rb += strtab.buildstr().length / 2
 
