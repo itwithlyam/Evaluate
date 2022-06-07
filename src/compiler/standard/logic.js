@@ -1,16 +1,21 @@
 import {RuntimeError, ParseTrace} from '../../util.js'
 
-export default function (args, line, trace, compiled, id) {
+export default function (args, line, trace, elf, id) {
 	try {
-		let statement = args[1]
+		let statement = args[0]
 		let func = Function(`if (${statement}) return true
 	else return false`)
 		let truth = func()
-		if (!compiled) {
+		if (elf) {
+			let t = "747275650A"
+			let tl = "0A000000"
+			let f = "66616c73650A"
+			let fl = "0C000000"
+
 			if (truth) {
-				return args[0] + ": True"
+				return [{hex: `B804000000BB01000000B9__BA${tl}CD80`}, {hex: t, label: true, desc: "True"}]
 			} else {
-				return args[0] + ": False"			
+				return [{hex: `B804000000BB01000000B9__BA${fl}CD80`}, {hex: f, label: true, desc: "False"}]
 			}
 		} else {
 			if (truth) {
@@ -20,6 +25,7 @@ export default function (args, line, trace, compiled, id) {
 			}
 		}
 	} catch(err) {
+		console.log(err)
 		throw new RuntimeError("StandardLibraryLogic", "An error occured during evaluation of logic", line, ParseTrace(trace))
 	}
 }

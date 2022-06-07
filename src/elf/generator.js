@@ -18,14 +18,10 @@ export default function ELFGenerator(mc, output) {
 
     mc.forEach(element => {
         if (element.label) {
-					console.log(element)
 					return strtab.add(element.hex, element.desc)
 				}
         program += element.hex
     })
-
-		console.log(strtab.table)
-			console.log(strtab.table.length)
 
 
     program += "B801000000BB00000000CD80"
@@ -55,6 +51,11 @@ export default function ELFGenerator(mc, output) {
         if (parr[counter] == '__') {
             let c = convertEndian(parseVaddr(strtab.next())).match(/.{1,2}/g)
             parr.splice(counter, 1, c[0], c[1], c[2], c[3])
+					console.log('----------')
+						console.log(parr[counter])
+						console.log(parr[counter+1])
+						console.log(parr[counter+2])
+						console.log(parr[counter+3])
 						console.log(c)
             counter += 2
         }
