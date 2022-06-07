@@ -51,7 +51,8 @@ export function ToHex(asciiString) {
         hex = hex + tempHex + ' ';
     });
     hex = hex.trim();
-	return hex
+
+	return hex.split(' ').join('')
 }
 
 export class CompilationError {

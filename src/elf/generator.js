@@ -49,12 +49,10 @@ export default function ELFGenerator(mc, output) {
     parr.forEach(byte => {
         if (parr[counter] == '__') {
             let c = convertEndian(parseVaddr(strtab.next())).match(/.{1,2}/g)
-            console.log(c)
             parr.splice(counter, 1, c[0], c[1], c[2], c[3])
             counter += 2
         }
         counter++
-        console.log(parr[counter])
     })
 
     // strshtab.setField("name", strshtab.find("shstrtab").offset, 0)
