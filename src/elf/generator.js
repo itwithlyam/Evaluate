@@ -25,14 +25,15 @@ export default function ELFGenerator(mc, output) {
 
     program += "B801000000BB00000000CD80"
 
+		let extrabytes = 0
 		strtab.table.forEach(label => {
-			program += "000000"
+			extrabytes += 3
 		})
 
     let parr = program.match(/.{1,2}/g) || []
 
     let counter = 0
-    let stentry = 84 + parr.length // String table entry
+    let stentry = 84 + parr.length + extrabytes// String table entry
     let phentry = 52
     let entry = convertEndian(parseVaddr("84"))
 
@@ -42,6 +43,8 @@ export default function ELFGenerator(mc, output) {
 
     fh.setField("entry", entry, 0)
     fh.setField("phoff", phentry, 0)
+
+		strtab.setOffset(stentry)
 
     parr.forEach(byte => {
         if (parr[counter] == '__') {
@@ -68,8 +71,7 @@ export default function ELFGenerator(mc, output) {
 
     program.push(parr.join(''))
     rb += parr.length
-
-		strtab.setOffset(rb)
+	
     program.push(strtab.buildstr())
     rb += strtab.buildstr().length / 2
 

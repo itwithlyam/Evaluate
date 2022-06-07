@@ -15,8 +15,10 @@ export default class StringTable extends sect {
     }
 		setOffset(offset) {
 			let c = 0
+			this.#bytes = offset
 			this.table.forEach(str => {
-				this.table[c].offset += c
+				this.table[c].offset += offset
+				c++
 			})
 		}
     add(string, name) {
