@@ -30,7 +30,7 @@ export default {
 					res = evaluate(args, line, trace, compiled, id, elf)
 					break;
 				case "panic":
-					res = panic(line, trace, compiled)
+					res = panic(line, trace, elf)
 					break;
 				case "logic":
 					res = logic(args, line, trace, elf, id)
