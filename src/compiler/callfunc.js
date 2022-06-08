@@ -24,7 +24,7 @@ export default {
 					res = simplify(args, line, trace, compiled, id)
 					break;
 				case 'printf':
-					res = output(args, line, trace, compiled, id)
+					res = output(args, line, trace, elf, id)
 					break;
 				case "equate":
 					res = evaluate(args, line, trace, compiled, id, elf)

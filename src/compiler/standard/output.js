@@ -3,7 +3,17 @@ import {simplify} from 'mathjs'
 
 export default function outputfunc(args, line, trace, compiled, id) {
 	try {
-		if (!compiled) return args.join(' ')
+		if (compiled) {
+			let ret = []
+			let v = false
+			let str = args[0].split(/(\\n)|({)|(})|(\\a)|(\\b)|(\\t)|(\\r)|(\\f)|(\\v)/gi)
+			str.forEach(element => {
+				if (v) {
+					ret += [{""}]
+				} 
+			})
+			return ret
+		} 
 		let ret = []
 		/* {label: args[0], commands: `db "${args[0]}: ${args[1]}",0`, type: "label", os: ['mac', 'linux', 'win']}, */
 		let counter = 0
