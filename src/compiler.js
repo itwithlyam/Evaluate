@@ -29,7 +29,7 @@ let VarMemory = []
 let FunctionMemory = {}
 let modules = ['ascii', 'standard']
 
-export function Compile(AST, unit, verbose, compiled) {
+export function Compile(AST, unit, verbose, compiled, output) {
 	if (verbose) console.log(AST)
 	const RuntimeStack = new StackTrace(verbose, "Compiler Stack")
 	RuntimeStack.push("Program Start", 0)
@@ -248,7 +248,7 @@ export function Compile(AST, unit, verbose, compiled) {
 		})
 		return;
 	} else if (compiled) {
-		return Generator(ans, compiled, true)
+		return Generator(ans, compiled, output)
 	}
 	return ans
 }
