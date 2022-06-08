@@ -2,5 +2,6 @@ import standard
 
 
 logic("1 == 1")
+panic()
 
 

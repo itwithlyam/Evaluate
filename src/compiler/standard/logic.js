@@ -8,9 +8,9 @@ export default function (args, line, trace, elf, id) {
 		let truth = func()
 		if (elf) {
 			let t = "747275650A"
-			let tl = "0A000000"
+			let tl = "05000000"
 			let f = "66616c73650A"
-			let fl = "0C000000"
+			let fl = "06000000"
 
 			if (truth) {
 				return [{hex: `B804000000BB01000000B9__BA${tl}CD80`}, {hex: t, label: true, desc: "True"}]
