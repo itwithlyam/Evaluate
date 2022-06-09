@@ -1,4 +1,4 @@
-import {RuntimeError, ParseTrace, ToHex} from '../../util.js'
+import {RuntimeError, ParseTrace, ToHex, parseMemoryAddress} from '../../util.js'
 import {simplify} from 'mathjs'
 
 export default function outputfunc(args, line, trace, compiled, id) {
@@ -95,10 +95,11 @@ export default function outputfunc(args, line, trace, compiled, id) {
 					ret.push({commands: `mov eax,0x20000004\nmov ebx,0x20000001\nmov ecx,${l}\nmov edx,${l}len\nint 0x80\n`, type: "text", os: ['mac']})
 				} else {
 					if (compiled) {
+						let len = parseMemoryAddress(ToHex(l).length / 2,0)
 						return ret.push({
 							hex: ToHex(l), label: true, desc: "text"
 							}, {
-								hex: `B804000000BB01000000B9__BA${parseMemoryAddress(ToHex(l).length / 2, 0)}CD80`
+								hex: `B804000000BB01000000B9__BA${len}CD80`
 						})
 					}
 					ret.push({commands: `db "${l}",0`, type: "label", label: "printf"+id+counter, os: ['mac', 'linux', 'win']})
@@ -110,7 +111,7 @@ export default function outputfunc(args, line, trace, compiled, id) {
 		})
 		return ret
 	} catch(err) {
-		//console.log(err)
+		console.log(err)
 		throw new RuntimeError("StandardLibraryOutput", "An error occured during output", line, ParseTrace(trace))
 	} 
 } 

@@ -1,6 +1,6 @@
 import standard
 
 
-printf("Hello\n")
+printf("Hello, world!\n")
 
 
