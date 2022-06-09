@@ -95,7 +95,8 @@ export default function outputfunc(args, line, trace, compiled, id) {
 					ret.push({commands: `mov eax,0x20000004\nmov ebx,0x20000001\nmov ecx,${l}\nmov edx,${l}len\nint 0x80\n`, type: "text", os: ['mac']})
 				} else {
 					if (compiled) {
-						let len = parseMemoryAddress(ToHex(l).length / 2,0)
+						let len = parseMemoryAddress((ToHex(l).length / 2),0)
+						console.log(ToHex(l).length / 2)
 						return ret.push({
 							hex: ToHex(l), label: true, desc: "text"
 							}, {
