@@ -15,6 +15,7 @@ export function ParseTrace(traceback) {
 
 export function parseMemoryAddress(bytes, mode=0) {
 	bytes = bytes.toString(16)
+	bytes = Nullify(bytes)
 	if (mode === 0) {
 		if (bytes.length === 1) bytes += "0000000"
 		if (bytes.length === 2) bytes += "000000"
@@ -42,6 +43,11 @@ export function convertEndian(bytes) {
 	return res.reverse().join('')
 }
 
+export function Nullify(str) {
+	if (str.length % 2 == 1) return '0' + str
+	return str
+}
+
 export function ToHex(asciiString) {
     let hex = '';
     let tempASCII, tempHex;
@@ -52,7 +58,9 @@ export function ToHex(asciiString) {
     });
     hex = hex.trim();
 
-	return hex.split(' ').join('')
+	hex = hex.split(' ')
+	if (hex[0].length == 1) hex[0] = '0' + hex[0]
+	return hex.join('')
 }
 
 export class CompilationError {

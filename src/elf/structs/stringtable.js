@@ -23,7 +23,6 @@ export default class StringTable extends sect {
 		}
     add(string, name) {
         string += "00"
-        console.log(this.#bytes)
         this.table.push({str: string, name: name, offset: this.#bytes})
         this.#bytes += string.split(' ').join('').length / 2
     }
