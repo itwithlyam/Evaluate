@@ -1,4 +1,13 @@
 import standard
 
-printf("Hello, world!\n")
+simplify("x+y+x")
+printf("sure\n")
+simplify("x+y+x")
+printf("sure\n")
+simplify("x+y+x")
+printf("sure\n")
+simplify("x+y+x")
+printf("sure\n")
+simplify("x+y+x")
+printf("sure\n")
 

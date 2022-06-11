@@ -21,7 +21,7 @@ export default {
 			if (!standard) throw new RuntimeError("Import", "Standard library not imported", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
-					res = simplify(args, line, trace, compiled, id)
+					res = simplify(args, line, trace, compiled, id, elf)
 					break;
 				case 'printf':
 					res = output(args, line, trace, elf, id)
