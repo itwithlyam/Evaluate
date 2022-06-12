@@ -1,7 +1,7 @@
 export default {
   name: "declare",
   description: "declares memory",
-  execute(annotation, id, value) {
+  execute(annotation, id, value) { 
     switch (annotation) {
       case "char":
         return [
