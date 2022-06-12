@@ -1,13 +1,9 @@
 import standard
 
-simplify("x+y+x")
-printf("sure\n")
-simplify("x+y+x")
-printf("sure\n")
-simplify("x+y+x")
-printf("sure\n")
-simplify("x+y+x")
-printf("sure\n")
-simplify("x+y+x")
-printf("sure\n")
+{
+    printf("yes func\n")
+} function Lyam
 
+Lyam()
+printf("yes not\n")
+Lyam()

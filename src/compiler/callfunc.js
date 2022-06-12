@@ -1,7 +1,5 @@
-import {RuntimeError, ParseTrace} from '../util.js'
+import {RuntimeError, ParseTrace, StandardLibrary} from '../util.js'
 import {Compile} from '../compiler.js'
-
-const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic", "malloc", "raw"]
 
 // Standard Library
 import simplify from "./standard/simplify.js"

@@ -33,6 +33,8 @@ export function parseMemoryAddress(bytes, mode=0) {
 	}
 }
 
+export const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic", "malloc", "raw"]
+
 export function parseVaddr(offset) {
 	let res = (134512640 + parseInt(offset)).toString(16) // Figure 3-25 of the ABI Suppliment 386 on page 48 says that .text is always at 0x08048000
 	return 0 + res

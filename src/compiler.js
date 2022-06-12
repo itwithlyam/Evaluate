@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import {RuntimeError, StackTrace, Yard, rpn, ParseTrace} from "./util.js"
+import {RuntimeError, StackTrace, Yard, rpn, ParseTrace, StandardLibrary} from "./util.js"
 import {Parse} from "./parser.js"
 import {Lexer} from "./lexer.js"
 import chalk from "chalk"
@@ -28,6 +28,7 @@ import notgate from './compiler/logic/not.js'
 let VarMemory = []
 let FunctionMemory = {}
 let modules = ['ascii', 'standard']
+let Symbols = {}
 
 export function Compile(AST, unit, verbose, compiled, output) {
 	if (verbose) console.log(AST)
@@ -49,7 +50,10 @@ export function Compile(AST, unit, verbose, compiled, output) {
 			case 'functiondec':
 				RuntimeStack.push("Function Declaration", line)
 				let name = element.declarations.id.name
-				parseblock.execute(blockbody, {func: name, type:"function"}).forEach(e => ans.push(e))
+				let bl = parseblock.execute(blockbody, {func: name, type:"function"}, output)
+				if (output === "elf32") {
+					Symbols[name] = bl
+				} else bl.forEach(e => ans.push(e))
 				RuntimeStack.pop()
 				current++
 				break;
@@ -65,25 +69,25 @@ export function Compile(AST, unit, verbose, compiled, output) {
 
 			case 'branching':
 				switch(element.kind) {
-					 case 'break':
-							 nbreak.execute().forEach(e => ans.push(e))
-							 break;
-					 case 'breakequal':
-							 breakequal.execute(element.params).forEach(e => ans.push(e))
-							 break;
-					 case 'breaknotequal':
-							 breaknotequal.execute(element.params).forEach(e => ans.push(e))
-							 break;
-					 case 'breakzero':
-							 breakzero.execute(element.params).forEach(e => ans.push(e))
-							 break;
-					 case 'breaknotzero':
-							 breaknotzero.execute(element.params).forEach(e => ans.push(e))
-							 break;
-					 case 'continue':
-							 ncontinue.execute().forEach(e => ans.push(e))
-							 break;
-			 }
+					case 'break':
+							nbreak.execute().forEach(e => ans.push(e))
+							break;
+					case 'breakequal':
+							breakequal.execute(element.params).forEach(e => ans.push(e))
+							break;
+					case 'breaknotequal':
+							breaknotequal.execute(element.params).forEach(e => ans.push(e))
+							break;
+					case 'breakzero':
+							breakzero.execute(element.params).forEach(e => ans.push(e))
+							break;
+					case 'breaknotzero':
+							breaknotzero.execute(element.params).forEach(e => ans.push(e))
+							break;
+					case 'continue':
+							ncontinue.execute().forEach(e => ans.push(e))
+							break;
+			}	
 				current++
 				break;
 
@@ -111,7 +115,7 @@ export function Compile(AST, unit, verbose, compiled, output) {
 				break;
 			case 'loop':
 				if (!parseInt(element.times)) throw new RuntimeError("ExpectedInteger", "An integer was expected but was not supplied.", line, ParseTrace(RuntimeStack))
-				res = parseblock.execute(blockbody, {current:current, amount:element.times, type:"loop"})
+				res = parseblock.execute(blockbody, {current:current, amount:element.times, type:"loop"}, output)
 				if (Array.isArray(res)) {
 					res.forEach(e => {
 						ans.push(e)
@@ -124,12 +128,17 @@ export function Compile(AST, unit, verbose, compiled, output) {
 				break;
 			case 'functioncall':
 				RuntimeStack.push(`Function ${element.value}`, line)
-				res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard, true)
-				if (Array.isArray(res)) {
-					res.forEach(e => {
-						ans.push(e)
-					})
-				} else ans.push(res)
+				if (output === "elf32" && !StandardLibrary.includes(element.value)) {
+					if (!Symbols[element.value]) throw new RuntimeError("FunctionNotFound", `Function ${element.value} was not found.`, line, ParseTrace(RuntimeStack))
+					Symbols[element.value].forEach(e => ans.push(e))
+				} else {
+					res = callfunc.execute(element.value, element.params, line, RuntimeStack, FunctionMemory, compiled, current, standard, true)
+					if (Array.isArray(res)) {
+						res.forEach(e => {
+							ans.push(e)
+						})
+					} else ans.push(res)
+				}		
 				current += 1
 				RuntimeStack.pop()
 				break;

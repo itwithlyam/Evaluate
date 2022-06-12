@@ -20,7 +20,7 @@ export default function ELFGenerator(mc, output) {
         if (element.label) {
 					return strtab.add(element.hex, element.desc)
 				}
-        program += element.hex
+        program += element.hex || ""
     })
 
 
