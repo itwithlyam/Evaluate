@@ -22,6 +22,7 @@ export default {
 						ans.push(e)
 						return
 					}
+					console.log(e)
 					if (!e.os.includes('mac') && os == 'Darwin') return
 					if (!e.os.includes('linux') && os == 'Linux') return
 					if (!e.os.includes('win') && os == 'Windows_NT') return

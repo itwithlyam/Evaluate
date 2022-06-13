@@ -6,7 +6,7 @@ export default function (args, line, trace, elf, id) {
 		let func = Function(`if (${statement}) return true
 	else return false`)
 		let truth = func()
-		if (elf) {
+		if (elf === "elf32") {
 			let t = "747275650A"
 			let tl = "05000000"
 			let f = "66616c73650A"

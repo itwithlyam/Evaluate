@@ -4,7 +4,7 @@ import {simplify} from 'mathjs'
 export default function simplifyfunc(args, line, trace, compiled, id, elf) {
 	try {
 		let sim = simplify(args[0]).toString()
-		if (elf) {
+		if (elf === "elf32") {
 			let hexsim = ToHex(sim) + "0A"
 			let ret = []
 			let len = Nullify(parseMemoryAddress((hexsim.length / 2),0))
