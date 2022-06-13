@@ -13,6 +13,58 @@ export function ParseTrace(traceback) {
 	return Trace
 }
 
+export function parseMemoryAddress(bytes, mode=0) {
+	bytes = bytes.toString(16)
+	bytes = Nullify(bytes)
+	if (mode === 0) {
+		if (bytes.length === 1) bytes += "0000000"
+		if (bytes.length === 2) bytes += "000000"
+		if (bytes.length === 3) bytes += "00000"
+		if (bytes.length === 4) bytes += "0000"
+		if (bytes.length === 5) bytes += "000"
+		if (bytes.length === 6) bytes += "00"
+		if (bytes.length === 7) bytes += "0"
+		return bytes
+	} else if (mode === 1) {
+		if (bytes.length === 1) bytes += "000"
+		if (bytes.length === 2) bytes += "00"
+		if (bytes.length === 3) bytes += "0"
+		return bytes
+	}
+}
+
+export const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic", "malloc", "raw"]
+
+export function parseVaddr(offset) {
+	let res = (134512640 + parseInt(offset)).toString(16) // Figure 3-25 of the ABI Suppliment 386 on page 48 says that .text is always at 0x08048000
+	return 0 + res
+}
+
+export function convertEndian(bytes) {
+	let res = bytes.match(/.{1,2}/g) || []
+	return res.reverse().join('')
+}
+
+export function Nullify(str) {
+	if (str.length % 2 == 1) return '0' + str
+	return str
+}
+
+export function ToHex(asciiString) {
+    let hex = '';
+    let tempASCII, tempHex;
+    asciiString.split('').map( i => {
+        tempASCII = i.charCodeAt(0)
+        tempHex = tempASCII.toString(16);
+        hex = hex + tempHex + ' ';
+    });
+    hex = hex.trim();
+
+	hex = hex.split(' ')
+	if (hex[0].length == 1) hex[0] = '0' + hex[0]
+	return hex.join('')
+}
+
 export class CompilationError {
 	constructor(type, body, location, traceback) {
 		console.error(chalk.red(`Error during Parsing: ${type}: ${body} (Line ${location})`)+`\n\nTRACEBACK` + traceback)

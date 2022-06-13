@@ -1,7 +1,5 @@
-import {RuntimeError, ParseTrace} from '../util.js'
+import {RuntimeError, ParseTrace, StandardLibrary} from '../util.js'
 import {Compile} from '../compiler.js'
-
-const StandardLibrary = ["simplify", "printf", "equate", "panic", "logic", "malloc", "raw"]
 
 // Standard Library
 import simplify from "./standard/simplify.js"
@@ -15,25 +13,25 @@ import raw from './standard/raw.js'
 export default {
 	name: "callfunc",
 	description: "run function",
-	execute(func, args, line, trace, memory, compiled, id, standard) {
+	execute(func, args, line, trace, memory, compiled, id, standard, elf) {
 		let res = null
 		if (StandardLibrary.includes(func)) {
 			if (!standard) throw new RuntimeError("Import", "Standard library not imported", line, ParseTrace(trace))
 			switch(func) {
 				case 'simplify':
-					res = simplify(args, line, trace, compiled, id)
+					res = simplify(args, line, trace, compiled, id, elf)
 					break;
 				case 'printf':
-					res = output(args, line, trace, compiled, id)
+					res = output(args, line, trace, elf, id)
 					break;
 				case "equate":
-					res = evaluate(args, line, trace, compiled, id)
+					res = evaluate(args, line, trace, compiled, id, elf)
 					break;
 				case "panic":
-					res = panic(line, trace, compiled)
+					res = panic(line, trace, elf)
 					break;
 				case "logic":
-					res = logic(args, line, trace, compiled, id)
+					res = logic(args, line, trace, elf, id)
 					break;
 				case "malloc":
 					res = malloc(args)

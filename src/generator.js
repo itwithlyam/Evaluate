@@ -1,7 +1,10 @@
 import {writeFileSync, readFileSync} from 'fs';
 import os from 'os'
+import elfgen from './elf/generator.js'
 
-export default function Generator(code, output) {
+export default function Generator(code, output, type) {
+
+    if (type === "elf32") return elfgen(code, output)
 
     // stext = section .text (code)
     // sdata = section .data (variables)

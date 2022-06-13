@@ -16,3 +16,4 @@ output.asm
 output
 debug
 *.vsix
+*.sh

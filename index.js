@@ -6,11 +6,12 @@ const devmode = false
 const argdef = [
 	{name: 'input', alias: 'i', type: String, defaultOption: true},
 	{name: 'verbose', alias: 'v', type: Boolean},
-	{name: 'version', type: Boolean},
+	{name: 'version', type: Boolean, alias: "V"},
 	{name: 'force', alias: 'f', type: Boolean},
-	{name: 'disable-warnings', type: Boolean},
+	{name: 'disable-warnings', type: Boolean, alias: "d"},
 	{name: 'output', type: String, alias: 'o'},
-	{name: 'help', type: Boolean, alias: 'h'}
+	{name: 'help', type: Boolean, alias: 'h'},
+	{name: 'file', type: String, alias: 'F'}
 ]
 
 import stopwatch from 'statman-stopwatch'
@@ -30,10 +31,11 @@ export default function runner() {
 			['--help', '-h', 'Shows this menu.'],
 			['--input <file>', '-i <file>', 'Input file. Default parameter.'],
 			['--verbose', '-v', 'Outputs all stack operations and produced data.'],
-			['--version', 'None', 'Outputs this version of Evaluate'],
+			['--version', '-V', 'Outputs this version of Evaluate'],
 			['--force', '-f', 'Make sure the program runs'],
 			['--output <filename>', '-o <filename>', 'Output filename.'],
-			['--disable-warnings', 'None', 'Disables warnings thrown by Evaluate.']
+			['--disable-warnings', '-d', 'Disables warnings thrown by Evaluate.'],
+			['--file <type>', '-F <type>', 'Type of file to output.']
 		]
 		const config = {
 			header: {
@@ -52,10 +54,6 @@ export default function runner() {
 		if (!options['disable-warnings']) {
 			if (devmode) consola.warn(chalk.yellow("Warning: Current version is an unstable devmode. Expect bugs."))
 		}
-		if (devmode && !options.force) {
-			consola.fatal(chalk.red("To use devmode, please continue with force."))
-			process.exit(1)
-		}
 		
 		if (options.version) console.log("Evaluate v" + version)
 
@@ -64,10 +62,18 @@ export default function runner() {
 			verbose = true
 			console.log("Loading program")
 		}
+		if (!options.file) {
+			consola.warn("No file type specified, defaulting to elf32")
+			options.file = "elf32"
+		}
+
+		let types = ['asmWin', 'asmMac', 'elf32', 'asm']
+		
+		if (!types.includes(options.file)) process.exit(1)
 
 		let tokens =  Lexer(fs.readFileSync(options.input).toString())
 		let script =  Parse(tokens, false, verbose)
-		Compile(script, false, verbose, options.output || "output")
+		Compile(script, false, verbose, options.output || "output", options.file)
 		if (verbose) console.log("Executed in " + Math.floor(timer.stop()) + " ms")
 	} catch(err) {
 		console.log(err)
