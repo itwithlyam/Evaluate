@@ -52,6 +52,7 @@ export function Parse(tokens, func, verbose=false) {
 				value: element.char
 			})
 			current += 1
+			return
 		}
 		// Equations are deprecated
 		// if (element.ident === 7) {
@@ -165,6 +166,7 @@ export function Parse(tokens, func, verbose=false) {
 					current++
 					break;
 			}
+			return
 		}
 		else if (element.classify === 9) {
 			ParseStack.push("logic gate", line)
@@ -224,7 +226,7 @@ export function Parse(tokens, func, verbose=false) {
 				})
 				current++
 				ParseStack.pop()
-				break;
+				return;
 			case 19:
 				// Function
 				ParseStack.push("function", line)
@@ -248,7 +250,7 @@ export function Parse(tokens, func, verbose=false) {
 				})
 
 				ParseStack.pop()
-				break;
+				return;
 			case 36:
 				// Loop
 				ParseStack.push("loop", line)
@@ -269,7 +271,7 @@ export function Parse(tokens, func, verbose=false) {
 				})
 
 				ParseStack.pop()
-				break;
+				return;
 			case 21:
 				tokens[current].read = true
 				current += 1
@@ -280,7 +282,7 @@ export function Parse(tokens, func, verbose=false) {
 					value: "pass"
 				})
 				ParseStack.pop()
-				break;
+				return;
 			case 1:
 				push({
 					type: "newline",
@@ -419,6 +421,7 @@ export function Parse(tokens, func, verbose=false) {
 				ParseStack.pop()
 				return;
 			}
+			/* // old var code
 			ParseStack.push("var", line)
 			push({
 				type: "memory",
@@ -432,6 +435,7 @@ export function Parse(tokens, func, verbose=false) {
 			})
 			ParseStack.pop()
 			return current += 1
+			*/
 		}
 		if (element.ident == 10) {
 			ParseStack.push("mset", line)
@@ -523,7 +527,7 @@ export function Parse(tokens, func, verbose=false) {
 			return;
 		}
 
-		//throw new CompilationError("UnnexpectedToken", "An unnexpected token was identified.", line, ParseTrace(ParseStack))
+		throw new CompilationError("UnnexpectedKeyword", "Unnexpected keyword " + element.char + " was identified.", line, ParseTrace(ParseStack))
 	})
 	let AST = {
 		type: "Program",
