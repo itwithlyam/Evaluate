@@ -181,7 +181,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("char", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "char",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
@@ -190,7 +189,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "int8",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
@@ -199,7 +197,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("int8", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "bool",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
@@ -208,7 +205,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("int16", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "int16",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
@@ -217,7 +213,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("int32", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "int32",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
@@ -226,7 +221,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("int64", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "int64",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
@@ -235,7 +229,6 @@ export function Compile(AST, unit, verbose, compiled, output) {
 							code = declare.execute("string", element.declarations.id.name, element.declarations.init.value)
 							Symbols[element.declarations.id.name] = {
 								type: "string",
-								value: element.declarations.init.value
 							}
 							current += 1
 							break;
