@@ -12,6 +12,8 @@ export function Parse(tokens, func, verbose=false) {
 	let bracket = false
 	let sbracket = false
 
+	let symbols = {}
+
 	function push(data) {
 		if (block) presentblock.push(data)
 		else body.push(data)
@@ -238,6 +240,10 @@ export function Parse(tokens, func, verbose=false) {
 				tokens[current].read = true
 				current++
 
+				Symbols[name] = {
+					type: "function"
+				}
+
 				push({
 					type: "functiondec",
 					declarations: {
@@ -352,6 +358,7 @@ export function Parse(tokens, func, verbose=false) {
 			}
 			if (tokens[current+1].char == '(') {
 				ParseStack.push("Function Call " + element.char, line)
+				if (!Symbols[element.char] || Symbols[element.char].type !== "function") throw new CompilationError("FunctionNotFound", "Function " + element.char + " does not exist.", line, ParseTrace(ParseStack))
 				current += 1
 				tokens[current].read = true
 				let options = []
