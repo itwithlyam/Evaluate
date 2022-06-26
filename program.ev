@@ -1,9 +1,3 @@
 import standard
 
-{
-    printf("yes func\n")
-} function Lyam
-
-Lyam()
-printf("yes not\n")
-Lyam()
+simplify("")

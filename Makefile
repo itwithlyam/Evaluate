@@ -33,7 +33,7 @@ unix:
 	@echo "Building for Unix platforms"
 	@echo -e ${NC}
 	@npx caxa --input '.' --output 'Evaluate-${VER}' ${ARGS}
-	@echo "Build complete"
+	@echo "Build complete" 
 
 macosapp:
 	@make install
