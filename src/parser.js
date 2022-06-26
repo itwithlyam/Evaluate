@@ -1,4 +1,4 @@
-import {CompilationError, ParseTrace, StackTrace} from './util.js'
+import {CompilationError, ParseTrace, StackTrace, StandardLibrary} from './util.js'
 
 export function Parse(tokens, func, verbose=false) {
 	const ParseStack = new StackTrace(verbose, "Parser Stack")
@@ -12,7 +12,14 @@ export function Parse(tokens, func, verbose=false) {
 	let bracket = false
 	let sbracket = false
 
-	let symbols = {}
+	let Symbols = {}
+
+	StandardLibrary.forEach(func => {
+		Symbols[func] = {
+			type: "function",
+			standard: true
+		}
+	})
 
 	function push(data) {
 		if (block) presentblock.push(data)
