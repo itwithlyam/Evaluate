@@ -3,6 +3,9 @@
 
 *It compiles to NASM and can cross-compile, though it's cross-compilation capabilities haven't been verified.*
 
+# Notice
+I am now going to archive Evaluate due to the project becoming boring and confusing to work on. In the future I might continue with Evaluate V2 (written in C++) but for the forseeable future I am focusing a lot more on web development which is where I can both earn money through freelancing and enjoy my work more.
+
 ## Example program
 Input 
 ```
